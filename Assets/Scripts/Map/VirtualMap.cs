@@ -9,6 +9,7 @@ namespace HordeEngine
     /// </summary>
     public class VirtualMap
     {
+#pragma warning disable CS0649
         struct ChunkData
         {
             public LayerChunk layerFloor;
@@ -16,6 +17,7 @@ namespace HordeEngine
             public LayerChunk layerHigh; // Layer rendered above floor height, like top of walls, statues etc.
             public LightmapChunk lightmapChunk; // Calculated lightmap for chunk
         }
+#pragma warning restore CS0649
 
         Vector2Int chunkSize_;
         Vector2Int origin_;

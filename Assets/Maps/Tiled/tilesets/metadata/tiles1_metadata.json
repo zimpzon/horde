@@ -1,132 +1,122 @@
-{ "columns":7,
+{ "columns":32,
  "image":"..\/png\/tiles1.png",
- "imageheight":192,
- "imagewidth":112,
+ "imageheight":512,
+ "imagewidth":512,
  "margin":0,
  "name":"Tiles1",
  "spacing":0,
- "tilecount":84,
+ "tilecount":1024,
  "tileheight":16,
  "tileproperties":
     {
-     "28":
+     "128":
         {
-         "collision":"0011",
-         "lightBlocking":"1"
+         "Collision":"0010",
+         "LightMultiplier":1
         },
-     "29":
+     "129":
         {
-         "collision":"0011",
-         "lightBlocking":"1"
+         "Collision":"0011",
+         "LightMultiplier":1
         },
-     "30":
+     "130":
         {
-         "collision":"0011",
-         "lightBlocking":"1"
+         "Collision":"0001",
+         "LightMultiplier":1
         },
-     "35":
+     "160":
         {
-         "collision":"1010",
-         "lightBlocking":"1"
+         "Collision":"1010",
+         "LightMultiplier":1
         },
-     "36":
+     "161":
         {
-         "collision":"0011",
-         "door":true,
-         "lightBlocking":"0.75"
+         "Collision":"0011",
+         "IsDoor":true,
+         "LightMultiplier":1
         },
-     "37":
+     "162":
         {
-         "collision":"0101",
-         "lightBlocking":"1"
+         "Collision":"0101",
+         "LightMultiplier":1
         },
-     "42":
+     "192":
         {
-         "collision":"1010",
-         "door":true,
-         "lightBlocking":"0.75"
+         "Collision":"1010",
+         "IsDoor":true,
+         "LightMultiplier":1
         },
-     "44":
+     "194":
         {
-         "collision":"0101",
-         "door":true,
-         "lightBlocking":"0.75"
+         "Collision":"0101",
+         "IsDoor":true,
+         "LightMultiplier":1
         },
-     "49":
+     "224":
         {
-         "collision":"0101",
-         "lightBlocking":"1"
+         "Collision":"0101",
+         "LightMultiplier":1
         },
-     "50":
+     "226":
         {
-         "collision":"1111",
-         "lightBlocking":"1"
-        },
-     "51":
-        {
-         "collision":"1010",
-         "lightBlocking":"1"
+         "Collision":"1010",
+         "LightMultiplier":1
         }
     },
  "tilepropertytypes":
     {
-     "28":
+     "128":
         {
-         "collision":"string",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "LightMultiplier":"float"
         },
-     "29":
+     "129":
         {
-         "collision":"string",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "LightMultiplier":"float"
         },
-     "30":
+     "130":
         {
-         "collision":"string",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "LightMultiplier":"float"
         },
-     "35":
+     "160":
         {
-         "collision":"string",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "LightMultiplier":"float"
         },
-     "36":
+     "161":
         {
-         "collision":"string",
-         "door":"bool",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "IsDoor":"bool",
+         "LightMultiplier":"float"
         },
-     "37":
+     "162":
         {
-         "collision":"string",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "LightMultiplier":"float"
         },
-     "42":
+     "192":
         {
-         "collision":"string",
-         "door":"bool",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "IsDoor":"bool",
+         "LightMultiplier":"float"
         },
-     "44":
+     "194":
         {
-         "collision":"string",
-         "door":"bool",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "IsDoor":"bool",
+         "LightMultiplier":"float"
         },
-     "49":
+     "224":
         {
-         "collision":"string",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "LightMultiplier":"float"
         },
-     "50":
+     "226":
         {
-         "collision":"string",
-         "lightBlocking":"string"
-        },
-     "51":
-        {
-         "collision":"string",
-         "lightBlocking":"string"
+         "Collision":"string",
+         "LightMultiplier":"float"
         }
     },
  "tilewidth":16,

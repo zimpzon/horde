@@ -1,20 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HordeEngine
 {
-    public class TileInfo
+    public enum DoorFacing { Top, Right, Down, Left };
+
+    /// <summary>
+    /// Position and facing of a door in a room.
+    /// </summary>
+    [Serializable]
+    public struct Door
     {
-        public int id;
-        public byte[] collision = new byte[4];
+        public DoorFacing Facing;
+        public int RoomX;
+        public int RoomY;
     }
 
-    public enum TileTypes { WallHoriz, WallVertLeft, WallVertRight, WallCornerUpLeft, WallCornerUpRight };
-
-    // All data for a single room
+    /// <summary>
+    /// Immutable prototype data for a single non-connected room.
+    /// </summary>
+    [Serializable]
     public class Room
     {
-        List<int> tiles_ = new List<int>();
-        public int width_;
-        public int height_;
+        public int[] FloorTiles;
+        public int[] WallTiles;
+        public int[] PropTiles;
+        public object[] Objects;
+        public int[] Doors;
+
+        public int Width;
+        public int Height;
+
+        public static Door[] FindDoors(Room room)
+        {
+            return null;
+        }
     }
 }

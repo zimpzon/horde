@@ -4,6 +4,22 @@ namespace HordeEngine
 {
     public static class MapUtil
     {
+        public static void CopyBlock(int[] src, int[] dst, BoundsInt srcBounds, BoundsInt dstBounds)
+        {
+            int topLeftSrc = srcBounds.size.x * srcBounds.y + srcBounds.x;
+            int topLeftDst = dstBounds.size.x * dstBounds.y + dstBounds.x;
+
+            for (int y = 0; y < dstBounds.size.y; ++y)
+            {
+                for (int x = 0; x < dstBounds.size.x; ++x)
+                {
+                    int idxSrc = topLeftSrc + y * srcBounds.size.x + x;
+                    int idxDst = topLeftDst + y * dstBounds.size.x + x;
+                    dst[idxDst] = src[idxSrc];
+                }
+            }
+        }
+
         public static bool RowIsEmpty(int[] tiles, int w, int h, int row)
         {
             int rowBegin = row * w;
@@ -28,23 +44,47 @@ namespace HordeEngine
         public static BoundsInt GetClampedBounds(int[] tiles, int w, int h)
         {
             var result = new BoundsInt(0, 0, 0, w, h, 0);
-            for (int x = 0; x < w / 2; ++x)
+
+            // Clamp left
+            for (int x = 0; x < w; ++x)
             {
-                if (ColIsEmpty(tiles, w, h, x))
+                if (!ColIsEmpty(tiles, w, h, x))
+                {
                     result.xMin = x;
-
-                if (ColIsEmpty(tiles, w, h, w - x - 1))
-                    result.xMax = x;
+                    break;
+                }
             }
 
-            for (int y = 0; y < h / 2; ++y)
+            // Clamp right
+            for (int x = w - 1; x >= 0; --x)
             {
-                if (RowIsEmpty(tiles, w, h, y))
-                    result.yMin = y;
-
-                if (RowIsEmpty(tiles, w, h, h - y - 1))
-                    result.yMax = y;
+                if (!ColIsEmpty(tiles, w, h, x))
+                {
+                    result.xMax = x;
+                    break;
+                }
             }
+
+            // Clamp top
+            for (int y = 0; y < h; ++y)
+            {
+                if (!RowIsEmpty(tiles, w, h, y))
+                {
+                    result.yMin = y;
+                    break;
+                }
+            }
+
+            // Clamp bottom
+            for (int y = h - 1; y >= 0; --y)
+            {
+                if (!RowIsEmpty(tiles, w, h, y))
+                {
+                    result.yMax = y;
+                    break;
+                }
+            }
+
             return result;
         }
     }

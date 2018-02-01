@@ -106,13 +106,16 @@
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineTrack.cs" />
      <Compile Include="Assets\Scripts\FrameData.cs" />
      <Compile Include="Assets\Scripts\LevelManager.cs" />
-     <Compile Include="Assets\Scripts\Map\Converterv1.cs" />
      <Compile Include="Assets\Scripts\Map\LayerChunk.cs" />
      <Compile Include="Assets\Scripts\Map\LightmapChunk.cs" />
+     <Compile Include="Assets\Scripts\Map\MapObjects\MapObjectBase.cs" />
+     <Compile Include="Assets\Scripts\Map\MapObjects\MapObjectPlayerStartTile.cs" />
      <Compile Include="Assets\Scripts\Map\MapUtil.cs" />
      <Compile Include="Assets\Scripts\Map\Room.cs" />
+     <Compile Include="Assets\Scripts\Map\TileMetadata.cs" />
      <Compile Include="Assets\Scripts\Map\VirtualLayer.cs" />
      <Compile Include="Assets\Scripts\Map\VirtualMap.cs" />
+     <Compile Include="Assets\SimpleJSON\SimpleJSON.cs" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />

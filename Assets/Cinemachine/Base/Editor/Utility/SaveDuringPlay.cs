@@ -483,7 +483,7 @@ namespace SaveDuringPlay
         }
 
         static List<ObjectStateSaver> sSavedStates = null;
-        static GameObject sSaveStatesGameObject;
+        static GameObject sSaveStatesGameObject { get; set; }
         static void SaveAllInterestingStates()
         {
             //Debug.Log("Exiting play mode: Saving state for all interesting objects");

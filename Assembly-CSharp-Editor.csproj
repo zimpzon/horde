@@ -94,7 +94,7 @@
      <Compile Include="Assets\Cinemachine\PostFX\Editor\CinemachinePostProcessingEditor.cs" />
      <Compile Include="Assets\Cinemachine\PostFX\Editor\PostFXAutoImport.cs" />
      <Compile Include="Assets\Cinemachine\Timeline\Editor\CinemachineShotEditor.cs" />
-     <Compile Include="Assets\Editor\GenerateMaps.cs" />
+     <Compile Include="Assets\Editor\MapDataImporter.cs" />
  <Reference Include="com.unity.package-manager-ui.Editor">
  <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/com.unity.package-manager-ui.Editor.dll</HintPath>
  </Reference>
