@@ -1,4 +1,7 @@
 {
-	"dependencies": {
-	}
+  "dependencies": {
+    "com.unity.ads": "exclude",
+    "com.unity.analytics": "exclude",
+    "com.unity.purchasing": "exclude"
+  }
 }

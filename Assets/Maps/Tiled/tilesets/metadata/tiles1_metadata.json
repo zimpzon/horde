@@ -32,6 +32,7 @@
      "161":
         {
          "Collision":"0011",
+         "FillDoorTileId":129,
          "IsDoor":true,
          "LightMultiplier":1
         },
@@ -43,12 +44,14 @@
      "192":
         {
          "Collision":"1010",
+         "FillDoorTileId":160,
          "IsDoor":true,
          "LightMultiplier":1
         },
      "194":
         {
          "Collision":"0101",
+         "FillDoorTileId":162,
          "IsDoor":true,
          "LightMultiplier":1
         },
@@ -88,6 +91,7 @@
      "161":
         {
          "Collision":"string",
+         "FillDoorTileId":"int",
          "IsDoor":"bool",
          "LightMultiplier":"float"
         },
@@ -99,12 +103,14 @@
      "192":
         {
          "Collision":"string",
+         "FillDoorTileId":"int",
          "IsDoor":"bool",
          "LightMultiplier":"float"
         },
      "194":
         {
          "Collision":"string",
+         "FillDoorTileId":"int",
          "IsDoor":"bool",
          "LightMultiplier":"float"
         },

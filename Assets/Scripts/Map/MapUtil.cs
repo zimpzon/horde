@@ -43,7 +43,7 @@ namespace HordeEngine
 
         public static BoundsInt GetClampedBounds(int[] tiles, int w, int h)
         {
-            var result = new BoundsInt(0, 0, 0, w, h, 0);
+            var result = new BoundsInt(0, 0, 0, 0, 0, 0);
 
             // Clamp left
             for (int x = 0; x < w; ++x)

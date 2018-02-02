@@ -10,7 +10,7 @@ namespace HordeEngine
     public class VirtualMap
     {
 #pragma warning disable CS0649
-        struct ChunkData
+        class ChunkData
         {
             public LayerChunk layerFloor;
             public LayerChunk layerObstacles;

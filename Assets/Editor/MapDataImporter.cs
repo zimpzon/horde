@@ -130,6 +130,8 @@ public class MenuItems
             var map = JsonUtility.FromJson<JsonMap>(json);
 
             Room room = GetRoom(map);
+            if (room == null)
+                continue;
             rooms.Add(room);
         }
 
@@ -154,6 +156,11 @@ public class MenuItems
         // The Walls layer is used to determine the bounds of the room.
         var srcBounds = MapUtil.GetClampedBounds(walls.data, walls.width, walls.height);
         Debug.Log("Room bounds: " + srcBounds);
+        if (srcBounds.size.x * srcBounds.y == 0)
+        {
+            Debug.Log("ERROR: no room found, skipping.");
+            return null;
+        }
 
         var room = new Room
         {
