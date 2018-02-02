@@ -5,6 +5,11 @@ namespace HordeEngine
 {
     public enum DoorFacing { Top, Right, Down, Left };
 
+    public class RoomWrapper
+    {
+        public List<Room> Rooms = new List<Room>();
+    }
+
     /// <summary>
     /// Position and facing of a door in a room.
     /// </summary>
