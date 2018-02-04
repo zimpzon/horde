@@ -1,23 +1,65 @@
 ﻿using UnityEngine;
+using System.IO;
 
 namespace HordeEngine
 {
     public static class MapUtil
     {
-        public static void CopyBlock(int[] src, int[] dst, BoundsInt srcBounds, BoundsInt dstBounds)
+        public static void PlaceRoom(Room room, Vector3Int pos, MapData mapDst)
         {
-            int topLeftSrc = srcBounds.size.x * srcBounds.y + srcBounds.x;
-            int topLeftDst = dstBounds.size.x * dstBounds.y + dstBounds.x;
+            for (int y = 0; y < room.Height; ++y)
+            {
+                for (int x = 0; x < room.Width; ++x)
+                {
+                    int dstIdx = (pos.y + y) * mapDst.Stride + pos.x + x;
+                    int srcIdx = y * room.Width + x;
+
+                    mapDst.walls[dstIdx] = room.WallTiles[srcIdx];
+                    mapDst.floor[dstIdx] = room.FloorTiles[srcIdx];
+                    mapDst.props[dstIdx] = room.PropTiles[srcIdx];
+                }
+            }
+        }
+
+        public static void CopyBlock(int[] src, int[] dst, BoundsInt srcBounds, BoundsInt dstBounds, int srcStride, int dstStride)
+        {
+            int topLeftSrc = srcBounds.y * srcStride + srcBounds.x;
+            int topLeftDst = dstBounds.y * dstStride + dstBounds.x;
 
             for (int y = 0; y < dstBounds.size.y; ++y)
             {
                 for (int x = 0; x < dstBounds.size.x; ++x)
                 {
-                    int idxSrc = topLeftSrc + y * srcBounds.size.x + x;
-                    int idxDst = topLeftDst + y * dstBounds.size.x + x;
+                    int idxSrc = topLeftSrc + y * srcStride + x;
+                    int idxDst = topLeftDst + y * dstStride + x;
                     dst[idxDst] = src[idxSrc];
                 }
             }
+        }
+
+        public static void TilesToPng(string path, int[] tiles, int w, int h)
+        {
+            TilesToPng(path, tiles, new BoundsInt(0, 0, 0, w, h, 0), w);
+        }
+
+        public static void TilesToPng(string path, int[] tiles, BoundsInt bounds, int stride)
+        {
+            int w = bounds.size.x;
+            int h = bounds.size.y;
+            Color[] pixels = new Color[w * h];
+            Texture2D tex = new Texture2D(w, h, TextureFormat.RGB24, false);
+            for (int y = 0; y < h; ++y)
+            {
+                for (int x = 0; x < w; ++x)
+                {
+                    byte value = (byte)(tiles[y * stride + x] == 0 ? 0 : 255);
+                    pixels[y * w + x] = new Color32(value, value, value, 255);
+                }
+            }
+
+            tex.SetPixels(pixels);
+            var bytes = tex.EncodeToPNG();
+            File.WriteAllBytes(path, bytes);
         }
 
         public static bool RowIsEmpty(int[] tiles, int w, int h, int row)
@@ -60,7 +102,7 @@ namespace HordeEngine
             {
                 if (!ColIsEmpty(tiles, w, h, x))
                 {
-                    result.xMax = x;
+                    result.xMax = x + 1;
                     break;
                 }
             }
@@ -80,7 +122,7 @@ namespace HordeEngine
             {
                 if (!RowIsEmpty(tiles, w, h, y))
                 {
-                    result.yMax = y;
+                    result.yMax = y + 1;
                     break;
                 }
             }

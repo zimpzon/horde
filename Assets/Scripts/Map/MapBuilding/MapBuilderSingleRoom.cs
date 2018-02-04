@@ -2,17 +2,16 @@
 
 namespace HordeEngine
 {
-    public class MapBuilderSingleRoom : MapBuilderBase
+    public static class MapBuilderSingleRoom
     {
-        public void Build(Room room, MapData mapDst)
+        public static void Build(Room room, MapData mapDst)
         {
-            const int Margin = 2;
-            mapDst.margin = Margin;
-            mapDst.mapBounds = new BoundsInt(0, 0, 0, room.Width + Margin * 2, room.Height + Margin * 2, 0);
-            mapDst.stride = mapDst.mapBounds.size.x;
-            mapDst.EnsureSizeFromBounds();
+            const int Margin = 1;
+            mapDst.Margin = Margin;
+            mapDst.SetBounds(room.Width + Margin * 2, room.Height + Margin * 2, stride: room.Width + Margin * 2);
+            mapDst.EnsureAllocatedSizeFromBounds();
 
-            PlaceRoom(room, new Vector3Int(Margin, Margin, 0), mapDst);
+            MapUtil.PlaceRoom(room, new Vector3Int(Margin, Margin, 0), mapDst);
         }
     }
 }

@@ -132,7 +132,12 @@ public class MenuItems
             Room room = GetRoom(map);
             if (room == null)
                 continue;
+
             rooms.Add(room);
+
+            //MapUtil.TilesToPng(string.Format(@"d:\temp\HordeDebug\{0}_walls.png", Path.GetFileNameWithoutExtension(file)), room.WallTiles, room.Width, room.Height);
+            //MapUtil.TilesToPng(string.Format(@"d:\temp\HordeDebug\{0}_floor.png", Path.GetFileNameWithoutExtension(file)), room.FloorTiles, room.Width, room.Height);
+            //MapUtil.TilesToPng(string.Format(@"d:\temp\HordeDebug\{0}_props.png", Path.GetFileNameWithoutExtension(file)), room.PropTiles, room.Width, room.Height);
         }
 
         var wrapper = new RoomWrapper();
@@ -174,7 +179,9 @@ public class MenuItems
         room.PropTiles = new int[tileCount];
 
         var dstBounds = new BoundsInt(0, 0, 0, room.Width, room.Height, 0);
-        MapUtil.CopyBlock(walls.data, room.WallTiles, srcBounds, dstBounds);
+        MapUtil.CopyBlock(walls.data, room.WallTiles, srcBounds, dstBounds, walls.width, room.Width);
+        MapUtil.CopyBlock(floor.data, room.FloorTiles, srcBounds, dstBounds, floor.width, room.Width);
+        MapUtil.CopyBlock(props.data, room.PropTiles, srcBounds, dstBounds, props.width, room.Width);
 
         return room;
     }

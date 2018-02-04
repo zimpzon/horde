@@ -12,7 +12,7 @@ namespace HordeEngine
         Texture2D staticLightTexture; // Dynamic objects will sample this to get environment color
         Texture2D dynamicLightTexture; // Dynamic objects will sample this to get environment color
 
-        public LightmapChunk()
+        public LightmapChunk(int w, int h, float tileW, float tileH, int resolution)
         {
 
         }
