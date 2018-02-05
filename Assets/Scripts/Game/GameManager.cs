@@ -28,6 +28,9 @@ namespace HordeEngine
             gameStateHandlers_[GameState.InHub] = new GameStateHub();
             gameStateHandlers_[GameState.StartScreen] = new GameStateHub();
 
+            foreach (var handler in gameStateHandlers_.Values)
+                handler.Initialize();
+
             gameStateStack_.Push(GameState.Boot);
         }
 

@@ -42,8 +42,8 @@ namespace HordeEngine
             RequestGoToState = newState;
         }
 
-        // Only check input in this method. Will only be called when state has focus.
-        public virtual void CheckInput() { }
+        // One-time initialization
+        public virtual void Initialize() { }
 
         // This will be called repeatedly until returning true
         public virtual bool TryEnterState() { return true; }
