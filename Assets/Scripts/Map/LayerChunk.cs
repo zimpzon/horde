@@ -27,6 +27,14 @@ namespace HordeEngine
             Initialize();
         }
 
+        int GetApproxBytesAllocated()
+        {
+            return
+                Vertices.Length * sizeof(float) * 3 +
+                UV.Length * sizeof(float) * 2 +
+                Indices.Length * sizeof(int);
+        }
+
         public void Update(MapData mapData, int[] tiles, int tileX, int tileY, TileMapMetadata tileMeta)
         {
             //
