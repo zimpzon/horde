@@ -5,6 +5,6 @@ namespace HordeEngine
     public class MapResources
     {
         public TileMapMetadata TilemapMetaData;
-        public List<Room> Rooms;
+        public List<LogicalMapRoom> Rooms;
     }
 }

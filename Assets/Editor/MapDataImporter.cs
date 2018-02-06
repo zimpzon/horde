@@ -51,7 +51,7 @@ public class MenuItems
     [Serializable]
     public class RoomWrapper
     {
-        public List<Room> Rooms = new List<Room>();
+        public List<LogicalMapRoom> Rooms = new List<LogicalMapRoom>();
     }
 
 #pragma warning restore CS0649
@@ -122,14 +122,14 @@ public class MenuItems
         if (files.Length == 0)
             throw new Exception("No room files found in " + inputPath);
 
-        List<Room> rooms = new List<Room>();
+        List<LogicalMapRoom> rooms = new List<LogicalMapRoom>();
         foreach (string file in files)
         {
             Debug.Log("Parsing file: " + file);
             var json = File.ReadAllText(file);
             var map = JsonUtility.FromJson<JsonMap>(json);
 
-            Room room = GetRoom(map);
+            LogicalMapRoom room = GetRoom(map);
             if (room == null)
                 continue;
 
@@ -152,7 +152,7 @@ public class MenuItems
         Debug.Log(string.Format("Imported {0} rooms.", rooms.Count));
     }
 
-    static Room GetRoom(JsonMap map)
+    static LogicalMapRoom GetRoom(JsonMap map)
     {
         var walls = map.GetLayer("Walls");
         var floor = map.GetLayer("Floor");
@@ -168,7 +168,7 @@ public class MenuItems
             return null;
         }
 
-        var room = new Room
+        var room = new LogicalMapRoom
         {
             Width = srcBounds.size.x,
             Height = srcBounds.size.y

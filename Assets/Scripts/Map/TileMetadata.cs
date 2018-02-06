@@ -12,13 +12,11 @@ public class TileMetadata
     // TODO: Maybe normal can be calculated from collision map? Collision blocks are steep if neighbor is empty?
     public float LightMultiplier;
     public bool IsDoor;
-    public Vector2 UV;
 
     public void UpdateInferredValues(TileMapMetadata meta)
     {
         int tileX = TileId % meta.columns;
         int tileY = TileId / meta.columns;
-        UV = new Vector2(tileX * meta.tileheight, tileY * meta.tileheight);
     }
 }
 
@@ -33,11 +31,29 @@ public class TileMapMetadata
     public List<TileMetadata> tileproperties = new List<TileMetadata>();
     public Dictionary<int, TileMetadata> tileLookup = new Dictionary<int, TileMetadata>();
 
+    int tilesPerRow;
+    int tilesPerCol;
+    float tileUvSize;
+
+    public Vector2 CalcUV(int tileId, int cornerX, int cornerY)
+    {
+        tileId--; // TileId is 1-based since 0 means no tile (in the Tiled editor)
+        int tileX = tileId % columns;
+        int tileY = tileId / columns;
+        float uvTopLeftX = tileX * tileUvSize;
+        float uvTopLeftY = 1.0f - (tileY * tileUvSize);
+        return new Vector2(uvTopLeftX + cornerX * tileUvSize, uvTopLeftY - cornerY * tileUvSize);
+    }
+
     /// <summary>
     /// After initial creation a selection of inferred values will be calculated (UV, etc)
     /// </summary>
     public void UpdateInferredValues()
     {
+        tilesPerRow = imagewidth / tileheight;
+        tilesPerCol = imageheight / tileheight;
+        tileUvSize = 1.0f / tilesPerRow;
+
         for (int i = 0; i < tileproperties.Count; ++i)
             tileproperties[i].UpdateInferredValues(this);
 

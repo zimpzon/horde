@@ -9,7 +9,7 @@ namespace HordeEngine
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public MapManager MapManager;
+        public MapRenderer MapManager;
 
         TimeManager timeManager_ = new TimeManager();
         MapResources mapResources_ = new MapResources();
@@ -128,14 +128,15 @@ namespace HordeEngine
             {
                 UpdateAllNonFocusedStates();
 
-                // Handle focused top state
+                // Handle focused top state (usually the only one)
                 var topState = gameStateStack_.Peek();
                 var handler = gameStateHandlers_[topState];
+
                 if (handler.RequestGoToState != GameState.None)
                 {
                     var newState = handler.RequestGoToState;
                     handler.ResetChangeRequests();
-                    yield return GoToState(to: newState);
+                    yield return GoToState(newState);
                 }
                 else if (handler.RequestPushState != GameState.None)
                 {

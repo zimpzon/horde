@@ -1,17 +1,16 @@
-﻿using UnityEngine;
-using System.Linq;
+﻿using System.Linq;
 
 namespace HordeEngine
 {
     public class GameStateHub : GameStateHandler
     {
-        MapData hubData_;
+        LogicalMap hubData_;
 
         void EnsureHubData()
         {
             if (hubData_ == null)
             {
-                hubData_ = new MapData();
+                hubData_ = new LogicalMap();
                 var hubRoom = Global.MapResources.Rooms.Where(r => r.Name == "hub").First();
                 MapBuilderSingleRoom.Build(hubRoom, hubData_);
             }
@@ -19,7 +18,15 @@ namespace HordeEngine
 
         public override bool TryEnterState()
         {
+            EnsureHubData();
+
+            Global.MapManager.SetMap(hubData_);
             return true;
+        }
+
+        public override void UpdateState(bool hasFocus)
+        {
+            Global.MapManager.DrawMap();
         }
     }
 }

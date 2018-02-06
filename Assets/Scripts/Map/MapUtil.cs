@@ -5,7 +5,7 @@ namespace HordeEngine
 {
     public static class MapUtil
     {
-        public static void PlaceRoom(Room room, Vector3Int pos, MapData mapDst)
+        public static void PlaceRoom(LogicalMapRoom room, Vector3Int pos, LogicalMap mapDst)
         {
             for (int y = 0; y < room.Height; ++y)
             {
