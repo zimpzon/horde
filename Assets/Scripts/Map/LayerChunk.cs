@@ -5,7 +5,8 @@ namespace HordeEngine
     /// <summary>
     /// Vertices are initialized once and never changed.
     /// UV and Triangles are also fixed size but values are updated from a tile
-    /// map, skipping empty tiles.
+    /// map, skipping empty tiles. The remaining triangles are left as degenerate,
+    /// ie. they will be skipped by the graphics hardware.
     /// </summary>
     public class LayerChunk
     {
@@ -13,7 +14,7 @@ namespace HordeEngine
         public int Height;
         public float TileW;
         public float TileH;
-        public Vector3[] Vertices = new Vector3[0];
+        public Vector3[] Vertices = new Vector3[0]; // NB NB NB They can all use the same shared vertices!!
         public Vector2[] UV = new Vector2[0];
         public int[] Indices = new int[0];
 
@@ -37,9 +38,8 @@ namespace HordeEngine
 
         public void Update(MapData mapData, int[] tiles, int tileX, int tileY, TileMapMetadata tileMeta)
         {
-            //
-            int w = Width;
-            int h = Height;
+            int w = tileX + Width > mapData.Width ? mapData.Width - tileX : Width;
+            int h = tileY + Height > mapData.Height ? mapData.Height - tileY : Height;
             int stride = mapData.Stride;
             int tileNonEmptyCount = 0;
 
@@ -48,6 +48,7 @@ namespace HordeEngine
                 for (int x = 0; x < w; ++x)
                 {
                     int tileId = tiles[(y + tileY) * stride + (x + tileX)];
+                    // NB NB NB NB Create degenerate triangles where there are no tiles (all indices to same vertex should work)
                     if (tileId != 0)
                     {
                         int indices0 = tileNonEmptyCount * 6;

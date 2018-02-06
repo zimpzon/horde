@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 namespace HordeEngine
 {
     /// <summary>
-    /// VirtualMap is an infinite (almost, within int.Min and int.Max) grid of chunks. Only chunks
-    /// containing data are stored.
+    /// VirtualMap is an infinite (within int.Min and int.Max) grid of chunks.
     /// </summary>
     public class VirtualMap
     {
@@ -13,22 +11,9 @@ namespace HordeEngine
         class ChunkData
         {
             public LayerChunk layerFloor;
-            private LayerChunk layerWalls;
+            public LayerChunk layerWalls;
             public LayerChunk layerProps;
             public LightmapChunk lightmapChunk;
-
-            public LayerChunk LayerWalls
-            {
-                get
-                {
-                    return layerWalls;
-                }
-
-                set
-                {
-                    layerWalls = value;
-                }
-            }
 
             public void Initialize(int w, int h, float tileW, float tileH, int lightmapResolution)
             {
@@ -36,12 +21,11 @@ namespace HordeEngine
                 layerWalls = new LayerChunk(w, h, tileW, tileH);
                 layerProps = new LayerChunk(w, h, tileW, tileH);
                 lightmapChunk = new LightmapChunk(w, h, tileW, tileH, lightmapResolution);
+
             }
         }
 #pragma warning restore CS0649
 
-        Vector2Int chunkSize_;
-        Vector2Int origin_;
         int chunkW_;
         int chunkH_;
         float tileW_;
@@ -49,9 +33,7 @@ namespace HordeEngine
         int lightmapResulution_;
         ReusableObject<ChunkData> chunkCache_;
 
-        Dictionary<long, ChunkData> chunkWalls_ = new Dictionary<long, ChunkData>();
-        Dictionary<long, ChunkData> chunkFloor_ = new Dictionary<long, ChunkData>();
-        Dictionary<long, ChunkData> chunkProps_ = new Dictionary<long, ChunkData>();
+        Dictionary<long, ChunkData> chunks_ = new Dictionary<long, ChunkData>();
 
         public VirtualMap(int chunkW, int chunkH, float tileW, float tileH, int lightmapResolution)
         {
@@ -71,23 +53,26 @@ namespace HordeEngine
 
         void ClearChunks()
         {
-            ClearChunkMap(chunkWalls_);
-            ClearChunkMap(chunkFloor_);
-            ClearChunkMap(chunkProps_);
-        }
-
-        void ClearChunkMap(Dictionary<long, ChunkData> map)
-        {
-            foreach (var chunk in map.Values)
+            foreach (var chunk in chunks_.Values)
                 chunkCache_.ReturnObject(chunk);
 
-            map.Clear();
+            chunks_.Clear();
         }
 
         public void SetMap(MapData mapData)
         {
             ClearChunks();
 
+            int chunksX = (mapData.Width / chunkW_) + 1;
+            int chunksY = (mapData.Height / chunkH_) + 1;
+            for (int cy = 0; cy < chunksY; ++cy)
+            {
+                for (int cx = 0; cx < chunksX; ++cx)
+                {
+                    var chunkData = chunkCache_.GetObject();
+                    chunkData.layerFloor.Update(mapData, mapData.floor, chunksX * chunkW_, chunksY * chunkH_, Global.MapResources.TilemapMetaData);
+                }
+            }
         }
     }
 }

@@ -133,6 +133,7 @@ public class MenuItems
             if (room == null)
                 continue;
 
+            room.Name = Path.GetFileNameWithoutExtension(file).ToLower();
             rooms.Add(room);
 
             //MapUtil.TilesToPng(string.Format(@"d:\temp\HordeDebug\{0}_walls.png", Path.GetFileNameWithoutExtension(file)), room.WallTiles, room.Width, room.Height);

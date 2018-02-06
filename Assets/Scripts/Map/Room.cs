@@ -22,11 +22,12 @@ namespace HordeEngine
     }
 
     /// <summary>
-    /// Immutable prototype data for a single non-connected room.
+    /// Immutable (not enforced) prototype data for a single non-connected room.
     /// </summary>
     [Serializable]
     public class Room
     {
+        public string Name;
         public int[] FloorTiles;
         public int[] WallTiles;
         public int[] PropTiles;

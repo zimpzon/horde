@@ -1,6 +1,0 @@
-﻿namespace HordeEngine
-{
-    class VirtualLayer
-    {
-    }
-}
