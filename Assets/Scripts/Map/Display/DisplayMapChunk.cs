@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace HordeEngine
 {
@@ -19,6 +20,10 @@ namespace HordeEngine
         public int[] Indices = new int[0];
         public Mesh Mesh = new Mesh();
 
+        [NonSerialized] public int ActiveTiles;
+        [NonSerialized] public int ActiveWidth;
+        [NonSerialized] public int ActiveHeight;
+
         public DisplayMapChunk(int w, int h, float tileW, float tileH)
         {
             ChunkWidth = w;
@@ -29,23 +34,20 @@ namespace HordeEngine
             Initialize();
         }
 
-        int GetApproxBytesAllocated()
-        {
-            return
-                SharedVertices.Length * sizeof(float) * 3 +
-                UV.Length * sizeof(float) * 2 +
-                Indices.Length * sizeof(int);
-        }
-
         public void Update(LogicalMap mapData, int[] tiles, int topLeftX, int topLeftY, TileMapMetadata tileMapMeta)
         {
             int w = topLeftX + ChunkWidth > mapData.Width ? mapData.Width - topLeftX : ChunkWidth;
             int h = topLeftY + ChunkHeight > mapData.Height ? mapData.Height - topLeftY : ChunkHeight;
+            ActiveWidth = w;
+            ActiveHeight = h;
             int stride = mapData.Stride;
             int tileCount = 0;
             int tileNonEmptyCount = 0;
 
             //            MapUtil.TilesToPng(@"c:\private\test.png", tiles, w, h);
+
+            Vector2 uvNudgeX = new Vector2(0.0001f, 0.0f);
+            Vector2 uvNudgeY = new Vector2(0.0f, 0.0001f);
 
             int endY = topLeftY + h;
             int endX = topLeftX + w;
@@ -58,7 +60,7 @@ namespace HordeEngine
 
                     if (tileId != 0)
                     {
-                        int vertex0 = (y * ChunkWidth + x) * 4;
+                        int vertex0 = tileCount * 4;
                         // 0---1
                         // | / | = [0, 1, 3] and [1, 2, 3]
                         // 3---2
@@ -74,10 +76,10 @@ namespace HordeEngine
                         Indices[indices0 + 5] = vertex0 + 3;
 
                         // UV coordinate system is 0, 0 at bottom left but CalcUV will take care of that.
-                        UV[vertex0 + 0] = tileMapMeta.CalcUV(tileId, 0, 0);
-                        UV[vertex0 + 1] = tileMapMeta.CalcUV(tileId, 1, 0);
-                        UV[vertex0 + 2] = tileMapMeta.CalcUV(tileId, 1, 1);
-                        UV[vertex0 + 3] = tileMapMeta.CalcUV(tileId, 0, 1);
+                        UV[vertex0 + 0] = tileMapMeta.CalcUV(tileId, 0, 0) + uvNudgeX - uvNudgeY;
+                        UV[vertex0 + 1] = tileMapMeta.CalcUV(tileId, 1, 0) - uvNudgeX - uvNudgeY;
+                        UV[vertex0 + 2] = tileMapMeta.CalcUV(tileId, 1, 1) - uvNudgeX + uvNudgeY;
+                        UV[vertex0 + 3] = tileMapMeta.CalcUV(tileId, 0, 1) + uvNudgeX + uvNudgeY;
 
                         Debug.DrawLine(SharedVertices[vertex0 + 0], SharedVertices[vertex0 + 1], Color.green);
                         Debug.DrawLine(SharedVertices[vertex0 + 1], SharedVertices[vertex0 + 3], Color.green);
@@ -105,6 +107,7 @@ namespace HordeEngine
                 }
             }
 
+            ActiveTiles = tileNonEmptyCount;
             Mesh.triangles = Indices;
             Mesh.uv = UV;
         }

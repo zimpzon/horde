@@ -11,8 +11,10 @@ namespace HordeEngine
 #pragma warning disable CS0649
         class ChunkData
         {
-            public static long CalcId(int x, int y) { return y << 32 + x; }
+            public static long CalcId(int x, int y) { return y * 10000 + x; }
             public long Id;
+            public int Cx;
+            public int Cy;
             public DisplayMapChunk layerFloor;
             public DisplayMapChunk layerWalls;
             public DisplayMapChunk layerProps;
@@ -65,12 +67,14 @@ namespace HordeEngine
         public void DrawMap(Material material)
         {
             Matrix4x4 matrix = Matrix4x4.identity;
+            float z = 0.0f;
             foreach (var chunk in chunks_.Values)
             {
+                matrix.SetTRS(new Vector3(chunk.Cx * chunkW_, -chunk.Cy * chunkH_, z), Quaternion.identity, Vector3.one);
                 Graphics.DrawMesh(chunk.layerFloor.Mesh, matrix, material, 0);
                 Graphics.DrawMesh(chunk.layerWalls.Mesh, matrix, material, 0);
-                //chunk.layerFloor.Update(logicalMap_, logicalMap_.floor, 0, 0, Global.MapResources.TilemapMetaData);
-                chunk.layerFloor.Update(logicalMap_, logicalMap_.walls, 0, 0, Global.MapResources.TilemapMetaData);
+                Graphics.DrawMesh(chunk.layerProps.Mesh, matrix, material, 0);
+                z += 1;
             }
         }
 
@@ -79,17 +83,32 @@ namespace HordeEngine
             logicalMap_ = logicalMap;
             ClearChunks();
 
-            int chunksX = (logicalMap.Width / chunkW_) + 1;
-            int chunksY = (logicalMap.Height / chunkH_) + 1;
+            Debug.LogFormat("LogicalMap size: {0}, {1}", logicalMap.Width, logicalMap.Height);
+
+            int chunksX = (logicalMap.Width + (chunkW_ - 1)) / chunkW_;
+            int chunksY = (logicalMap.Height + (chunkH_ - 1)) / chunkH_;
             for (int cy = 0; cy < chunksY; ++cy)
             {
                 for (int cx = 0; cx < chunksX; ++cx)
                 {
                     var chunk = chunkCache_.GetObject();
                     chunk.Id = ChunkData.CalcId(cx, cy);
-                    chunks_[chunk.Id] = chunk;
+                    chunk.Cx = cx;
+                    chunk.Cy = cy;
+
                     chunk.layerFloor.Update(logicalMap, logicalMap.floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData);
                     chunk.layerWalls.Update(logicalMap, logicalMap.walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData);
+                    chunk.layerProps.Update(logicalMap, logicalMap.props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData);
+
+                    bool isEmpty = chunk.layerFloor.ActiveTiles + chunk.layerWalls.ActiveTiles + chunk.layerProps.ActiveTiles == 0;
+                    if (!isEmpty)
+                    {
+                        chunks_[chunk.Id] = chunk;
+
+                        Debug.LogFormat("Floor tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerFloor.ActiveTiles, chunk.layerFloor.ActiveWidth, chunk.layerFloor.ActiveHeight);
+                        Debug.LogFormat("Walls tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerWalls.ActiveTiles, chunk.layerWalls.ActiveWidth, chunk.layerWalls.ActiveHeight);
+                        Debug.LogFormat("Props tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerProps.ActiveTiles, chunk.layerProps.ActiveWidth, chunk.layerProps.ActiveHeight);
+                    }
                 }
             }
         }
