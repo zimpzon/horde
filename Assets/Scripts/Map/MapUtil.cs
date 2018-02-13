@@ -37,12 +37,12 @@ namespace HordeEngine
             }
         }
 
-        public static void TilesToPng<T>(string path, T[] tiles, int w, int h)
+        public static void ArrayToPng(string path, int[] tiles, int w, int h, int idEmpty)
         {
-            TilesToPng(path, tiles, new BoundsInt(0, 0, 0, w, h, 0), w);
+            ArrayToPng(path, tiles, new BoundsInt(0, 0, 0, w, h, 0), w, idEmpty);
         }
 
-        public static void TilesToPng(string path, int[] tiles, BoundsInt bounds, int stride)
+        public static void ArrayToPng(string path, int[] tiles, BoundsInt bounds, int stride, int idEmpty)
         {
             int w = bounds.size.x;
             int h = bounds.size.y;
@@ -52,7 +52,7 @@ namespace HordeEngine
             {
                 for (int x = 0; x < w; ++x)
                 {
-                    byte value = (byte)(tiles[y * stride + x] == 0 ? 0 : 255);
+                    byte value = (byte)(tiles[y * stride + x] == idEmpty ? 0 : 255);
                     pixels[y * w + x] = new Color32(value, value, value, 255);
                 }
             }
@@ -62,35 +62,35 @@ namespace HordeEngine
             File.WriteAllBytes(path, bytes);
         }
 
-        public static bool RowIsEmpty(int[] tiles, int w, int h, int row)
+        public static bool RowIsEmpty(int[] tiles, int w, int h, int row, int idEmpty)
         {
             int rowBegin = row * w;
             for (int i = 0; i < w; ++i)
             {
-                if (tiles[rowBegin + i] != 0)
+                if (tiles[rowBegin + i] != idEmpty)
                     return false;
             }
             return true;
         }
 
-        public static bool ColIsEmpty(int[] tiles, int w, int h, int col)
+        public static bool ColIsEmpty(int[] tiles, int w, int h, int col, int idEmpty)
         {
             for (int i = 0; i < h; ++i)
             {
-                if (tiles[col + i * w] != 0)
+                if (tiles[col + i * w] != idEmpty)
                     return false;
             }
             return true;
         }
 
-        public static BoundsInt GetClampedBounds(int[] tiles, int w, int h)
+        public static BoundsInt GetClampedBounds(int[] tiles, int w, int h, int idEmpty)
         {
             var result = new BoundsInt(0, 0, 0, 0, 0, 0);
 
             // Clamp left
             for (int x = 0; x < w; ++x)
             {
-                if (!ColIsEmpty(tiles, w, h, x))
+                if (!ColIsEmpty(tiles, w, h, x, idEmpty))
                 {
                     result.xMin = x;
                     break;
@@ -100,7 +100,7 @@ namespace HordeEngine
             // Clamp right
             for (int x = w - 1; x >= 0; --x)
             {
-                if (!ColIsEmpty(tiles, w, h, x))
+                if (!ColIsEmpty(tiles, w, h, x, idEmpty))
                 {
                     result.xMax = x + 1;
                     break;
@@ -110,7 +110,7 @@ namespace HordeEngine
             // Clamp top
             for (int y = 0; y < h; ++y)
             {
-                if (!RowIsEmpty(tiles, w, h, y))
+                if (!RowIsEmpty(tiles, w, h, y, idEmpty))
                 {
                     result.yMin = y;
                     break;
@@ -120,7 +120,7 @@ namespace HordeEngine
             // Clamp bottom
             for (int y = h - 1; y >= 0; --y)
             {
-                if (!RowIsEmpty(tiles, w, h, y))
+                if (!RowIsEmpty(tiles, w, h, y, idEmpty))
                 {
                     result.yMax = y + 1;
                     break;

@@ -12,6 +12,7 @@ namespace HordeEngine
             mapDst.EnsureAllocatedSizeFromBounds();
 
             MapUtil.PlaceRoom(room, new Vector3Int(Margin, Margin, 0), mapDst);
+            mapDst.UpdateCollisionMap();
         }
     }
 }

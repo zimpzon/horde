@@ -60,7 +60,7 @@ namespace HordeEngine
                     int tileId = tiles[y * stride + x];
                     int indices0 = tileCount * 6;
 
-                    if (tileId != 0)
+                    if (tileId != TileMetadata.NoTile)
                     {
                         int vertex0 = tileCount * 4;
                         // 0---1

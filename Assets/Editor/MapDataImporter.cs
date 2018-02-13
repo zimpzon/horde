@@ -78,7 +78,7 @@ public class MenuItems
             throw new Exception(string.Format("Expected exactly one metadata file in {0}, found {1} ", inputPath, files.Length));
 
         var file = files[0];
-        Debug.Log("Parsing file: " + file);
+        Debug.Log("Parsing file (a single parse error is expected since Unity cannot read json maps): " + file);
         var json = File.ReadAllText(file);
 
         var tileMetadata = JsonUtility.FromJson<TileMapMetadata>(json);
@@ -110,6 +110,8 @@ public class MenuItems
         var jsonOutput = JsonUtility.ToJson(tileMetadata);
         File.WriteAllText(outputFile, jsonOutput);
 
+        AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+
         Debug.Log("Imported tile metadata.");
     }
 
@@ -136,9 +138,9 @@ public class MenuItems
             room.Name = Path.GetFileNameWithoutExtension(file).ToLower();
             rooms.Add(room);
 
-            //MapUtil.TilesToPng(string.Format(@"d:\temp\HordeDebug\{0}_walls.png", Path.GetFileNameWithoutExtension(file)), room.WallTiles, room.Width, room.Height);
-            //MapUtil.TilesToPng(string.Format(@"d:\temp\HordeDebug\{0}_floor.png", Path.GetFileNameWithoutExtension(file)), room.FloorTiles, room.Width, room.Height);
-            //MapUtil.TilesToPng(string.Format(@"d:\temp\HordeDebug\{0}_props.png", Path.GetFileNameWithoutExtension(file)), room.PropTiles, room.Width, room.Height);
+            //MapUtil.ArrayToPng(string.Format(@"d:\temp\{0}_walls.png", Path.GetFileNameWithoutExtension(file)), room.WallTiles, room.Width, room.Height, TileMetadata.NoTile);
+            //MapUtil.ArrayToPng(string.Format(@"d:\temp\{0}_floor.png", Path.GetFileNameWithoutExtension(file)), room.FloorTiles, room.Width, room.Height, TileMetadata.NoTile);
+            //MapUtil.ArrayToPng(string.Format(@"d:\temp\{0}_props.png", Path.GetFileNameWithoutExtension(file)), room.PropTiles, room.Width, room.Height, TileMetadata.NoTile);
         }
 
         var wrapper = new RoomWrapper();
@@ -160,11 +162,11 @@ public class MenuItems
         var objects = map.GetLayer("Objects");
 
         // The Walls layer is used to determine the bounds of the room.
-        var srcBounds = MapUtil.GetClampedBounds(walls.data, walls.width, walls.height);
+        var srcBounds = MapUtil.GetClampedBounds(walls.data, walls.width, walls.height, idEmpty: 0);
         Debug.Log("Room bounds: " + srcBounds);
         if (srcBounds.size.x * srcBounds.y == 0)
         {
-            Debug.Log("ERROR: no room found, skipping.");
+            Debug.LogWarning("No room found, skipping.");
             return null;
         }
 
@@ -183,6 +185,12 @@ public class MenuItems
         MapUtil.CopyBlock(walls.data, room.WallTiles, srcBounds, dstBounds, walls.width, room.Width);
         MapUtil.CopyBlock(floor.data, room.FloorTiles, srcBounds, dstBounds, floor.width, room.Width);
         MapUtil.CopyBlock(props.data, room.PropTiles, srcBounds, dstBounds, props.width, room.Width);
+
+        // When exporting from Tiled 0 means empty and 1 is added to all tile ids.
+        // Subtract 1 so ids are correct. -1 now means empty.
+        room.WallTiles = room.WallTiles.Select(tileId => tileId - 1).ToArray();
+        room.FloorTiles = room.FloorTiles.Select(tileId => tileId - 1).ToArray();
+        room.PropTiles = room.PropTiles.Select(tileId => tileId - 1).ToArray();
 
         return room;
     }

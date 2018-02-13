@@ -11,7 +11,7 @@
     {
      "128":
         {
-         "Collision":"0010",
+         "Collision":"0011",
          "LightMultiplier":1
         },
      "129":
@@ -21,7 +21,7 @@
         },
      "130":
         {
-         "Collision":"0001",
+         "Collision":"0011",
          "LightMultiplier":1
         },
      "160":

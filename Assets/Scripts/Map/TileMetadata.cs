@@ -7,6 +7,8 @@ using UnityEngine;
 [Serializable]
 public class TileMetadata
 {
+    public const int NoTile = -1;
+
     public int TileId;
     public string CollisionStr;
     // TODO: Maybe normal can be calculated from collision map? Collision blocks are steep if neighbor is empty?
@@ -37,7 +39,6 @@ public class TileMapMetadata
 
     public Vector2 CalcUV(int tileId, int cornerX, int cornerY)
     {
-        tileId--; // TileId is 1-based since 0 means no tile (in the Tiled editor)
         int tileX = tileId % columns;
         int tileY = tileId / columns;
         float uvTopLeftX = tileX * tileUvSize;
