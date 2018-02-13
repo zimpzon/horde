@@ -37,7 +37,7 @@ namespace HordeEngine
             }
         }
 
-        public static void TilesToPng(string path, int[] tiles, int w, int h)
+        public static void TilesToPng<T>(string path, T[] tiles, int w, int h)
         {
             TilesToPng(path, tiles, new BoundsInt(0, 0, 0, w, h, 0), w);
         }
