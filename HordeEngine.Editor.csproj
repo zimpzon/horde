@@ -362,13 +362,10 @@
   <ItemGroup>
     <None Include="Assets\Maps\Tiled\roomProto_empty.txt" />
     <None Include="Assets\Maps\Tiled\roomProto_simple.txt" />
+    <None Include="Assets\Shaders\AdditiveTint.shader" />
     <None Include="Assets\Shaders\CutoutTransparent.shader" />
     <None Include="Assets\Shaders\LightingBlend.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpriteLight-EmissiveMesh.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpriteLight.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpriteLightKit-BlendImageEffect.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpriteLightKit-Shadowed.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpritesLight-Emissive.shader" />
+    <None Include="Assets\Shaders\SpriteAdditive.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />

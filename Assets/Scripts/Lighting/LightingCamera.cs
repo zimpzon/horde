@@ -8,6 +8,7 @@ namespace HordeEngine
         public LayerMask LightingLayer;
         public RenderTextureFormat LightingTextureFormat;
         public Camera ParentCamera;
+        public float LightingResolution = 1.0f;
 
         Camera lightingCam_;
         LightingImageEffect lightingImageEffect_;
@@ -22,7 +23,9 @@ namespace HordeEngine
         {
             AlignWithParentCamera(ParentCamera);
 
-            lightingCam_.targetTexture = RenderTexture.GetTemporary(ParentCamera.pixelWidth, ParentCamera.pixelHeight, 0, LightingTextureFormat);
+            int texW = Mathf.RoundToInt(ParentCamera.pixelWidth * LightingResolution);
+            int texH = Mathf.RoundToInt(ParentCamera.pixelHeight * LightingResolution);
+            lightingCam_.targetTexture = RenderTexture.GetTemporary(texW, texH, 0, LightingTextureFormat);
             lightingImageEffect_.LightingTexture = lightingCam_.targetTexture;
         }
 

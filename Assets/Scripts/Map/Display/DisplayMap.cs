@@ -64,17 +64,16 @@ namespace HordeEngine
             chunks_.Clear();
         }
 
-        public void DrawMap(Material material)
+        public void DrawMap(Material material, float floorZ)
         {
             Matrix4x4 matrix = Matrix4x4.identity;
-            float z = 0.0f;
             foreach (var chunk in chunks_.Values)
             {
-                matrix.SetTRS(new Vector3(chunk.Cx * chunkW_, -chunk.Cy * chunkH_, z), Quaternion.identity, Vector3.one);
+                matrix.SetTRS(new Vector3(chunk.Cx * chunkW_, -chunk.Cy * chunkH_, floorZ), Quaternion.identity, Vector3.one);
+
                 Graphics.DrawMesh(chunk.layerFloor.Mesh, matrix, material, 0);
                 Graphics.DrawMesh(chunk.layerWalls.Mesh, matrix, material, 0);
                 Graphics.DrawMesh(chunk.layerProps.Mesh, matrix, material, 0);
-                z += 1;
             }
         }
 
@@ -96,9 +95,9 @@ namespace HordeEngine
                     chunk.Cx = cx;
                     chunk.Cy = cy;
 
-                    chunk.layerFloor.Update(logicalMap, logicalMap.floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData);
-                    chunk.layerWalls.Update(logicalMap, logicalMap.walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData);
-                    chunk.layerProps.Update(logicalMap, logicalMap.props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData);
+                    chunk.layerFloor.Update(logicalMap, logicalMap.floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: false);
+                    chunk.layerWalls.Update(logicalMap, logicalMap.walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true);
+                    chunk.layerProps.Update(logicalMap, logicalMap.props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true);
 
                     bool isEmpty = chunk.layerFloor.ActiveTiles + chunk.layerWalls.ActiveTiles + chunk.layerProps.ActiveTiles == 0;
                     if (!isEmpty)

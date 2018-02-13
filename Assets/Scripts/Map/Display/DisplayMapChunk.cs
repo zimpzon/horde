@@ -11,7 +11,9 @@ namespace HordeEngine
     /// </summary>
     public class DisplayMapChunk
     {
+        const float TileTopZSkew = -0.5f;
         public static Vector3[] SharedVertices;
+        public static Vector3[] SharedVerticesSkewed;
         public int ChunkWidth;
         public int ChunkHeight;
         public float TileW;
@@ -34,7 +36,7 @@ namespace HordeEngine
             Initialize();
         }
 
-        public void Update(LogicalMap mapData, int[] tiles, int topLeftX, int topLeftY, TileMapMetadata tileMapMeta)
+        public void Update(LogicalMap mapData, int[] tiles, int topLeftX, int topLeftY, TileMapMetadata tileMapMeta, bool skewTileTop)
         {
             int w = topLeftX + ChunkWidth > mapData.Width ? mapData.Width - topLeftX : ChunkWidth;
             int h = topLeftY + ChunkHeight > mapData.Height ? mapData.Height - topLeftY : ChunkHeight;
@@ -108,8 +110,34 @@ namespace HordeEngine
             }
 
             ActiveTiles = tileNonEmptyCount;
+
+            Mesh.vertices = skewTileTop ? SharedVerticesSkewed : SharedVertices;
             Mesh.triangles = Indices;
             Mesh.uv = UV;
+        }
+
+        void InitializeSharedVertices(Vector3[] vertices, bool skewTileTop)
+        {
+            // Vertices starts at 0, 0 and moves down and to the right in the coordinate system (so y goes towards negative)
+            float tileTopZSkew = skewTileTop ? TileTopZSkew : 0.0f;
+            int idx0 = 0;
+
+            for (int y = 0; y < ChunkHeight; ++y)
+            {
+                for (int x = 0; x < ChunkWidth; ++x)
+                {
+                    // Clockwise
+                    // 0----1
+                    // |    |
+                    // 3----2
+                    vertices[idx0 + 0] = new Vector3((x + 0) * TileW, (-y + 0) * TileH, tileTopZSkew);
+                    vertices[idx0 + 1] = new Vector3((x + 1) * TileW, (-y + 0) * TileH, tileTopZSkew);
+                    vertices[idx0 + 2] = new Vector3((x + 1) * TileW, (-y - 1) * TileH, 0.0f);
+                    vertices[idx0 + 3] = new Vector3((x + 0) * TileW, (-y - 1) * TileH, 0.0f);
+
+                    idx0 += 4;
+                }
+            }
         }
 
         void Initialize()
@@ -120,33 +148,20 @@ namespace HordeEngine
             int maxTriangleCount = tileCount * 2;
             int maxIndexCount = maxTriangleCount * 3;
 
-            if (SharedVertices == null)
-                SharedVertices = new Vector3[vertexCount];
-
             UV = new Vector2[vertexCount];
             Indices = new int[maxTriangleCount * 3];
 
-            // Vertices starts at 0, 0 and moves down and to the right in the coordinate system (so y goes towards negative)
-            // TODO TODO NB NB Maybe skew top of quad in Z to enable front/back ordering
-            int idx0 = 0;
-            for (int y = 0; y < ChunkHeight; ++y)
+            if (SharedVertices == null)
             {
-                for (int x = 0; x < ChunkWidth; ++x)
-                {
-                    // Clockwise
-                    // 0----1
-                    // |    |
-                    // 3----2
-                    SharedVertices[idx0 + 0] = new Vector3((x + 0) * TileW, (-y + 0) * TileH, 0.0f);
-                    SharedVertices[idx0 + 1] = new Vector3((x + 1) * TileW, (-y + 0) * TileH, 0.0f);
-                    SharedVertices[idx0 + 2] = new Vector3((x + 1) * TileW, (-y - 1) * TileH, 0.0f);
-                    SharedVertices[idx0 + 3] = new Vector3((x + 0) * TileW, (-y - 1) * TileH, 0.0f);
-
-                    idx0 += 4;
-                }
+                SharedVertices = new Vector3[vertexCount];
+                InitializeSharedVertices(SharedVertices, skewTileTop: false);
             }
 
-            Mesh.vertices = SharedVertices;
+            if (SharedVerticesSkewed == null)
+            {
+                SharedVerticesSkewed = new Vector3[vertexCount];
+                InitializeSharedVertices(SharedVerticesSkewed, skewTileTop: true);
+            }
         }
     }
 }

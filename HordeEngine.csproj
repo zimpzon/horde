@@ -305,6 +305,7 @@
     <Compile Include="Assets\Scripts\Game\GameStateHub.cs" />
     <Compile Include="Assets\Scripts\Lighting\LightingCamera.cs" />
     <Compile Include="Assets\Scripts\Lighting\LightingImageEffect.cs" />
+    <Compile Include="Assets\Scripts\Lighting\MaterialColorSetter.cs" />
     <Compile Include="Assets\Scripts\Map\Display\DisplayMap.cs" />
     <Compile Include="Assets\Scripts\Map\Display\DisplayMapChunk.cs" />
     <Compile Include="Assets\Scripts\Map\Display\LightmapChunk.cs" />
@@ -323,22 +324,14 @@
     <Compile Include="Assets\Scripts\Misc\Splash.cs" />
     <Compile Include="Assets\Scripts\Misc\TimeManager.cs" />
     <Compile Include="Assets\SimpleJSON\SimpleJSON.cs" />
-    <Compile Include="Assets\SpriteLightKit\Shadows\SpriteLightKitLightManager.cs" />
-    <Compile Include="Assets\SpriteLightKit\Shadows\SpriteLightKitShadow.cs" />
-    <Compile Include="Assets\SpriteLightKit\SpriteLightColorCycler.cs" />
-    <Compile Include="Assets\SpriteLightKit\SpriteLightKit.cs" />
-    <Compile Include="Assets\SpriteLightKit\SpriteLightKitImageEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Maps\Tiled\roomProto_empty.txt" />
     <None Include="Assets\Maps\Tiled\roomProto_simple.txt" />
+    <None Include="Assets\Shaders\AdditiveTint.shader" />
     <None Include="Assets\Shaders\CutoutTransparent.shader" />
     <None Include="Assets\Shaders\LightingBlend.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpriteLight-EmissiveMesh.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpriteLight.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpriteLightKit-BlendImageEffect.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpriteLightKit-Shadowed.shader" />
-    <None Include="Assets\SpriteLightKit\Shaders\SpritesLight-Emissive.shader" />
+    <None Include="Assets\Shaders\SpriteAdditive.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
