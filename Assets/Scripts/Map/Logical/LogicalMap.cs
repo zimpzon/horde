@@ -43,7 +43,7 @@ namespace HordeEngine
                 {
                     int tileIdx = y * Width + x;
                     int tileId = walls[tileIdx];
-                    // Each rendered tile is split into 4 collision blocks for more fine grained collision
+                    // Each rendered tile is split into 4 collision blocks for more fine-grained collision
                     // 01
                     // 23
                     int collisionIdx0 = y * Width * 4 + x * 2;
