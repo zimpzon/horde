@@ -360,6 +360,7 @@
     <Compile Include="Assets\Editor\MapDataImporter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Doc\doc.txt" />
     <None Include="Assets\Maps\Tiled\roomProto_empty.txt" />
     <None Include="Assets\Maps\Tiled\roomProto_simple.txt" />
     <None Include="Assets\Shaders\AdditiveTint.shader" />

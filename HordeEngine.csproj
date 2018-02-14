@@ -299,6 +299,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Actors\ActorData.cs" />
     <Compile Include="Assets\Scripts\Game\GameManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameStateBoot.cs" />
     <Compile Include="Assets\Scripts\Game\GameStateHandler.cs" />
@@ -326,6 +327,7 @@
     <Compile Include="Assets\SimpleJSON\SimpleJSON.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Doc\doc.txt" />
     <None Include="Assets\Maps\Tiled\roomProto_empty.txt" />
     <None Include="Assets\Maps\Tiled\roomProto_simple.txt" />
     <None Include="Assets\Shaders\AdditiveTint.shader" />
