@@ -67,7 +67,6 @@ namespace HordeEngine
                     var collisionStr = GetCollisionString(walls, x, y);
 
                     // The collision map pieces will not fit together perfectly (but almost).
-                    // Uncomment ArrayToPng below to visually debug the collision map.
 
                     // close hole at corner
                     // if 0011 and up = 1010 | 0011 set self 1011
@@ -100,7 +99,8 @@ namespace HordeEngine
                 }
             }
 
-            //MapUtil.ArrayToPng(@"d:\temp\collision.png", Array.ConvertAll(collision, item => (int)item), Width * 2, Height * 2, 0);
+            if (Global.WriteDebugPngFiles)
+                Global.WriteDebugPng("collision", Array.ConvertAll(collision, item => (int)item), Width * 2, Height * 2, 0);
         }
 
         public void EnsureAllocatedSizeFromBounds()

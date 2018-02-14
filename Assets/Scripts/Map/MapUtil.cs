@@ -37,23 +37,27 @@ namespace HordeEngine
             }
         }
 
-        public static void ArrayToPng(string path, int[] tiles, int w, int h, int idEmpty)
+        public static void ArrayToPng(string path, int[] array, int w, int h, int idEmpty)
         {
-            ArrayToPng(path, tiles, new BoundsInt(0, 0, 0, w, h, 0), w, idEmpty);
+            ArrayToPng(path, array, new BoundsInt(0, 0, 0, w, h, 0), w, idEmpty);
         }
 
-        public static void ArrayToPng(string path, int[] tiles, BoundsInt bounds, int stride, int idEmpty)
+        public static void ArrayToPng(string path, int[] array, BoundsInt bounds, int stride, int idEmpty)
         {
             int w = bounds.size.x;
             int h = bounds.size.y;
             Color[] pixels = new Color[w * h];
             Texture2D tex = new Texture2D(w, h, TextureFormat.RGB24, false);
-            for (int y = 0; y < h; ++y)
+            for (int y = h - 1; y >= 0; --y)
             {
                 for (int x = 0; x < w; ++x)
                 {
-                    byte value = (byte)(tiles[y * stride + x] == idEmpty ? 0 : 255);
-                    pixels[y * w + x] = new Color32(value, value, value, 255);
+                    int arrayValue = array[y * stride + x];
+                    if (arrayValue > 255)
+                        arrayValue = 255;
+
+                    byte pixelValue = (byte)(arrayValue == idEmpty ? 0 : (arrayValue >> 1) + 128); // Scale value to be between 128 and 255
+                    pixels[y * w + x] = new Color32(pixelValue, pixelValue, pixelValue, 255);
                 }
             }
 

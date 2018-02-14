@@ -82,7 +82,15 @@ namespace HordeEngine
             logicalMap_ = logicalMap;
             ClearChunks();
 
-            Debug.LogFormat("LogicalMap size: {0}, {1}", logicalMap.Width, logicalMap.Height);
+            if (Global.WriteDebugPngFiles)
+            {
+                Global.WriteDebugPng("logical_floor", logicalMap.floor, logicalMap.Width, logicalMap.Height, TileMetadata.NoTile);
+                Global.WriteDebugPng("logical_walls", logicalMap.walls, logicalMap.Width, logicalMap.Height, TileMetadata.NoTile);
+                Global.WriteDebugPng("logical_props", logicalMap.props, logicalMap.Width, logicalMap.Height, TileMetadata.NoTile);
+            }
+
+            if (Global.DebugLogging)
+                Debug.LogFormat("LogicalMap size: {0}, {1}", logicalMap.Width, logicalMap.Height);
 
             int chunksX = (logicalMap.Width + (chunkW_ - 1)) / chunkW_;
             int chunksY = (logicalMap.Height + (chunkH_ - 1)) / chunkH_;
@@ -95,18 +103,21 @@ namespace HordeEngine
                     chunk.Cx = cx;
                     chunk.Cy = cy;
 
-                    chunk.layerFloor.Update(logicalMap, logicalMap.floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: false);
-                    chunk.layerWalls.Update(logicalMap, logicalMap.walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true);
-                    chunk.layerProps.Update(logicalMap, logicalMap.props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true);
+                    chunk.layerFloor.Update(logicalMap, logicalMap.floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: false, debugName: "floor");
+                    chunk.layerWalls.Update(logicalMap, logicalMap.walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "walls");
+                    chunk.layerProps.Update(logicalMap, logicalMap.props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "props");
 
                     bool isEmpty = chunk.layerFloor.ActiveTiles + chunk.layerWalls.ActiveTiles + chunk.layerProps.ActiveTiles == 0;
                     if (!isEmpty)
                     {
                         chunks_[chunk.Id] = chunk;
 
-                        Debug.LogFormat("Floor tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerFloor.ActiveTiles, chunk.layerFloor.ActiveWidth, chunk.layerFloor.ActiveHeight);
-                        Debug.LogFormat("Walls tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerWalls.ActiveTiles, chunk.layerWalls.ActiveWidth, chunk.layerWalls.ActiveHeight);
-                        Debug.LogFormat("Props tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerProps.ActiveTiles, chunk.layerProps.ActiveWidth, chunk.layerProps.ActiveHeight);
+                        if (Global.DebugLogging)
+                        {
+                            Debug.LogFormat("Floor tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerFloor.ActiveTiles, chunk.layerFloor.ActiveWidth, chunk.layerFloor.ActiveHeight);
+                            Debug.LogFormat("Walls tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerWalls.ActiveTiles, chunk.layerWalls.ActiveWidth, chunk.layerWalls.ActiveHeight);
+                            Debug.LogFormat("Props tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerProps.ActiveTiles, chunk.layerProps.ActiveWidth, chunk.layerProps.ActiveHeight);
+                        }
                     }
                 }
             }

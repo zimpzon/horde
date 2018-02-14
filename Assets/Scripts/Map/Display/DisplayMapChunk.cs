@@ -11,7 +11,7 @@ namespace HordeEngine
     /// </summary>
     public class DisplayMapChunk
     {
-        const float TileTopZSkew = -0.5f;
+        const float TileTopZSkew = -1.0f;
         public static Vector3[] SharedVertices;
         public static Vector3[] SharedVerticesSkewed;
         public int ChunkWidth;
@@ -36,7 +36,7 @@ namespace HordeEngine
             Initialize();
         }
 
-        public void Update(LogicalMap mapData, int[] tiles, int topLeftX, int topLeftY, TileMapMetadata tileMapMeta, bool skewTileTop)
+        public void Update(LogicalMap mapData, int[] tiles, int topLeftX, int topLeftY, TileMapMetadata tileMapMeta, bool skewTileTop, string debugName)
         {
             int w = topLeftX + ChunkWidth > mapData.Width ? mapData.Width - topLeftX : ChunkWidth;
             int h = topLeftY + ChunkHeight > mapData.Height ? mapData.Height - topLeftY : ChunkHeight;
@@ -46,8 +46,7 @@ namespace HordeEngine
             int tileCount = 0;
             int tileNonEmptyCount = 0;
 
-            //            MapUtil.TilesToPng(@"c:\private\test.png", tiles, w, h);
-
+            // Nudge UV a tiny bit inwards to avoid seams ("bleeding" from adjacent tiles) between rendered tiles caused by rounding.
             Vector2 uvNudgeX = new Vector2(0.0001f, 0.0f);
             Vector2 uvNudgeY = new Vector2(0.0f, 0.0001f);
 
@@ -119,7 +118,6 @@ namespace HordeEngine
         void InitializeSharedVertices(Vector3[] vertices, bool skewTileTop)
         {
             // Vertices starts at 0, 0 and moves down and to the right in the coordinate system (so y goes towards negative)
-            float tileTopZSkew = skewTileTop ? TileTopZSkew : 0.0f;
             int idx0 = 0;
 
             for (int y = 0; y < ChunkHeight; ++y)
@@ -130,10 +128,22 @@ namespace HordeEngine
                     // 0----1
                     // |    |
                     // 3----2
-                    vertices[idx0 + 0] = new Vector3((x + 0) * TileW, (-y + 0) * TileH, tileTopZSkew);
-                    vertices[idx0 + 1] = new Vector3((x + 1) * TileW, (-y + 0) * TileH, tileTopZSkew);
-                    vertices[idx0 + 2] = new Vector3((x + 1) * TileW, (-y - 1) * TileH, 0.0f);
-                    vertices[idx0 + 3] = new Vector3((x + 0) * TileW, (-y - 1) * TileH, 0.0f);
+                    if (skewTileTop)
+                    {
+                        // Standing (ex wall)
+                        vertices[idx0 + 0] = new Vector3((x + 0) * TileW, (-y + 0) * TileH, TileTopZSkew);
+                        vertices[idx0 + 1] = new Vector3((x + 1) * TileW, (-y + 0) * TileH, TileTopZSkew);
+                        vertices[idx0 + 2] = new Vector3((x + 1) * TileW, (-y - 1) * TileH, 0.0f);
+                        vertices[idx0 + 3] = new Vector3((x + 0) * TileW, (-y - 1) * TileH, 0.0f);
+                    }
+                    else
+                    {
+                        // Flat (ex floor)
+                        vertices[idx0 + 0] = new Vector3((x + 0) * TileW, (-y + 0) * TileH, 0.0f);
+                        vertices[idx0 + 1] = new Vector3((x + 1) * TileW, (-y + 0) * TileH, 0.0f);
+                        vertices[idx0 + 2] = new Vector3((x + 1) * TileW, (-y - 1) * TileH, 0.0f);
+                        vertices[idx0 + 3] = new Vector3((x + 0) * TileW, (-y - 1) * TileH, 0.0f);
+                    }
 
                     idx0 += 4;
                 }
