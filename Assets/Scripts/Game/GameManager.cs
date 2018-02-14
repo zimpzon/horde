@@ -19,6 +19,9 @@ namespace HordeEngine
 
         void Awake()
         {
+            Application.logMessageReceived += Application_logMessageReceived;
+            Application.lowMemory += Application_lowMemory;
+
             Global.GameManager = this;
             Global.MapManager = MapManager;
             Global.TimeManager = timeManager_;
@@ -34,21 +37,39 @@ namespace HordeEngine
             gameStateStack_.Push(GameState.Boot);
         }
 
-        void Start()
+        private void Application_lowMemory()
         {
-            StartCoroutine(GameStateLoop());
+            // TODO
+            // Send this to Playfab if possible
         }
 
-        // The first update per frame
-        void Update()
+        private void Application_logMessageReceived(string condition, string stackTrace, LogType type)
         {
-            timeManager_.UpdateTime(Time.deltaTime);
+            if (string.IsNullOrEmpty(stackTrace))
+                stackTrace = new System.Diagnostics.StackTrace().ToString();
+
+            if (type == LogType.Error)
+            {
+                // TODO
+                // Send this to Playfab if possible. Also see FatalError right below.
+            }
         }
 
         public void FatalError(string message)
         {
             Debug.LogError("FATAL ERROR: " + message);
             Application.Quit();
+        }
+
+        void Start()
+        {
+            StartCoroutine(GameStateLoop());
+        }
+
+        void Update()
+        {
+            // This is the first update to be called in every frame
+            timeManager_.UpdateTime(Time.deltaTime);
         }
 
         IEnumerator EnterState(GameState state)
