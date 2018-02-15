@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 
 /*
+    Data-orientated
+    Dooldown/timers: keep a sorted list and just check top every frame.
+    Health regen: collection of damaged entities. No checking when full health.
+    Possibly build list of items to be processed, then process them all.
+        Better cache than checking flag then process?
 
 
-
+    props are decals?
 */
+
 // Player
 // Enemy (from simplest to complex boss)
 // NPC
