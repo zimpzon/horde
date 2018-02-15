@@ -9,7 +9,7 @@ namespace HordeEngine
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public MapRenderer MapManager;
+        public MapRenderer MapRenderer;
 
         TimeManager timeManager_ = new TimeManager();
         MapResources mapResources_ = new MapResources();
@@ -23,7 +23,7 @@ namespace HordeEngine
             Application.lowMemory += Application_lowMemory;
 
             Global.GameManager = this;
-            Global.MapManager = MapManager;
+            Global.MapManager = MapRenderer;
             Global.TimeManager = timeManager_;
             Global.MapResources = mapResources_;
 
