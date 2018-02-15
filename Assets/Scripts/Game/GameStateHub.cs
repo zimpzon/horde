@@ -20,13 +20,13 @@ namespace HordeEngine
         {
             EnsureHubData();
 
-            Global.MapManager.SetMap(hubData_);
+            Global.MapRenderer.SetMap(hubData_);
             return true;
         }
 
         public override void UpdateState(bool hasFocus)
         {
-            Global.MapManager.DrawMap();
+            Global.MapRenderer.DrawMap();
         }
     }
 }

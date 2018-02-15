@@ -23,7 +23,7 @@ namespace HordeEngine
             Application.lowMemory += Application_lowMemory;
 
             Global.GameManager = this;
-            Global.MapManager = MapRenderer;
+            Global.MapRenderer = MapRenderer;
             Global.TimeManager = timeManager_;
             Global.MapResources = mapResources_;
 

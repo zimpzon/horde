@@ -5,7 +5,7 @@ namespace HordeEngine
     public static class Global
     {
         public static GameManager GameManager;
-        public static MapRenderer MapManager;
+        public static MapRenderer MapRenderer;
         public static TimeManager TimeManager;
         public static MapResources MapResources;
 

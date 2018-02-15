@@ -1,12 +1,39 @@
 ﻿using UnityEngine;
 
 /*
-    Data-orientated
-    Dooldown/timers: keep a sorted list and just check top every frame.
-    Health regen: collection of damaged entities. No checking when full health.
-    Possibly build list of items to be processed, then process them all.
-        Better cache than checking flag then process?
 
+Looping through data
+------------------------------------------
+
+Controllers not running every frame.
+CheapScheduler class holding timestamp and some identification.
+	Are we then yet? Cyclic buffer, only checking top?
+
+Movement towards moving target (chase player, is that all?)
+	Does not have to update every frame
+
+Physics, force + friction + possibly gravity if we are cool.
+
+Movement in static direction (very, very common, even with AI. Dumb frames)
+    Pos, vel
+
+Static collision (very, very common. Might be able to skip some frames if not moving too fast. Will I hit a wall in next step?)
+    Circle and/or box.
+    Ray casting static colliders (can I see player? Can I hide over there?)
+    Avoiding corners when chasing?
+    CircleOverlap, get all in circle
+    ConeOverlap (partial circle), melee attack?
+    In-front-of, interaction with items, doors, etc.
+
+Dynamic collision (very, very common. Projectile, enemy, player, allied, props). Layers?
+
+Dynamic meshes (all dynamic sprites. Projectiles, enemies, players, dropshadows, weapons, props, lights, items, chests, doors)
+
+Dynamic map updates?
+
+Specials: health regen (update rate?)
+
+Summary:
 
     props are decals?
 */

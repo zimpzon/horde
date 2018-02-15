@@ -47,7 +47,13 @@
     {
         half4 base = tex2D(_MainTex, IN.uv);
         half4 lighting = tex2D(_LightingTex, IN.uv);
-        return base * lighting * _Multiplier;
+        half4 col = base * lighting * _Multiplier;
+
+        // Could do greyscale here (0.2989, 0.5870, 0.1140.)
+        //float g = col.r * 0.2989 + col.g * 0.5870 + col.b * 0.1140;
+        //fixed4 grey = fixed4(g, g, g, 1.0);
+        //return grey;
+        return col;
     }
 
         ENDCG
