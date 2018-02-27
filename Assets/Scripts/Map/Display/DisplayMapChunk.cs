@@ -12,19 +12,22 @@ namespace HordeEngine
     public class DisplayMapChunk
     {
         const float TileTopZSkew = -1.0f;
-        public static Vector3[] SharedVertices;
-        public static Vector3[] SharedVerticesSkewed;
-        public int ChunkWidth;
-        public int ChunkHeight;
-        public float TileW;
-        public float TileH;
-        public Vector2[] UV = new Vector2[0];
-        public int[] Indices = new int[0];
-        public Mesh Mesh = new Mesh();
+        [NonSerialized] public static Vector3[] SharedVertices;
+        [NonSerialized] public static Vector3[] SharedVerticesSkewed;
+        [NonSerialized] public int ChunkWidth;
+        [NonSerialized] public int ChunkHeight;
+        [NonSerialized] public float TileW;
+        [NonSerialized] public float TileH;
+
+        [NonSerialized] public Vector2[] UV = new Vector2[0];
+        [NonSerialized] public int[] Indices = new int[0];
+        [NonSerialized] public Mesh Mesh = new Mesh();
 
         [NonSerialized] public int ActiveTiles;
         [NonSerialized] public int ActiveWidth;
         [NonSerialized] public int ActiveHeight;
+        [NonSerialized] public int TopLeftX;
+        [NonSerialized] public int TopLeftY;
 
         public DisplayMapChunk(int w, int h, float tileW, float tileH)
         {
@@ -38,6 +41,8 @@ namespace HordeEngine
 
         public void Update(LogicalMap mapData, int[] tiles, int topLeftX, int topLeftY, TileMapMetadata tileMapMeta, bool skewTileTop, string debugName)
         {
+            TopLeftX = topLeftX;
+            TopLeftY = topLeftY;
             int w = topLeftX + ChunkWidth > mapData.Width ? mapData.Width - topLeftX : ChunkWidth;
             int h = topLeftY + ChunkHeight > mapData.Height ? mapData.Height - topLeftY : ChunkHeight;
             ActiveWidth = w;

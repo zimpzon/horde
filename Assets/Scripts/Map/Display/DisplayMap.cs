@@ -4,7 +4,6 @@ using UnityEngine;
 namespace HordeEngine
 {
     /// <summary>
-    /// VirtualMap is an infinite (within int.Min and int.Max) grid of chunks.
     /// </summary>
     public class DisplayMap
     {
@@ -18,14 +17,14 @@ namespace HordeEngine
             public DisplayMapChunk layerFloor;
             public DisplayMapChunk layerWalls;
             public DisplayMapChunk layerProps;
-            public LightmapChunk lightmapChunk;
+            public DynamicQuadMesh AmbientOcclusionMesh;
 
             public void Initialize(int w, int h, float tileW, float tileH, int lightmapResolution)
             {
                 layerFloor = new DisplayMapChunk(w, h, tileW, tileH);
                 layerWalls = new DisplayMapChunk(w, h, tileW, tileH);
                 layerProps = new DisplayMapChunk(w, h, tileW, tileH);
-                lightmapChunk = new LightmapChunk(w, h, tileW, tileH, lightmapResolution);
+                AmbientOcclusionMesh = new DynamicQuadMesh((w * h) / 16);
             }
         }
 #pragma warning restore CS0649
@@ -51,6 +50,21 @@ namespace HordeEngine
             chunkCache_ = new ReusableObject<ChunkData>(initializeMethod: InitializeChunk);
         }
 
+        public Vector2 WorldFromTile(int x, int y)
+        {
+            return new Vector2(x * tileW_ + tileW_ * 0.5f, y * tileH_ + tileH_ * 0.5f);
+        }
+
+        public Vector2Int TileFromWorld(Vector2 worldPoint)
+        {
+            return new Vector2Int(Mathf.RoundToInt(worldPoint.x / tileW_), Mathf.RoundToInt(worldPoint.y / tileH_));
+        }
+
+        public Vector2Int CollisionTileFromWorld(Vector2 worldPoint)
+        {
+            return TileFromWorld(worldPoint) * 2; // 2x2 collision tiles for every rendered tile
+        }
+
         void InitializeChunk(ChunkData chunk)
         {
             chunk.Initialize(chunkW_, chunkH_, tileW_, tileH_, lightmapResulution_);
@@ -64,16 +78,17 @@ namespace HordeEngine
             chunks_.Clear();
         }
 
-        public void DrawMap(Material material, float floorZ)
+        public void DrawMap(Material material, Material ambientOcclusionMaterial, bool enableAmbientOcclusion, float floorZ)
         {
             Matrix4x4 matrix = Matrix4x4.identity;
             foreach (var chunk in chunks_.Values)
             {
                 matrix.SetTRS(new Vector3(chunk.Cx * chunkW_, -chunk.Cy * chunkH_, floorZ), Quaternion.identity, Vector3.one);
-
                 Graphics.DrawMesh(chunk.layerFloor.Mesh, matrix, material, 0);
                 Graphics.DrawMesh(chunk.layerWalls.Mesh, matrix, material, 0);
                 Graphics.DrawMesh(chunk.layerProps.Mesh, matrix, material, 0);
+                if (enableAmbientOcclusion)
+                    Graphics.DrawMesh(chunk.AmbientOcclusionMesh.GetMesh(), matrix, ambientOcclusionMaterial, 0);
             }
         }
 
@@ -106,6 +121,7 @@ namespace HordeEngine
                     chunk.layerFloor.Update(logicalMap, logicalMap.floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: false, debugName: "floor");
                     chunk.layerWalls.Update(logicalMap, logicalMap.walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "walls");
                     chunk.layerProps.Update(logicalMap, logicalMap.props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "props");
+                    MapUtil.GetChunkAmbientOcclusion(logicalMap_.collision, logicalMap_.Stride * 2, chunk.layerWalls, chunk.AmbientOcclusionMesh);
 
                     bool isEmpty = chunk.layerFloor.ActiveTiles + chunk.layerWalls.ActiveTiles + chunk.layerProps.ActiveTiles == 0;
                     if (!isEmpty)

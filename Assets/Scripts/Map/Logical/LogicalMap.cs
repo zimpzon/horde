@@ -42,7 +42,7 @@ namespace HordeEngine
                 for (int x = 0; x < Width; x++)
                 {
                     int tileIdx = y * Width + x;
-                    int tileId = walls[tileIdx];
+                    int tileId = walls[tileIdx] != TileMetadata.NoTile ? walls[tileIdx] : floor[tileIdx];
                     // Each rendered tile is split into 4 collision blocks for more fine-grained collision
                     // 01
                     // 23
@@ -51,13 +51,19 @@ namespace HordeEngine
                     int collisionIdx2 = collisionIdx0 + Width * 2 + 0;
                     int collisionIdx3 = collisionIdx0 + Width * 2 + 1;
 
-                    collision[collisionIdx0] = 0;
-                    collision[collisionIdx1] = 0;
-                    collision[collisionIdx2] = 0;
-                    collision[collisionIdx3] = 0;
-
                     if (tileId == TileMetadata.NoTile)
+                    {
+                        collision[collisionIdx0] = MapConstants.CollOutsideMap;
+                        collision[collisionIdx1] = MapConstants.CollOutsideMap;
+                        collision[collisionIdx2] = MapConstants.CollOutsideMap;
+                        collision[collisionIdx3] = MapConstants.CollOutsideMap;
                         continue;
+                    }
+
+                    collision[collisionIdx0] = MapConstants.CollWalkable;
+                    collision[collisionIdx1] = MapConstants.CollWalkable;
+                    collision[collisionIdx2] = MapConstants.CollWalkable;
+                    collision[collisionIdx3] = MapConstants.CollWalkable;
 
                     TileMetadata tileProperties;
                     if (!Global.MapResources.TilemapMetaData.tileLookup.TryGetValue(tileId, out tileProperties))
@@ -91,10 +97,10 @@ namespace HordeEngine
                     bool isValidCollisionStr = !string.IsNullOrEmpty(collisionStr) && collisionStr.Length == 4;
                     if (isValidCollisionStr)
                     {
-                        collision[collisionIdx0] = (byte)((collisionStr[0] == '0') ? 0 : 255);
-                        collision[collisionIdx1] = (byte)((collisionStr[1] == '0') ? 0 : 255);
-                        collision[collisionIdx2] = (byte)((collisionStr[2] == '0') ? 0 : 255);
-                        collision[collisionIdx3] = (byte)((collisionStr[3] == '0') ? 0 : 255);
+                        collision[collisionIdx0] = (collisionStr[0] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
+                        collision[collisionIdx1] = (collisionStr[1] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
+                        collision[collisionIdx2] = (collisionStr[2] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
+                        collision[collisionIdx3] = (collisionStr[3] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
                     }
                 }
             }
