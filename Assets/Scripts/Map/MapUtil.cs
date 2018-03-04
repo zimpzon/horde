@@ -45,7 +45,7 @@ namespace HordeEngine
                         float occlusionLength = occlusionEndX - occlusionBeginX;
                         float centerX = ((occlusionBeginX + occlusionLength * 0.5f) - chunk.TopLeftX * 2) * 0.5f;
                         float centerY = (-y + chunk.TopLeftY * 2) * 0.5f - 0.5f;
-                        targetMesh.AddQuad(new Vector3(centerX, centerY, -0.1f), occlusionLength * 0.5f, 0.5f, -1.0f, Color.white);
+                        targetMesh.AddQuad(new Vector3(centerX, centerY, -0.1f), occlusionLength * 0.5f, 0.75f, -1.0f, Color.white);
 
                         occlusionBeginX = -1;
                     }
@@ -63,9 +63,9 @@ namespace HordeEngine
                     int dstIdx = (pos.y + y) * mapDst.Stride + pos.x + x;
                     int srcIdx = y * room.Width + x;
 
-                    mapDst.walls[dstIdx] = room.WallTiles[srcIdx];
-                    mapDst.floor[dstIdx] = room.FloorTiles[srcIdx];
-                    mapDst.props[dstIdx] = room.PropTiles[srcIdx];
+                    mapDst.Walls[dstIdx] = room.WallTiles[srcIdx];
+                    mapDst.Floor[dstIdx] = room.FloorTiles[srcIdx];
+                    mapDst.Props[dstIdx] = room.PropTiles[srcIdx];
                 }
             }
         }
@@ -111,6 +111,12 @@ namespace HordeEngine
             }
 
             tex.SetPixels(pixels);
+            var bytes = tex.EncodeToPNG();
+            File.WriteAllBytes(path, bytes);
+        }
+
+        public static void TextureToPng(string path, Texture2D tex)
+        {
             var bytes = tex.EncodeToPNG();
             File.WriteAllBytes(path, bytes);
         }

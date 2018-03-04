@@ -99,9 +99,9 @@ namespace HordeEngine
 
             if (Global.WriteDebugPngFiles)
             {
-                Global.WriteDebugPng("logical_floor", logicalMap.floor, logicalMap.Width, logicalMap.Height, TileMetadata.NoTile);
-                Global.WriteDebugPng("logical_walls", logicalMap.walls, logicalMap.Width, logicalMap.Height, TileMetadata.NoTile);
-                Global.WriteDebugPng("logical_props", logicalMap.props, logicalMap.Width, logicalMap.Height, TileMetadata.NoTile);
+                Global.WriteDebugPng("logical_floor", logicalMap.Floor, logicalMap.Width, logicalMap.Height, TileMetadata.NoTile);
+                Global.WriteDebugPng("logical_walls", logicalMap.Walls, logicalMap.Width, logicalMap.Height, TileMetadata.NoTile);
+                Global.WriteDebugPng("logical_props", logicalMap.Props, logicalMap.Width, logicalMap.Height, TileMetadata.NoTile);
             }
 
             if (Global.DebugLogging)
@@ -118,10 +118,10 @@ namespace HordeEngine
                     chunk.Cx = cx;
                     chunk.Cy = cy;
 
-                    chunk.layerFloor.Update(logicalMap, logicalMap.floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: false, debugName: "floor");
-                    chunk.layerWalls.Update(logicalMap, logicalMap.walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "walls");
-                    chunk.layerProps.Update(logicalMap, logicalMap.props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "props");
-                    MapUtil.GetChunkAmbientOcclusion(logicalMap_.collision, logicalMap_.Stride * 2, chunk.layerWalls, chunk.AmbientOcclusionMesh);
+                    chunk.layerFloor.Update(logicalMap, logicalMap.Floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: false, debugName: "floor");
+                    chunk.layerWalls.Update(logicalMap, logicalMap.Walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "walls");
+                    chunk.layerProps.Update(logicalMap, logicalMap.Props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "props");
+                    MapUtil.GetChunkAmbientOcclusion(logicalMap_.CollisionMap, logicalMap_.CollisionWidth, chunk.layerWalls, chunk.AmbientOcclusionMesh);
 
                     bool isEmpty = chunk.layerFloor.ActiveTiles + chunk.layerWalls.ActiveTiles + chunk.layerProps.ActiveTiles == 0;
                     if (!isEmpty)

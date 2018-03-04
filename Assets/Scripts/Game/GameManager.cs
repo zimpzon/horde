@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace HordeEngine
@@ -9,13 +11,19 @@ namespace HordeEngine
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public MapRenderer MapRenderer;
-
         TimeManager timeManager_ = new TimeManager();
         MapResources mapResources_ = new MapResources();
         GameState CurrentGameState { get { return gameStateStack_.Peek(); } }
         Stack<GameState> gameStateStack_ = new Stack<GameState>();
         Dictionary<GameState, GameStateHandler> gameStateHandlers_ = new Dictionary<GameState, GameStateHandler>();
+
+        Dictionary<string, string> debugLines_ = new Dictionary<string, string>();
+        public void ShowDebug(object key, string text, params object[] param)
+        {
+            string formatted = string.Format("{0}: {1} ({2})", key.ToString(), string.Format(text, param), Time.frameCount);
+            debugLines_[key.ToString()] = formatted;
+            Global.SceneAccess.DebugText.text = string.Join(Environment.NewLine, debugLines_.Values.ToArray());
+        }
 
         void Awake()
         {
@@ -23,7 +31,6 @@ namespace HordeEngine
             Application.lowMemory += Application_lowMemory;
 
             Global.GameManager = this;
-            Global.MapRenderer = MapRenderer;
             Global.TimeManager = timeManager_;
             Global.MapResources = mapResources_;
 

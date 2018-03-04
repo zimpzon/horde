@@ -4,7 +4,14 @@
     {
         _MainTex("Base Texture", 2D) = "black" {}
         _LightingTex("Lighting Texture", 2D) = "black" {}
-        _Multiplier("Multiplier", float) = 1.0
+        _Multiplier("Brightness", float) = 1.0
+        _Multiplier("MonochromeFactorR", float) = 0.2989
+        _Multiplier("MonochromeFactorG", float) = 0.5870
+        _Multiplier("MonochromeFactorB", float) = 0.1140
+        _Multiplier("MonochromeDisplayR", float) = 0.0
+        _Multiplier("MonochromeDisplayG", float) = 1.0
+        _Multiplier("MonochromeDisplayB", float) = 0.0
+        _Multiplier("MonochromeAmount", float) = 0.0
     }
 
         SubShader
@@ -41,19 +48,24 @@
 
     sampler2D _MainTex;
     sampler2D _LightingTex;
-    float _Multiplier;
+    float _Brightness;
+	float _MonochromeFactorR;
+	float _MonochromeFactorG;
+	float _MonochromeFactorB;
+	float _MonochromeDisplayR;
+	float _MonochromeDisplayG;
+	float _MonochromeDisplayB;
+	float _MonochromeAmount;
 
     half4 frag(v2f IN) : SV_Target
     {
         half4 base = tex2D(_MainTex, IN.uv);
         half4 lighting = tex2D(_LightingTex, IN.uv);
-        half4 col = base * lighting * _Multiplier;
+        half4 col = base * lighting * _Brightness;
 
-        // Could do greyscale here (0.2989, 0.5870, 0.1140.)
-        //float g = col.r * 0.2989 + col.g * 0.5870 + col.b * 0.1140;
-        //fixed4 grey = fixed4(g, g, g, 1.0);
-        //return grey;
-        return col;
+        float mono = col.r * _MonochromeFactorR + col.g * _MonochromeFactorG + col.b * _MonochromeFactorB;
+        half4 monoDisplay = half4(mono * _MonochromeDisplayR, mono * _MonochromeDisplayG, mono * _MonochromeDisplayB, 1.0);
+        return monoDisplay * _MonochromeAmount + col * (1.0 - _MonochromeAmount);
     }
 
         ENDCG

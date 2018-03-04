@@ -25,13 +25,4 @@ public class MapRenderer : MonoBehaviour
     {
         displayMap_.DrawMap(MapMaterial, AmbientOcclusionMaterial, EnableAmbientOcclusion, trans_.position.z);
     }
-
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-
-    }
 }

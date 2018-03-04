@@ -94,7 +94,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 8
-  m_Depth: 0
+  m_Depth: -2
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 256
@@ -164,6 +164,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EffectMaterial: {fileID: 2100000, guid: cd51ddb0508aed244b049a8760e58dc5, type: 2}
+  Brightness: 1
+  MonochromeAmount: 0
+  MonochromeFactorR: 0.5
+  MonochromeFactorG: 0.5
+  MonochromeFactorB: 0.5
+  MonochromeDisplayR: 0.1
+  MonochromeDisplayG: 1
+  MonochromeDisplayB: 0
 --- !u!114 &114396265246137974
 MonoBehaviour:
   m_ObjectHideFlags: 1

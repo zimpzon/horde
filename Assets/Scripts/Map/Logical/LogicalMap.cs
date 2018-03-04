@@ -4,20 +4,24 @@ namespace HordeEngine
 {
     public class LogicalMap
     {
-        public int[] walls;
-        public int[] floor;
-        public int[] props;
-        public byte[] collision;
-        public int Stride;
+        public int[] Walls;
+        public int[] Floor;
+        public int[] Props;
         public int Width;
         public int Height;
+        public int Stride;
         public int Margin = 0;
+        public byte[] CollisionMap;
+        public int CollisionWidth;
+        public int CollisionHeight;
 
         public void SetBounds(int w, int h, int stride)
         {
             Width = w;
             Height = h;
             Stride = stride;
+            CollisionWidth = Width * 2;
+            CollisionHeight = Height * 2;
         }
 
         string GetCollisionString(int[] tiles, int x, int y)
@@ -42,7 +46,7 @@ namespace HordeEngine
                 for (int x = 0; x < Width; x++)
                 {
                     int tileIdx = y * Width + x;
-                    int tileId = walls[tileIdx] != TileMetadata.NoTile ? walls[tileIdx] : floor[tileIdx];
+                    int tileId = Walls[tileIdx] != TileMetadata.NoTile ? Walls[tileIdx] : Floor[tileIdx];
                     // Each rendered tile is split into 4 collision blocks for more fine-grained collision
                     // 01
                     // 23
@@ -53,37 +57,37 @@ namespace HordeEngine
 
                     if (tileId == TileMetadata.NoTile)
                     {
-                        collision[collisionIdx0] = MapConstants.CollOutsideMap;
-                        collision[collisionIdx1] = MapConstants.CollOutsideMap;
-                        collision[collisionIdx2] = MapConstants.CollOutsideMap;
-                        collision[collisionIdx3] = MapConstants.CollOutsideMap;
+                        CollisionMap[collisionIdx0] = MapConstants.CollOutsideMap;
+                        CollisionMap[collisionIdx1] = MapConstants.CollOutsideMap;
+                        CollisionMap[collisionIdx2] = MapConstants.CollOutsideMap;
+                        CollisionMap[collisionIdx3] = MapConstants.CollOutsideMap;
                         continue;
                     }
 
-                    collision[collisionIdx0] = MapConstants.CollWalkable;
-                    collision[collisionIdx1] = MapConstants.CollWalkable;
-                    collision[collisionIdx2] = MapConstants.CollWalkable;
-                    collision[collisionIdx3] = MapConstants.CollWalkable;
+                    CollisionMap[collisionIdx0] = MapConstants.CollWalkable;
+                    CollisionMap[collisionIdx1] = MapConstants.CollWalkable;
+                    CollisionMap[collisionIdx2] = MapConstants.CollWalkable;
+                    CollisionMap[collisionIdx3] = MapConstants.CollWalkable;
 
                     TileMetadata tileProperties;
                     if (!Global.MapResources.TilemapMetaData.tileLookup.TryGetValue(tileId, out tileProperties))
                         continue;
 
                     // A collision string is 4 chars like "0101", "0000", "1111" etc.
-                    var collisionStr = GetCollisionString(walls, x, y);
+                    var collisionStr = GetCollisionString(Walls, x, y);
 
                     // The collision map pieces will not fit together perfectly (but almost).
 
-                    // close hole at corner
+                    // Close hole at corner
                     // if 0011 and up = 1010 | 0011 set self 1011
                     // if 0011 and up = 0101 | 0011 set self 0111
 
-                    // remove artifact at corner
+                    // Remove artifact at corner
                     // if 1010 and left  = 0011 set self  0010
                     // if 0101 and right = 0011 set self  0001
-                    var up = GetCollisionString(walls, x, y - 1);
-                    var left = GetCollisionString(walls, x - 1, y);
-                    var right = GetCollisionString(walls, x + 1, y);
+                    var up = GetCollisionString(Walls, x, y - 1);
+                    var left = GetCollisionString(Walls, x - 1, y);
+                    var right = GetCollisionString(Walls, x + 1, y);
 
                     if (collisionStr == "0011" && (up == "1010" || up == "0011"))
                         collisionStr = "1111";
@@ -97,27 +101,27 @@ namespace HordeEngine
                     bool isValidCollisionStr = !string.IsNullOrEmpty(collisionStr) && collisionStr.Length == 4;
                     if (isValidCollisionStr)
                     {
-                        collision[collisionIdx0] = (collisionStr[0] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
-                        collision[collisionIdx1] = (collisionStr[1] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
-                        collision[collisionIdx2] = (collisionStr[2] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
-                        collision[collisionIdx3] = (collisionStr[3] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
+                        CollisionMap[collisionIdx0] = (collisionStr[0] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
+                        CollisionMap[collisionIdx1] = (collisionStr[1] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
+                        CollisionMap[collisionIdx2] = (collisionStr[2] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
+                        CollisionMap[collisionIdx3] = (collisionStr[3] == '0') ? MapConstants.CollWalkable : MapConstants.CollBlocked;
                     }
                 }
             }
 
             if (Global.WriteDebugPngFiles)
-                Global.WriteDebugPng("collision", Array.ConvertAll(collision, item => (int)item), Width * 2, Height * 2, 0);
+                Global.WriteDebugPng("collision", Array.ConvertAll(CollisionMap, item => (int)item), Width * 2, Height * 2, 0);
         }
 
         public void EnsureAllocatedSizeFromBounds()
         {
             int size = Width * Height;
-            if (walls == null || walls.Length < size)
+            if (Walls == null || Walls.Length < size)
             {
-                walls = new int[size];
-                floor = new int[size];
-                props = new int[size];
-                collision = new byte[size * 4];
+                Walls = new int[size];
+                Floor = new int[size];
+                Props = new int[size];
+                CollisionMap = new byte[size * 4];
             }
         }
     }

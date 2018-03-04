@@ -51,7 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CameraShaker.cs" />
      <Compile Include="Assets\Projects\PerfTest\PerfTestManager.cs" />
+     <Compile Include="Assets\SceneAccessScript.cs" />
      <Compile Include="Assets\Scripts\Actors\ActorData.cs" />
      <Compile Include="Assets\Scripts\Actors\ActorIdAllocator.cs" />
      <Compile Include="Assets\Scripts\Actors\ActorRenderSystem.cs" />
@@ -62,13 +64,14 @@
      <Compile Include="Assets\Scripts\Actors\PlayerInputSystem.cs" />
      <Compile Include="Assets\Scripts\Actors\Projectile.cs" />
      <Compile Include="Assets\Scripts\Actors\ProjectileRenderer.cs" />
+     <Compile Include="Assets\Scripts\Actors\RenderedActor.cs" />
      <Compile Include="Assets\Scripts\Actors\SimpleActorSystem.cs" />
      <Compile Include="Assets\Scripts\Actors\SoundSystem.cs" />
-     <Compile Include="Assets\Scripts\DynamicQuadMesh.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\GameStateBoot.cs" />
      <Compile Include="Assets\Scripts\Game\GameStateHandler.cs" />
      <Compile Include="Assets\Scripts\Game\GameStateHub.cs" />
+     <Compile Include="Assets\Scripts\Game\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\Lighting\LightingCamera.cs" />
      <Compile Include="Assets\Scripts\Lighting\LightingImageEffect.cs" />
      <Compile Include="Assets\Scripts\Lighting\MaterialColorSetter.cs" />
@@ -76,6 +79,8 @@
      <Compile Include="Assets\Scripts\Map\Display\DisplayMap.cs" />
      <Compile Include="Assets\Scripts\Map\Display\DisplayMapChunk.cs" />
      <Compile Include="Assets\Scripts\Map\Display\MapRenderer.cs" />
+     <Compile Include="Assets\Scripts\Map\Display\MiniMapScript.cs" />
+     <Compile Include="Assets\Scripts\Map\Logical\CollisionUtil.cs" />
      <Compile Include="Assets\Scripts\Map\Logical\LogicalMap.cs" />
      <Compile Include="Assets\Scripts\Map\Logical\LogicalMapRoom.cs" />
      <Compile Include="Assets\Scripts\Map\Logical\MapResources.cs" />
@@ -85,6 +90,7 @@
      <Compile Include="Assets\Scripts\Map\MapObjects\MapObjectBase.cs" />
      <Compile Include="Assets\Scripts\Map\MapObjects\MapObjectPlayerStartTile.cs" />
      <Compile Include="Assets\Scripts\Map\MapUtil.cs" />
+     <Compile Include="Assets\Scripts\Misc\DynamicQuadMesh.cs" />
      <Compile Include="Assets\Scripts\Misc\Global.cs" />
      <Compile Include="Assets\Scripts\Misc\ReusableObject.cs" />
      <Compile Include="Assets\Scripts\Misc\SpatialHash.cs" />

@@ -4,29 +4,30 @@ namespace HordeEngine
 {
     public class GameStateHub : GameStateHandler
     {
-        LogicalMap hubData_;
+        LogicalMap hubMap_;
 
-        void EnsureHubData()
+        void EnsureHubMap()
         {
-            if (hubData_ == null)
+            if (hubMap_ == null)
             {
-                hubData_ = new LogicalMap();
+                hubMap_ = new LogicalMap();
                 var hubRoom = Global.MapResources.Rooms.Where(r => r.Name == "hub").First();
-                MapBuilderSingleRoom.Build(hubRoom, hubData_);
+                MapBuilderSingleRoom.Build(hubRoom, hubMap_);
             }
         }
 
         public override bool TryEnterState()
         {
-            EnsureHubData();
+            EnsureHubMap();
 
-            Global.MapRenderer.SetMap(hubData_);
+            Global.SceneAccess.MiniMap.SetMap(hubMap_);
+            Global.SetMap(hubMap_);
             return true;
         }
-
+        
         public override void UpdateState(bool hasFocus)
         {
-            Global.MapRenderer.DrawMap();
+            Global.SceneAccess.MapRenderer.DrawMap();
         }
     }
 }
