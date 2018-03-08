@@ -18,9 +18,9 @@ namespace HordeEngine
         Dictionary<GameState, GameStateHandler> gameStateHandlers_ = new Dictionary<GameState, GameStateHandler>();
 
         Dictionary<string, string> debugLines_ = new Dictionary<string, string>();
-        public void ShowDebug(object key, string text, params object[] param)
+        public void ShowDebug(object key, object text, params object[] param)
         {
-            string formatted = string.Format("{0}: {1} ({2})", key.ToString(), string.Format(text, param), Time.frameCount);
+            string formatted = string.Format("{0}: {1} ({2})", key.ToString(), string.Format(text.ToString(), param), Time.frameCount);
             debugLines_[key.ToString()] = formatted;
             Global.SceneAccess.DebugText.text = string.Join(Environment.NewLine, debugLines_.Values.ToArray());
         }

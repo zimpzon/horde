@@ -2,14 +2,14 @@
 {
     public static class MapConstants
     {
-        public static readonly float TileW = 1.0f;
-        public static readonly float TileH = 1.0f;
-        public static readonly int ChunkW = 8;
-        public static readonly int ChunkH = 8;
-        public static readonly int LightmapResolution = 2;
+        public const float TileW = 1.0f;
+        public const float TileH = 1.0f;
+        public const int ChunkW = 8;
+        public const int ChunkH = 8;
+        public const int LightmapResolution = 2;
 
-        public static readonly byte CollOutsideMap = 0;
-        public static readonly byte CollBlocked = 255;
-        public static readonly byte CollWalkable = 127;
+        public const byte CollOutsideMap = 0;
+        public const byte CollBlocked = 255;
+        public const byte CollWalkable = 127;
     }
 }

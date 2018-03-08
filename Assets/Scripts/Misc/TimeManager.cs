@@ -7,14 +7,14 @@
         public float DeltaTime;
         public float SlowableTime;
         public float DeltaSlowableTime;
-        public float SlowingFactor = 1.0f;
+        public float TimeScale = 1.0f;
 
         public void UpdateTime(float delta)
         {
             DeltaTime = delta;
             Time += DeltaTime;
 
-            DeltaSlowableTime = DeltaTime * SlowingFactor;
+            DeltaSlowableTime = DeltaTime * TimeScale;
             SlowableTime += DeltaSlowableTime;
         }
     }

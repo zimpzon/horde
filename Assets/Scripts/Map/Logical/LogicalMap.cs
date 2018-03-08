@@ -85,18 +85,18 @@ namespace HordeEngine
                     // Remove artifact at corner
                     // if 1010 and left  = 0011 set self  0010
                     // if 0101 and right = 0011 set self  0001
-                    var up = GetCollisionString(Walls, x, y - 1);
-                    var left = GetCollisionString(Walls, x - 1, y);
-                    var right = GetCollisionString(Walls, x + 1, y);
+                    //var up = GetCollisionString(Walls, x, y - 1);
+                    //var left = GetCollisionString(Walls, x - 1, y);
+                    //var right = GetCollisionString(Walls, x + 1, y);
 
-                    if (collisionStr == "0011" && (up == "1010" || up == "0011"))
-                        collisionStr = "1111";
-                    else if (collisionStr == "0011" && (up == "0101" || up == "0011"))
-                        collisionStr = "1111";
-                    else if (collisionStr == "1010" && left == "0011")
-                        collisionStr = "0010";
-                    else if (collisionStr == "0101" && right == "0011")
-                        collisionStr = "0001";
+                    //if (collisionStr == "0011" && (up == "1010" || up == "0011"))
+                    //    collisionStr = "1111";
+                    //else if (collisionStr == "0011" && (up == "0101" || up == "0011"))
+                    //    collisionStr = "1111";
+                    //else if (collisionStr == "1010" && left == "0011")
+                    //    collisionStr = "0010";
+                    //else if (collisionStr == "0101" && right == "0011")
+                    //    collisionStr = "0001";
 
                     bool isValidCollisionStr = !string.IsNullOrEmpty(collisionStr) && collisionStr.Length == 4;
                     if (isValidCollisionStr)

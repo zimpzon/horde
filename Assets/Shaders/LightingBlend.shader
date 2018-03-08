@@ -15,60 +15,63 @@
     }
 
         SubShader
-    {
+        {
 
-        Pass
-    {
-        CGPROGRAM
+            Pass
+        {
+            CGPROGRAM
 
-#pragma vertex vert
-#pragma fragment frag
-#include "UnityCG.cginc"
+    #pragma vertex vert
+    #pragma fragment frag
+    #include "UnityCG.cginc"
 
-        struct appdata_t
-    {
-        float4 vertex   : POSITION;
-        float2 uv : TEXCOORD0;
-    };
+            struct appdata_t
+        {
+            float4 vertex   : POSITION;
+            float2 uv : TEXCOORD0;
+        };
 
-    struct v2f
-    {
-        float4 vertex   : SV_POSITION;
-        half2 uv : TEXCOORD0;
-    };
+        struct v2f
+        {
+            float4 vertex   : SV_POSITION;
+            half2 uv : TEXCOORD0;
+        };
 
-    v2f vert(appdata_t i)
-    {
-        v2f o;
-        o.vertex = UnityObjectToClipPos(i.vertex);
-        o.uv = i.uv;
+        v2f vert(appdata_t i)
+        {
+            v2f o;
+            o.vertex = UnityObjectToClipPos(i.vertex);
+            o.uv = i.uv;
 
-        return o;
-    }
+            return o;
+        }
 
-    sampler2D _MainTex;
-    sampler2D _LightingTex;
-    float _Brightness;
-	float _MonochromeFactorR;
-	float _MonochromeFactorG;
-	float _MonochromeFactorB;
-	float _MonochromeDisplayR;
-	float _MonochromeDisplayG;
-	float _MonochromeDisplayB;
-	float _MonochromeAmount;
+        sampler2D _MainTex;
+        sampler2D _LightingTex;
+        float _Brightness;
+        float _MonochromeFactorR;
+        float _MonochromeFactorG;
+        float _MonochromeFactorB;
+        float _MonochromeDisplayR;
+        float _MonochromeDisplayG;
+        float _MonochromeDisplayB;
+        float _MonochromeAmount;
 
-    half4 frag(v2f IN) : SV_Target
-    {
-        half4 base = tex2D(_MainTex, IN.uv);
-        half4 lighting = tex2D(_LightingTex, IN.uv);
-        half4 col = base * lighting * _Brightness;
+        half4 frag(v2f IN) : SV_Target
+        {
+            float4 base = tex2D(_MainTex, IN.uv);
+            float lightingBlendFactor = base.a;
+            base.a = 1.0;
+            float4 lighting = tex2D(_LightingTex, IN.uv);
+            float4 col = base * lighting * _Brightness;
 
-        float mono = col.r * _MonochromeFactorR + col.g * _MonochromeFactorG + col.b * _MonochromeFactorB;
-        half4 monoDisplay = half4(mono * _MonochromeDisplayR, mono * _MonochromeDisplayG, mono * _MonochromeDisplayB, 1.0);
-        return monoDisplay * _MonochromeAmount + col * (1.0 - _MonochromeAmount);
-    }
+            float mono = col.r * _MonochromeFactorR + col.g * _MonochromeFactorG + col.b * _MonochromeFactorB;
+            float4 monoDisplay = float4(mono * _MonochromeDisplayR, mono * _MonochromeDisplayG, mono * _MonochromeDisplayB, 1.0);
+            float4 albedoAndLight = monoDisplay * _MonochromeAmount + col * (1.0 - _MonochromeAmount);
+            return lightingBlendFactor * base + (1 - lightingBlendFactor) * albedoAndLight;
+        }
 
-        ENDCG
-    }
-    }
+            ENDCG
+        }
+        }
 }

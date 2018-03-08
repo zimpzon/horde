@@ -8,6 +8,8 @@ namespace HordeEngine
         public TextMeshProUGUI DebugText;
         public MapRenderer MapRenderer;
         public MiniMapScript MiniMap;
+        public CameraShake CameraShake;
+        public CameraTarget CameraTarget;
 
         void Awake()
         {

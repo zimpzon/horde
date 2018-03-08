@@ -111,6 +111,7 @@ namespace HordeEngine
             }
 
             tex.SetPixels(pixels);
+            tex.Apply();
             var bytes = tex.EncodeToPNG();
             File.WriteAllBytes(path, bytes);
         }

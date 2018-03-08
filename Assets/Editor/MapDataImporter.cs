@@ -109,8 +109,7 @@ public class MenuItems
 
         var jsonOutput = JsonUtility.ToJson(tileMetadata);
         File.WriteAllText(outputFile, jsonOutput);
-
-        AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+        AssetDatabase.ImportAsset(outputFile);
 
         Debug.Log("Imported tile metadata.");
     }
@@ -137,10 +136,6 @@ public class MenuItems
 
             room.Name = Path.GetFileNameWithoutExtension(file).ToLower();
             rooms.Add(room);
-
-            //MapUtil.ArrayToPng(string.Format(@"d:\temp\{0}_walls.png", Path.GetFileNameWithoutExtension(file)), room.WallTiles, room.Width, room.Height, TileMetadata.NoTile);
-            //MapUtil.ArrayToPng(string.Format(@"d:\temp\{0}_floor.png", Path.GetFileNameWithoutExtension(file)), room.FloorTiles, room.Width, room.Height, TileMetadata.NoTile);
-            //MapUtil.ArrayToPng(string.Format(@"d:\temp\{0}_props.png", Path.GetFileNameWithoutExtension(file)), room.PropTiles, room.Width, room.Height, TileMetadata.NoTile);
         }
 
         var wrapper = new RoomWrapper();
@@ -150,6 +145,7 @@ public class MenuItems
         Directory.CreateDirectory(outputPath);
         var outputFile = Path.Combine(outputPath, "rooms.json");
         File.WriteAllText(outputFile, jsonRooms);
+        AssetDatabase.ImportAsset(outputFile, ImportAssetOptions.ForceUpdate);
 
         Debug.Log(string.Format("Imported {0} rooms.", rooms.Count));
     }
@@ -186,12 +182,28 @@ public class MenuItems
         MapUtil.CopyBlock(floor.data, room.FloorTiles, srcBounds, dstBounds, floor.width, room.Width);
         MapUtil.CopyBlock(props.data, room.PropTiles, srcBounds, dstBounds, props.width, room.Width);
 
-        // When exporting from Tiled 0 means empty and 1 is added to all tile ids.
-        // Subtract 1 so ids are correct. -1 now means empty.
-        room.WallTiles = room.WallTiles.Select(tileId => tileId - 1).ToArray();
-        room.FloorTiles = room.FloorTiles.Select(tileId => tileId - 1).ToArray();
-        room.PropTiles = room.PropTiles.Select(tileId => tileId - 1).ToArray();
+    room.WallTiles = room.WallTiles.Select(tileId => FilterTileId(tileId)).ToArray();
+        room.FloorTiles = room.FloorTiles.Select(tileId => FilterTileId(tileId)).ToArray();
+        room.PropTiles = room.PropTiles.Select(tileId => FilterTileId(tileId)).ToArray();
 
         return room;
+    }
+
+    static int FilterTileId(int id)
+    {
+        // When exporting from Tiled 0 means empty and 1 is added to all tile ids.
+        // Subtract 1 so ids match what we want: 0 is the first tile in the tile map
+        // and -1 means empty.
+        // Also remove flags for mirrored tiles, we don't support that. Tiled editor will
+        // flag mirrored tiles when mirroring areas of a map, but that is not what we want.
+        const uint FlagDiagonal = 0x20000000;
+        const uint FlagVertical = 0x40000000;
+        const uint FlagHorizontal = 0x80000000;
+        uint uid = (uint)id;
+        uid &= ~FlagDiagonal;
+        uid &= ~FlagVertical;
+        uid &= ~FlagHorizontal;
+        id = (int)uid;
+        return id - 1;
     }
 }

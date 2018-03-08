@@ -47,6 +47,7 @@
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
                 if (col.a < 0.5) discard; // Fixed cut-off at 0.5
+				col.a = 0.0f;
                 return col;
 			}
 			ENDCG
