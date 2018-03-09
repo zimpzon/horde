@@ -14,7 +14,13 @@ namespace HordeEngine
         Color32[] pixels_;
         Color32[] pixelsCopy_;
 
+        const float PixelWorldSize = 0.1f;
         RawImage image_;
+
+        public void CenterAt(Vector3 worldPos)
+        {
+
+        }
 
         private void Awake()
         {
@@ -23,24 +29,25 @@ namespace HordeEngine
 
         private void LateUpdate()
         {
-            //if (pixels_ != null)
-            //    Array.Copy(pixelsCopy_, pixels_, pixels_.Length);
+            if (pixels_ != null)
+                Array.Copy(pixelsCopy_, pixels_, pixels_.Length);
         }
 
         public void SetDebugPixel(int idx, Color col)
         {
             // NB NB Requires margin of 0 atm
-            //int w = Texture.width;
-            //int h = Texture.height;
-            //int y = idx / w;
-            //int x = idx % w;
-            //pixels_[(h - y - 1) * w + x] = col;
-            //Texture = new Texture2D(Texture.width, Texture.height, TextureFormat.RGBA32, false)
+            int w = texture_.width;
+            int h = texture_.height;
+            int y = idx / w;
+            int x = idx % w;
+            pixels_[(h - y - 1) * w + x] = col;
+            //texture_ = new Texture2D(texture_.width, texture_.height, TextureFormat.RGBA32, false)
             //{
             //    filterMode = FilterMode.Point
             //};
-            //Texture.SetPixels(pixels_);
-            //image_.texture = Texture;
+            texture_.SetPixels32(pixels_);
+            texture_.Apply();
+//            image_.texture = texture_;
         }
 
         public void SetMap(LogicalMap map)
@@ -76,7 +83,7 @@ namespace HordeEngine
             texture_.Apply();
             image_.texture = texture_;
 
-//            pixelsCopy_ = (Color[])pixels_.Clone();
+            pixelsCopy_ = (Color32[])pixels_.Clone();
 
             if (Global.WriteDebugPngFiles)
             {

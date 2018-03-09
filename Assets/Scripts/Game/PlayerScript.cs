@@ -33,7 +33,8 @@ public class PlayerScript : MonoBehaviour
         Vector3 moveVec = Vector3.zero;
         moveVec.x = Input.GetAxis("Horizontal");
         moveVec.y = Input.GetAxis("Vertical");
-        var velocity = moveVec * Time.deltaTime * 6;
+
+        var velocity = moveVec.normalized * Time.deltaTime * 100;
         if (velocity.sqrMagnitude > 0.0f)
         {
             var pos = trans_.position;

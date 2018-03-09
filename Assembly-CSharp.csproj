@@ -68,6 +68,7 @@
      <Compile Include="Assets\Scripts\Game\GameStateHandler.cs" />
      <Compile Include="Assets\Scripts\Game\GameStateHub.cs" />
      <Compile Include="Assets\Scripts\Game\PlayerScript.cs" />
+     <Compile Include="Assets\Scripts\Lighting\FlashingLight.cs" />
      <Compile Include="Assets\Scripts\Lighting\LightingCamera.cs" />
      <Compile Include="Assets\Scripts\Lighting\LightingImageEffect.cs" />
      <Compile Include="Assets\Scripts\Lighting\MaterialColorSetter.cs" />

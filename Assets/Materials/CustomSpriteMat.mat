@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: CustomSpriteMat
   m_Shader: {fileID: 4800000, guid: f8058be84aa632c468a71ab556c43de1, type: 3}
-  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA PIXELSNAP_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -38,6 +38,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FakeDepthTex:
+        m_Texture: {fileID: 2800000, guid: 5ff76cb2662fe2841ab3b312ad52eb47, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: f88ed525c1093454db77196fa9c24ff0, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -55,8 +59,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Brightness: -1.84
+    - PixelSnap: 1
+    - _Brightness: 0.1
     - _BumpScale: 1
+    - _Clarity: 0.2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -74,5 +80,5 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Brightness: {r: 0, g: 0, b: 0, a: 1}
-    - _Color: {r: 0.26637593, g: 0.43245572, b: 0.7735849, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

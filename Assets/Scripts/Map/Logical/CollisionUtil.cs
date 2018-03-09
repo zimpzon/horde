@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HordeEngine;
 using UnityEngine;
 
+// TODO: Can walk right through walls on low frame rates. Do stepping.
 public static class CollisionUtil
 {
     public static byte[] CollisionMap;
     public static int Width;
     public static int Height;
     public static List<Vector3> PointsToMove = new List<Vector3>(20);
+    const float MaxVelocity = 0.49f; // A collision tile is 0.5. Limit speed to just below that.
 
     public static void SetCollisionMap(byte[] map, int w, int h)
     {
@@ -20,10 +21,18 @@ public static class CollisionUtil
 
     public static bool TryMovePoints(List<Vector3> pointsToMove, Vector3 velocity, out Vector3 shortestMove, bool adjustOnCollision = true)
     {
+        if (velocity.sqrMagnitude > MaxVelocity * MaxVelocity)
+        {
+            Global.GameManager.ShowDebug("vel capped1", velocity.magnitude);
+            velocity = velocity.normalized * MaxVelocity;
+            Global.GameManager.ShowDebug("vel capped2", velocity.magnitude);
+        }
+
         shortestMove = velocity;
         bool allMoved = true;
         float shortestSqr = float.MaxValue;
 
+        Global.GameManager.ShowDebug("vel", velocity);
         for (int i = 0; i < pointsToMove.Count; ++i)
         {
             var point = pointsToMove[i];
@@ -32,8 +41,7 @@ public static class CollisionUtil
             {
                 allMoved = false;
                 var movementVec = point - pointsToMove[i];
-                Global.GameManager.ShowDebug(i.ToString(), movementVec.magnitude);
-                if (point.sqrMagnitude < shortestSqr)
+                if (movementVec.sqrMagnitude < shortestSqr)
                 {
                     shortestMove = movementVec;
                     shortestSqr = movementVec.sqrMagnitude;
@@ -45,6 +53,9 @@ public static class CollisionUtil
 
     public static bool TryMovePoint(ref Vector3 pos, Vector3 velocity, bool adjustOnCollision = true)
     {
+        if (velocity.sqrMagnitude > MaxVelocity * MaxVelocity)
+            velocity = velocity.normalized * MaxVelocity;
+
         var newPos = pos + velocity;
         if (GetCollisionValue(newPos) != MapConstants.CollWalkable)
         {
@@ -122,7 +133,7 @@ public static class CollisionUtil
         int y = -(int)(pos.y * 2);
         int collIdx = y * Width + x;
         var collision = CollisionMap[collIdx];
-        if (Time.frameCount % 100 == 0)
+        if (Time.frameCount % 10 == 0)
             Global.SceneAccess.MiniMap.SetDebugPixel(collIdx, collision == MapConstants.CollWalkable ? Color.green : Color.red);
         return collision;
     }

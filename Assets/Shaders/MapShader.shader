@@ -3,11 +3,17 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-	}
+        [MaterialToggle] PixelSnap("Pixel snap", float) = 1
+    }
 
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" }
+		Tags
+        {
+            "RenderType"="Opaque"
+            "PreviewType" = "Plane"
+            "CanUseSpriteAtlas" = "True"
+        }
 		LOD 100
 
 		Pass
@@ -15,7 +21,8 @@
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			
+            #pragma multi_compile DUMMY PIXELSNAP_ON
+
 			#include "UnityCG.cginc"
 
 			struct appdata
@@ -40,7 +47,10 @@
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				return o;
+#ifdef PIXELSNAP_ON
+                o.vertex = UnityPixelSnap(o.vertex);
+#endif
+                return o;
 			}
 			
 			fixed4 frag (v2f i) : SV_Target
