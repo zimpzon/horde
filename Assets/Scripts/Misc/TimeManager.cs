@@ -9,6 +9,11 @@
         public float DeltaSlowableTime;
         public float TimeScale = 1.0f;
 
+        public float GetDeltaTime(bool slowable)
+        {
+            return slowable ? SlowableTime : DeltaTime;
+        }
+
         public void UpdateTime(float delta)
         {
             DeltaTime = delta;

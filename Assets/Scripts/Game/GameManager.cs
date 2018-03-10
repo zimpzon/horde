@@ -11,7 +11,6 @@ namespace HordeEngine
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        TimeManager timeManager_ = new TimeManager();
         MapResources mapResources_ = new MapResources();
         GameState CurrentGameState { get { return gameStateStack_.Peek(); } }
         Stack<GameState> gameStateStack_ = new Stack<GameState>();
@@ -31,7 +30,8 @@ namespace HordeEngine
             Application.lowMemory += Application_lowMemory;
 
             Global.GameManager = this;
-            Global.TimeManager = timeManager_;
+            Global.TimeManager = new TimeManager();
+            Global.Crosshair = new CrosshairController();
             Global.MapResources = mapResources_;
 
             gameStateHandlers_[GameState.Boot] = new GameStateBoot();
@@ -76,7 +76,7 @@ namespace HordeEngine
         void Update()
         {
             // This is the first update to be called in every frame
-            timeManager_.UpdateTime(Time.deltaTime);
+            Global.TimeManager.UpdateTime(Time.deltaTime);
         }
 
         IEnumerator EnterState(GameState state)

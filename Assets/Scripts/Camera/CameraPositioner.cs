@@ -1,8 +1,10 @@
 ﻿using HordeEngine;
 using UnityEngine;
 
-public class CameraTarget : MonoBehaviour
+public class CameraPositioner : MonoBehaviour
 {
+    public float MoveSpeed = 8.0f;
+
     Vector3 target_;
     Vector3 currentPos_;
     Transform trans_;
@@ -24,8 +26,7 @@ public class CameraTarget : MonoBehaviour
 
     void Update()
     {
-        const float MoveFactor = 5.0f;
-        var movement = (target_ - currentPos_) * MoveFactor;
+        var movement = (target_ - currentPos_) * MoveSpeed;
 
         const float CloseEnough = 0.1f;
         if (movement.sqrMagnitude < CloseEnough * CloseEnough)

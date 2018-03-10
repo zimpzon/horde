@@ -1,8 +1,24 @@
 ﻿using HordeEngine;
 using UnityEngine;
 
-public static class SimpleSpriteAnimator
+[RequireComponent(typeof(SpriteRenderer))]
+public class SimpleSpriteAnimator : MonoBehaviour
 {
+    public Sprite[] AnimationSprites;
+    public float AnimationFramesPerSecond = 5.0f;
+
+    SpriteRenderer renderer_;
+
+    private void Awake()
+    {
+        renderer_ = GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
+        renderer_.sprite = GetAnimationSprite(AnimationSprites, AnimationFramesPerSecond);
+    }
+
     public static Sprite GetAnimationSprite(Sprite[] sprites, float animationFramesPerSecond)
     {
         int id = (int)(Global.TimeManager.SlowableTime * animationFramesPerSecond) % sprites.Length;

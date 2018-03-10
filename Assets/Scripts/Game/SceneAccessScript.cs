@@ -9,7 +9,11 @@ namespace HordeEngine
         public MapRenderer MapRenderer;
         public MiniMapScript MiniMap;
         public CameraShake CameraShake;
-        public CameraTarget CameraTarget;
+        public CameraPositioner CameraTarget;
+        public Transform PlayerTransform;
+        public Camera LightingCam;
+        public Camera GameplayCam;
+        public Camera OverlayCam;
 
         void Awake()
         {

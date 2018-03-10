@@ -18,6 +18,7 @@ namespace HordeEngine
         public static TimeManager TimeManager;
         public static MapResources MapResources;
         public static LogicalMap CurrentMap;
+        public static CrosshairController Crosshair;
 
         // On/off toggle for verbose debug logging
         public static bool DebugLogging = true;
