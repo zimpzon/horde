@@ -7,8 +7,8 @@ public class ActorAbility_Dodge : MonoBehaviour
     public bool UseSlowableTime = true;
     public float DodgeLength = 8.0f;
     public float DodgeTimeMs = 100.0f;
+    [System.NonSerialized]public bool IsDodging;
 
-    bool isDodging_;
     ActorPhysicsBody actorBody_;
     Vector3 dodgeVelocity_;
     float currentDodgeLen_;
@@ -20,15 +20,15 @@ public class ActorAbility_Dodge : MonoBehaviour
         actorBody_ = GetComponent<ActorPhysicsBody>();
     }
 
+    public void DoDodge(Vector3 direction)
+    {
+        float velocity = DodgeLength / (DodgeTimeMs / 1000.0f);
+        dodgeVelocity_ = direction.normalized * velocity;
+        IsDodging = dodgeVelocity_.sqrMagnitude >= 0.0f;
+    }
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && !isDodging_)
-        {
-            float velocity = DodgeLength / (DodgeTimeMs / 1000.0f); // Reach destination in DodgeTimeMs
-            dodgeVelocity_ = Global.Crosshair.GetDirectionVector(trans_.localPosition, normalize: true) * velocity;
-            isDodging_ = true;
-        }
-
         if (dodgeVelocity_.sqrMagnitude >= 0.0f)
         {
             var dodgeVec = dodgeVelocity_ * Global.TimeManager.GetDeltaTime(UseSlowableTime);
@@ -41,7 +41,7 @@ public class ActorAbility_Dodge : MonoBehaviour
                 dodgeVec = dodgeVec.normalized * frameDodgeLen;
                 currentDodgeLen_ = 0.0f;
                 dodgeVelocity_ = Vector3.zero;
-                isDodging_ = false;
+                IsDodging = false;
             }
 
             actorBody_.Move(dodgeVec);

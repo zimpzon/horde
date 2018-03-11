@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class MapRenderer : MonoBehaviour
 {
-    public Material MapMaterial;
+    public Material FloorMaterial;
+    public Material WallMaterial;
     public Material AmbientOcclusionMaterial;
     public bool EnableAmbientOcclusion = true;
 
@@ -23,6 +24,6 @@ public class MapRenderer : MonoBehaviour
 
     public void DrawMap()
     {
-        displayMap_.DrawMap(MapMaterial, AmbientOcclusionMaterial, EnableAmbientOcclusion, trans_.position.z);
+        displayMap_.DrawMap(FloorMaterial, WallMaterial, AmbientOcclusionMaterial, EnableAmbientOcclusion, trans_.position.z);
     }
 }

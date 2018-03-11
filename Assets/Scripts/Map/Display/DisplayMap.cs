@@ -110,16 +110,16 @@ namespace HordeEngine
             }
         }
 
-        public void DrawMap(Material material, Material ambientOcclusionMaterial, bool enableAmbientOcclusion, float floorZ)
+        public void DrawMap(Material floorMat, Material wallMat, Material ambientOcclusionMaterial, bool enableAmbientOcclusion, float floorZ)
         {
             Matrix4x4 matrix = Matrix4x4.identity;
             const float OffsetY = 0.25f;
             foreach (var chunk in chunks_.Values)
             {
                 matrix.SetTRS(new Vector3(chunk.Cx * chunkW_, -chunk.Cy * chunkH_ + OffsetY, floorZ), Quaternion.identity, Vector3.one);
-                Graphics.DrawMesh(chunk.layerFloor.Mesh, matrix, material, 0);
-                Graphics.DrawMesh(chunk.layerWalls.Mesh, matrix, material, 0);
-                Graphics.DrawMesh(chunk.layerProps.Mesh, matrix, material, 0);
+                Graphics.DrawMesh(chunk.layerFloor.Mesh, matrix, floorMat, 0);
+                Graphics.DrawMesh(chunk.layerWalls.Mesh, matrix, wallMat, 0);
+                Graphics.DrawMesh(chunk.layerProps.Mesh, matrix, wallMat, 0);
                 if (enableAmbientOcclusion)
                     Graphics.DrawMesh(chunk.AmbientOcclusionMesh.GetMesh(), matrix, ambientOcclusionMaterial, 0);
             }

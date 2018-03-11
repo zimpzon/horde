@@ -8,12 +8,16 @@ public class ActorController_Player : MonoBehaviour
     public SpriteAnimationFrames_IdleRun Anim;
     public SpriteRenderer PlayerSpriteRenderer;
 
+    Transform trans_;
     ActorPhysicsBody actorBody_;
+    ActorAbility_Dodge dodge_;
     bool flipX_;
 
     private void Awake()
     {
+        trans_ = transform;
         actorBody_ = GetComponent<ActorPhysicsBody>();
+        dodge_ = GetComponent<ActorAbility_Dodge>();
     }
 
     void Update()
@@ -26,12 +30,18 @@ public class ActorController_Player : MonoBehaviour
         Vector3 inputVec = Vector3.zero;
         inputVec.x = Input.GetAxis("Horizontal");
         inputVec.y = Input.GetAxis("Vertical");
-        var velocity = inputVec.normalized * td * MoveSpeed;
-        actorBody_.Move(velocity);
 
-        bool isRunning = velocity.sqrMagnitude > 0.0f;
+        bool isRunning = inputVec.sqrMagnitude > 0.0f;
         if (isRunning)
-            flipX_ = velocity.x < 0.0f;
+        {
+            var velocity = inputVec.normalized * td * MoveSpeed;
+            actorBody_.Move(velocity);
+
+            if (Input.GetMouseButtonDown(1) && !dodge_.IsDodging)
+                dodge_.DoDodge(inputVec);
+        }
+
+        flipX_ = Global.Crosshair.GetDirectionVector(trans_.localPosition).x < 0.0f;
 
         PlayerSpriteRenderer.sprite = SimpleSpriteAnimator.GetAnimationSprite(isRunning ? Anim.Run : Anim.Idle, Anim.DefaultAnimationFramesPerSecond);
         PlayerSpriteRenderer.flipX = flipX_;
