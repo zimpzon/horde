@@ -62,7 +62,8 @@ Shader "Engine/WallShader"
                     fixed4 col = tex2D(_MainTex, i.uv);
                     fixed height = tex2D(_HeightTex, i.uv);
                     if (col.a < 0.5) discard;
-                    col.a = clamp(-i.worldPos.z + height, 0, 0.75) * 0.2;
+                    fixed a = clamp(-i.worldPos.z + height, 0, 0.75);
+                    col.a = a * a * 0.3;
                     return col;
                 }
                 ENDCG
