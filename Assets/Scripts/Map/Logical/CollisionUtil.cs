@@ -36,8 +36,10 @@ public static class CollisionUtil
         }
     }
 
-    public static bool TryMovePoints(List<Vector2> pointsToMove, Vector2 velocity, out Vector2 maxAllowedMove, bool clampOnCollision = true)
+    public static bool TryMovePoints(List<Vector2> pointsToMove, Vector2 velocity, out Vector2 maxAllowedMove, out Vector2 collisionNormal, bool reactToCollision = true)
     {
+        collisionNormal = Vector2.zero;
+
         if (velocity.sqrMagnitude > MaxVelocity * MaxVelocity)
             velocity = velocity.normalized * MaxVelocity;
 
@@ -45,11 +47,11 @@ public static class CollisionUtil
         bool allMoved = true;
         float shortestSqr = float.MaxValue;
 
-        Global.GameManager.ShowDebug("vel", velocity);
         for (int i = 0; i < pointsToMove.Count; ++i)
         {
+            Vector2 tempCollisionNormal;
             var point = pointsToMove[i];
-            bool couldMove = TryMovePoint(ref point, velocity, clampOnCollision);
+            bool couldMove = TryMovePoint(ref point, velocity, out tempCollisionNormal, reactToCollision);
             if (!couldMove)
             {
                 allMoved = false;
@@ -58,21 +60,24 @@ public static class CollisionUtil
                 {
                     maxAllowedMove = movementVec;
                     shortestSqr = movementVec.sqrMagnitude;
+                    collisionNormal = tempCollisionNormal;
                 }
             }
         }
         return allMoved;
     }
 
-    public static bool TryMovePoint(ref Vector2 pos, Vector2 velocity, bool clampOnCollision = true)
+    public static bool TryMovePoint(ref Vector2 pos, Vector2 velocity, out Vector2 collisionNormal, bool reactToCollision = true)
     {
+        collisionNormal = Vector2.zero;
+
         if (velocity.sqrMagnitude > MaxVelocity * MaxVelocity)
             velocity = velocity.normalized * MaxVelocity;
 
         var newPos = pos + velocity;
         if (GetCollisionValue(newPos) != MapConstants.CollWalkable)
         {
-            if (!clampOnCollision)
+            if (!reactToCollision)
                 return false;
 
             // There is a collision, adjust movement
@@ -83,6 +88,7 @@ public static class CollisionUtil
             {
                 int x = (int)(newPos.x * 2);
                 newPos = ClampToCellX(pos, newPos, x);
+                collisionNormal += velocity.x < 0.0f ? Vector2.right : Vector2.left;
             }
 
             newPos.y += velocity.y;
@@ -90,6 +96,7 @@ public static class CollisionUtil
             {
                 int y = -(int)(newPos.y * 2);
                 newPos = ClampToCellY(pos, newPos, y);
+                collisionNormal += velocity.y < 0.0f ? Vector2.up: Vector2.down;
             }
 
             pos = newPos;

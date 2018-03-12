@@ -156,7 +156,7 @@ namespace HordeEngine
                     chunk.layerFloor.Update(logicalMap, logicalMap.Floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: false, debugName: "floor");
                     chunk.layerWalls.Update(logicalMap, logicalMap.Walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "walls");
                     chunk.layerProps.Update(logicalMap, logicalMap.Props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "props");
-                    MapUtil.GetChunkAmbientOcclusion(logicalMap_.CollisionMap, logicalMap_.CollisionWidth, chunk.layerWalls, chunk.AmbientOcclusionMesh);
+                    MapUtil.BuildChunkAmbientOcclusion(logicalMap_.CollisionMap, logicalMap_.CollisionWidth, chunk.layerWalls, chunk.AmbientOcclusionMesh);
 
                     bool isEmpty = chunk.layerFloor.ActiveTiles + chunk.layerWalls.ActiveTiles + chunk.layerProps.ActiveTiles == 0;
                     if (!isEmpty)

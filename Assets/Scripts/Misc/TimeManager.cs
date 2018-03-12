@@ -11,7 +11,7 @@
 
         public float GetDeltaTime(bool slowable)
         {
-            return slowable ? SlowableTime : DeltaTime;
+            return slowable ? DeltaSlowableTime : DeltaTime;
         }
 
         public void UpdateTime(float delta)

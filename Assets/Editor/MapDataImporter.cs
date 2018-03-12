@@ -160,7 +160,7 @@ public class MenuItems
         // The Walls layer is used to determine the bounds of the room.
         var srcBounds = MapUtil.GetClampedBounds(walls.data, walls.width, walls.height, idEmpty: 0);
         Debug.Log("Room bounds: " + srcBounds);
-        if (srcBounds.size.x * srcBounds.y == 0)
+        if (srcBounds.size.x * srcBounds.size.y == 0)
         {
             Debug.LogWarning("No room found, skipping.");
             return null;

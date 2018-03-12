@@ -16,6 +16,7 @@ namespace HordeEngine
         public static GameManager GameManager;
         public static SceneAccessScript SceneAccess;
         public static TimeManager TimeManager;
+        public static ComponentUpdater ComponentUpdater;
         public static MapResources MapResources;
         public static LogicalMap CurrentMap;
         public static CrosshairController Crosshair;

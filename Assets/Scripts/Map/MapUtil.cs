@@ -5,7 +5,7 @@ namespace HordeEngine
 {
     public static class MapUtil
     {
-        public static void GetChunkAmbientOcclusion(byte[] collision, int stride, DisplayMapChunk chunk, DynamicQuadMesh targetMesh)
+        public static void BuildChunkAmbientOcclusion(byte[] collision, int stride, DisplayMapChunk chunk, DynamicQuadMesh targetMesh)
         {
             targetMesh.Clear();
             int x0 = chunk.TopLeftX * 2;

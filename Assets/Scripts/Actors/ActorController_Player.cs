@@ -1,49 +1,54 @@
-﻿using HordeEngine;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(ActorPhysicsBody))]
-public class ActorController_Player : MonoBehaviour
+namespace HordeEngine
 {
-    public float MoveSpeed = 5.0f;
-    public SpriteAnimationFrames_IdleRun Anim;
-    public SpriteRenderer PlayerSpriteRenderer;
-
-    Transform trans_;
-    ActorPhysicsBody actorBody_;
-    ActorAbility_Dodge dodge_;
-    bool flipX_;
-
-    private void Awake()
+    [RequireComponent(typeof(ActorPhysicsBody))]
+    public class ActorController_Player : MonoBehaviour, IComponentUpdate
     {
-        trans_ = transform;
-        actorBody_ = GetComponent<ActorPhysicsBody>();
-        dodge_ = GetComponent<ActorAbility_Dodge>();
-    }
+        public float MoveSpeed = 5.0f;
+        public SpriteAnimationFrames_IdleRun Anim;
+        public SpriteRenderer PlayerSpriteRenderer;
 
-    void Update()
-    {
-        float td = Global.TimeManager.DeltaTime;
+        Transform trans_;
+        ActorPhysicsBody actorBody_;
+        ActorAbility_Dodge dodge_;
+        bool flipX_;
 
-        if (Input.GetKeyDown(KeyCode.R))
-            Global.SceneAccess.CameraShake.AddTrauma(1.0f);
-
-        Vector3 inputVec = Vector3.zero;
-        inputVec.x = Input.GetAxis("Horizontal");
-        inputVec.y = Input.GetAxis("Vertical");
-
-        bool isRunning = inputVec.sqrMagnitude > 0.0f;
-        if (isRunning)
+        private void Awake()
         {
-            var velocity = inputVec.normalized * td * MoveSpeed;
-            actorBody_.Move(velocity);
-
-            if (Input.GetMouseButtonDown(1) && !dodge_.IsDodging)
-                dodge_.DoDodge(inputVec);
+            trans_ = transform;
+            actorBody_ = GetComponent<ActorPhysicsBody>();
+            dodge_ = GetComponent<ActorAbility_Dodge>();
         }
 
-        flipX_ = Global.Crosshair.GetDirectionVector(trans_.localPosition).x < 0.0f;
+        void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
+        void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
-        PlayerSpriteRenderer.sprite = SimpleSpriteAnimator.GetAnimationSprite(isRunning ? Anim.Run : Anim.Idle, Anim.DefaultAnimationFramesPerSecond);
-        PlayerSpriteRenderer.flipX = flipX_;
+        public void ComponentUpdate(ComponentUpdatePass pass)
+        {
+            float td = Global.TimeManager.DeltaTime;
+
+            if (Input.GetKeyDown(KeyCode.R))
+                Global.SceneAccess.CameraShake.AddTrauma(1.0f);
+
+            Vector3 inputVec = Vector3.zero;
+            inputVec.x = Input.GetAxis("Horizontal");
+            inputVec.y = Input.GetAxis("Vertical");
+
+            bool isRunning = inputVec.sqrMagnitude > 0.0f;
+            if (isRunning)
+            {
+                var velocity = inputVec.normalized * td * MoveSpeed;
+                actorBody_.Move(velocity);
+
+                if (Input.GetMouseButtonDown(1) && !dodge_.IsDodging)
+                    dodge_.DoDodge(inputVec);
+            }
+
+            flipX_ = Global.Crosshair.GetDirectionVector(trans_.localPosition).x < 0.0f;
+
+            PlayerSpriteRenderer.sprite = SimpleSpriteAnimator.GetAnimationSprite(isRunning ? Anim.Run : Anim.Idle, Anim.DefaultAnimationFramesPerSecond);
+            PlayerSpriteRenderer.flipX = flipX_;
+        }
     }
 }

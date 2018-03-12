@@ -31,6 +31,7 @@ namespace HordeEngine
 
             Global.GameManager = this;
             Global.TimeManager = new TimeManager();
+            Global.ComponentUpdater = new ComponentUpdater();
             Global.Crosshair = new CrosshairController();
             Global.MapResources = mapResources_;
 
@@ -77,6 +78,7 @@ namespace HordeEngine
         {
             // This is the first update to be called in every frame
             Global.TimeManager.UpdateTime(Time.deltaTime);
+            Global.ComponentUpdater.DoUpdate();
         }
 
         IEnumerator EnterState(GameState state)

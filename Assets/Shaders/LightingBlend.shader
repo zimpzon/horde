@@ -59,15 +59,16 @@
 
         half4 frag(v2f IN) : SV_Target
         {
-            float4 base = tex2D(_MainTex, IN.uv);
-            float lightingBlendFactor = base.a;
-            base.a = 1.0;
-            float4 lighting = tex2D(_LightingTex, IN.uv);
-            float4 col = base * lighting * _Brightness;
+            fixed4 base = tex2D(_MainTex, IN.uv);
+            fixed lightingBlendFactor = base.a;
+            fixed4 lighting = tex2D(_LightingTex, IN.uv);
+            // Lighting.a is available for additional effects
 
-            float mono = col.r * _MonochromeFactorR + col.g * _MonochromeFactorG + col.b * _MonochromeFactorB;
-            float4 monoDisplay = float4(mono * _MonochromeDisplayR, mono * _MonochromeDisplayG, mono * _MonochromeDisplayB, 1.0);
-            float4 albedoAndLight = monoDisplay * _MonochromeAmount + col * (1.0 - _MonochromeAmount);
+            fixed4 col = base * lighting * _Brightness;
+
+            fixed mono = col.r * _MonochromeFactorR + col.g * _MonochromeFactorG + col.b * _MonochromeFactorB;
+            fixed4 monoDisplay = fixed4(mono * _MonochromeDisplayR, mono * _MonochromeDisplayG, mono * _MonochromeDisplayB, 1.0);
+            fixed4 albedoAndLight = monoDisplay * _MonochromeAmount + col * (1.0 - _MonochromeAmount);
             return lightingBlendFactor * base + (1 - lightingBlendFactor) * albedoAndLight;
         }
 
