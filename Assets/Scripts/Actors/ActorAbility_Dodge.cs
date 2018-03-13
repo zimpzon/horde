@@ -25,7 +25,7 @@ namespace HordeEngine
         {
             float velocity = DodgeLength / (DodgeTimeMs / 1000.0f);
             dodgeVelocity_ = direction.normalized * velocity;
-            IsDodging = dodgeVelocity_.sqrMagnitude >= 0.0f;
+            IsDodging = dodgeVelocity_.sqrMagnitude > 0.0f;
         }
 
         void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
@@ -33,7 +33,7 @@ namespace HordeEngine
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            if (dodgeVelocity_.sqrMagnitude >= 0.0f)
+            if (dodgeVelocity_.sqrMagnitude > 0.0f)
             {
                 var dodgeVec = dodgeVelocity_ * Global.TimeManager.GetDeltaTime(UseSlowableTime);
                 float frameDodgeLen = dodgeVec.magnitude;

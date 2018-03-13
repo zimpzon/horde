@@ -24,8 +24,7 @@ namespace HordeEngine
 
         private void Start()
         {
-            //            StartCoroutine(Think());
-            actorBody_.AddForce(Random.insideUnitCircle.normalized * 2.8f);
+            StartCoroutine(Think());
         }
 
         Vector2 dir_ = Vector2.zero;
@@ -36,8 +35,7 @@ namespace HordeEngine
             {
                 yield return new WaitForSeconds(Random.value * 1 + 0.5f);
                 dir_ = Random.insideUnitCircle.normalized;
-                actorBody_.AddForce(dir_);
-                yield return new WaitForSeconds(Random.value * 10 + 0.5f);
+                yield return new WaitForSeconds(Random.value * 1 + 0.5f);
                 dir_ = Vector2.zero;
             }
         }
@@ -49,13 +47,16 @@ namespace HordeEngine
         {
             float td = Global.TimeManager.DeltaSlowableTime;
 
+            if (Random.value < 0.005f)
+                actorBody_.AddForce(Random.insideUnitCircle.normalized * (Random.value * 5.0f + 10));
+
             bool isRunning = dir_.sqrMagnitude > 0.0f;
             if (isRunning)
             {
                 flipX_ = dir_.x < 0.0f;
 
                 var velocity = dir_.normalized * td * MoveSpeed;
-//                actorBody_.Move(velocity);
+                actorBody_.Move(velocity);
             }
 
             ActorSpriteRenderer.sprite = SimpleSpriteAnimator.GetAnimationSprite(isRunning ? Anim.Run : Anim.Idle, Anim.DefaultAnimationFramesPerSecond);

@@ -6,6 +6,7 @@ namespace HordeEngine
     {
         public float Width = 1.0f;
         public float Drag = 1.0f;
+        public float Mass = 1.0f;
         public float Bounciness = 0.5f;
         public float CollisionGranularity = 0.49f;
         public bool UseSlowableTime = true;
@@ -67,11 +68,11 @@ namespace HordeEngine
                     // There was a collision. Reflect the current force against the collider.
                     Vector2 reflectedForce = Vector2.Reflect(totalMove, collisionNormal).normalized * force_.magnitude * Bounciness;
                     SetForce(reflectedForce);
-                    // After a collision the body position is clamped just in front of the collider. Add the remaining velocity to be added in next update.
+
+                    // After a collision the body position is clamped just in front of
+                    // the collider. Add the remaining velocity to be added in next update.
                     float remainingVelocity = (totalMove.magnitude - maxAllowedMove.magnitude);
                     Move(force_.normalized * remainingVelocity);
-
-                    Debug.LogFormat("Reflect {0} @ {1} = {2}", totalMove.ToString("0.00000000"), collisionNormal.ToString("0.00000000"), reflectedForce.ToString("0.00000000"));
                 }
             }
 
@@ -80,7 +81,7 @@ namespace HordeEngine
             {
                 float forceLen = force_.magnitude;
                 forceLen = Mathf.Clamp(forceLen - Drag * dt, 0.0f, float.MaxValue);
-//                force_ = force_.normalized * forceLen;
+                force_ = force_.normalized * forceLen;
             }
         }
     }

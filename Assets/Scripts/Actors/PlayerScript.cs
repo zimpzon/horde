@@ -1,8 +1,4 @@
-﻿using HordeEngine;
-using UnityEngine;
-
-// Dodge, Physics (pushable etc), wield weapon, explode (something)
-// Shared data...
+﻿using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -15,10 +11,11 @@ public class PlayerScript : MonoBehaviour
     //Music
     //http://soundimage.org/fantasy-2/
 
-    // Draw walls with different alpha to get different color? Or just different color?
+    // Just place everything except walls and autogen them? Need it for pgc anyways.    
+    // Move appears to be able to go through walls.
+
     // Make user answer questions so he learns something? Not blocking.
     // Can I do something with OpenStreetMap data?
-    // really easy lights: vertex colors
     // Use props to place stufff? Lights (not just torches), traps, whatever?
 
     float DodgeLength = 8.0f;

@@ -54,6 +54,7 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
+                // Make floor 100% affected by lighting (alpha is used to blend between base color and lighting color)
 				col.a = 0.0f;
                 return col;
 			}

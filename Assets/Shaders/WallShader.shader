@@ -62,6 +62,8 @@ Shader "Engine/WallShader"
                     fixed4 col = tex2D(_MainTex, i.uv);
                     fixed height = tex2D(_HeightTex, i.uv);
                     if (col.a < 0.5) discard;
+
+                    // Make top of walls less effected by lighting (alpha is used to blend between base color and lighting color)
                     fixed a = clamp(-i.worldPos.z + height, 0, 1.0);
                     col.a = a * a * 0.3;
                     return col;
