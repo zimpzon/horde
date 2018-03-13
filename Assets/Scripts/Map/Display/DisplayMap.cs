@@ -52,7 +52,7 @@ namespace HordeEngine
         LogicalMap logicalMap_;
         ReusableObject<ChunkData> chunkCache_;
 
-        Dictionary<long, ChunkData> chunks_ = new Dictionary<long, ChunkData>();
+        List<ChunkData> chunks_ = new List<ChunkData>();
 
         public DisplayMap(int chunkW, int chunkH, float tileW, float tileH, int lightmapResolution)
         {
@@ -87,8 +87,8 @@ namespace HordeEngine
 
         void ClearChunks()
         {
-            foreach (var chunk in chunks_.Values)
-                chunkCache_.ReturnObject(chunk);
+            for (int i = 0; i < chunks_.Count; ++i)
+                chunkCache_.ReturnObject(chunks_[i]);
 
             chunks_.Clear();
         }
@@ -96,8 +96,9 @@ namespace HordeEngine
         void DrawDebugInfo()
         {
             Matrix4x4 matrix = Matrix4x4.identity;
-            foreach (var chunk in chunks_.Values)
+            for (int i = 0; i < chunks_.Count; ++i)
             {
+                var chunk = chunks_[i];
                 matrix.SetTRS(new Vector3(chunk.Cx * chunkW_, -chunk.Cy * chunkH_, 0.0f), Quaternion.identity, Vector3.one);
                 DebugUtil.DrawRect(0.0f, 1.0f, 0.0f, 1.0f);
 
@@ -114,8 +115,9 @@ namespace HordeEngine
         {
             Matrix4x4 matrix = Matrix4x4.identity;
             const float OffsetY = 0.25f;
-            foreach (var chunk in chunks_.Values)
+            for (int i = 0; i < chunks_.Count; ++i)
             {
+                var chunk = chunks_[i];
                 matrix.SetTRS(new Vector3(chunk.Cx * chunkW_, -chunk.Cy * chunkH_ + OffsetY, floorZ), Quaternion.identity, Vector3.one);
                 Graphics.DrawMesh(chunk.layerFloor.Mesh, matrix, floorMat, 0);
                 Graphics.DrawMesh(chunk.layerWalls.Mesh, matrix, wallMat, 0);
@@ -124,7 +126,8 @@ namespace HordeEngine
                     Graphics.DrawMesh(chunk.AmbientOcclusionMesh.GetMesh(), matrix, ambientOcclusionMaterial, 0);
             }
 
-            DrawDebugInfo();
+            if (Global.DebugDrawing)
+                DrawDebugInfo();
         }
 
         public void SetMap(LogicalMap logicalMap)
@@ -161,7 +164,7 @@ namespace HordeEngine
                     bool isEmpty = chunk.layerFloor.ActiveTiles + chunk.layerWalls.ActiveTiles + chunk.layerProps.ActiveTiles == 0;
                     if (!isEmpty)
                     {
-                        chunks_[chunk.Id] = chunk;
+                        chunks_.Add(chunk);
 
                         if (Global.DebugLogging)
                         {

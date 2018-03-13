@@ -2,7 +2,7 @@
 using UnityEngine;
 
 // Object to shake will be forced at 0, 0, 0
-public class CameraShake : MonoBehaviour
+public class CameraShake : MonoBehaviour, IComponentUpdate
 {
     const float TraumaDampening = 4.0f;
     const float Scale = 0.2f;
@@ -24,7 +24,10 @@ public class CameraShake : MonoBehaviour
         traumaValue_ = Mathf.Clamp01(traumaValue_ + amount);
     }
 
-	void Update()
+    void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+
+    public void ComponentUpdate(ComponentUpdatePass pass)
     {
         float t = Global.TimeManager.SlowableTime * 10.0f;
         float dt = Global.TimeManager.DeltaSlowableTime;

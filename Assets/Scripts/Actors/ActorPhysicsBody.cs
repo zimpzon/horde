@@ -6,7 +6,7 @@ namespace HordeEngine
     {
         public float Width = 1.0f;
         public float Drag = 1.0f;
-        public float Mass = 1.0f;
+        public float Mass = 1.0f; // TODO
         public float Bounciness = 0.5f;
         public float CollisionGranularity = 0.49f;
         public bool UseSlowableTime = true;
@@ -55,7 +55,7 @@ namespace HordeEngine
                 int pointCount = Mathf.CeilToInt(Width / CollisionGranularity);
                 float pointStep = Width / pointCount;
 
-                // Start at the left edge of the body, then step forward
+                // Start at the left edge of the body, then step right and add points.
                 Vector2 point = trans_.localPosition + Vector3.left * Width;
                 CollisionUtil.AddPointsForLine(CollisionUtil.TempList, trans_.localPosition, Width, CollisionGranularity);
 

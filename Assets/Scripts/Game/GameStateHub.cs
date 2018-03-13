@@ -27,7 +27,6 @@ namespace HordeEngine
         
         public override void UpdateState(bool hasFocus)
         {
-            Global.SceneAccess.MapRenderer.DrawMap();
         }
     }
 }

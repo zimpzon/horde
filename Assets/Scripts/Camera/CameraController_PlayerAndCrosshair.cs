@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CameraPositioner))]
-public class CameraController_PlayerAndCrosshair : MonoBehaviour
+public class CameraController_PlayerAndCrosshair : MonoBehaviour, IComponentUpdate
 {
     CameraPositioner positioner_;
 
@@ -11,7 +11,10 @@ public class CameraController_PlayerAndCrosshair : MonoBehaviour
         positioner_ = GetComponent<CameraPositioner>();
     }
 
-    void LateUpdate()
+    void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+
+    public void ComponentUpdate(ComponentUpdatePass pass)
     {
         var playerPos = Global.SceneAccess.PlayerTransform.localPosition;
         var crosshairPos = Global.Crosshair.GetWorldPosition();

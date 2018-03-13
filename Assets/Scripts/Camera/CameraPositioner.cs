@@ -1,7 +1,7 @@
 ﻿using HordeEngine;
 using UnityEngine;
 
-public class CameraPositioner : MonoBehaviour
+public class CameraPositioner : MonoBehaviour, IComponentUpdate
 {
     public float MoveSpeed = 8.0f;
 
@@ -24,7 +24,10 @@ public class CameraPositioner : MonoBehaviour
         currentPos_ = pos;
     }
 
-    void Update()
+    void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+
+    public void ComponentUpdate(ComponentUpdatePass pass)
     {
         var movement = (target_ - currentPos_) * MoveSpeed;
 

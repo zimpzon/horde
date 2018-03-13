@@ -24,6 +24,9 @@ namespace HordeEngine
         // On/off toggle for verbose debug logging
         public static bool DebugLogging = true;
 
+        // On/off toggle for expensive debug drawing
+        public static bool DebugDrawing = false;
+
         // Enable this to output debug png files of map layers and collision layer. Set path in DebugPngFilePath.
         public static bool WriteDebugPngFiles = true;
         public static string DebugPngFilePath = @"c:\HordeEngineDebug";

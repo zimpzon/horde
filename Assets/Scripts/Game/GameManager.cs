@@ -34,6 +34,7 @@ namespace HordeEngine
             Global.ComponentUpdater = new ComponentUpdater();
             Global.Crosshair = new CrosshairController();
             Global.MapResources = mapResources_;
+            Global.SceneAccess = FindObjectOfType<SceneAccessScript>();
 
             gameStateHandlers_[GameState.Boot] = new GameStateBoot();
             gameStateHandlers_[GameState.InHub] = new GameStateHub();
@@ -76,9 +77,17 @@ namespace HordeEngine
 
         void Update()
         {
-            // This is the first update to be called in every frame
+            // This is the first Update() to be called in every frame
             Global.TimeManager.UpdateTime(Time.deltaTime);
             Global.ComponentUpdater.DoUpdate();
+
+            Global.SceneAccess.LightDebugView.texture = Global.SceneAccess.LightingCam.targetTexture;
+        }
+
+        void LateUpdate()
+        {
+            // This is the first LateUpdate() to be called in every frame
+            Global.ComponentUpdater.DoLateUpdate();
         }
 
         IEnumerator EnterState(GameState state)
@@ -132,7 +141,7 @@ namespace HordeEngine
             {
                 if (gameState != topState)
                 {
-                    var handler = gameStateHandlers_[gameState];
+                    GameStateHandler handler = GetStatehandler(gameState);
                     handler.UpdateState(hasFocus: false);
                     if (handler.RequestGoToState != GameState.None || handler.RequestPushState != GameState.None || handler.RequestPopState)
                     {
@@ -150,6 +159,13 @@ namespace HordeEngine
             prevState_ = state;
         }
 
+        GameStateHandler GetStatehandler(GameState state)
+        {
+            GameStateHandler handler;
+            gameStateHandlers_.TryGetValue(state, out handler);
+            return handler;
+        }
+
         IEnumerator GameStateLoop()
         {
             yield return GoToState(GameState.Boot);
@@ -160,7 +176,7 @@ namespace HordeEngine
 
                 // Handle focused top state (usually the only one)
                 var topState = gameStateStack_.Peek();
-                var handler = gameStateHandlers_[topState];
+                var handler = GetStatehandler(topState);
 
                 if (handler.RequestGoToState != GameState.None)
                 {

@@ -1,7 +1,7 @@
 ﻿using HordeEngine;
 using UnityEngine;
 
-public class MapRenderer : MonoBehaviour
+public class MapRenderer : MonoBehaviour, IComponentUpdate
 {
     public Material FloorMaterial;
     public Material WallMaterial;
@@ -25,5 +25,13 @@ public class MapRenderer : MonoBehaviour
     public void DrawMap()
     {
         displayMap_.DrawMap(FloorMaterial, WallMaterial, AmbientOcclusionMaterial, EnableAmbientOcclusion, trans_.position.z);
+    }
+
+    void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+
+    public void ComponentUpdate(ComponentUpdatePass pass)
+    {
+        DrawMap();
     }
 }

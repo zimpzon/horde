@@ -53,7 +53,7 @@ public class PerfTestManager : MonoBehaviour
 
     void RenderProjectile(ref Projectile projectile)
     {
-        mesh.AddQuad(projectile.ActualPos, projectile.Size, projectile.Size, 0.0f, Vector2.zero, 1.0f, 1.0f, projectile.Color);
+        mesh.AddQuad(projectile.ActualPos, projectile.Size, projectile.Size, 0.0f, 0.0f, Vector2.zero, 1.0f, 1.0f, projectile.Color);
     }
 
     void Update()

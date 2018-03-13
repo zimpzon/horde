@@ -63,7 +63,17 @@ public static class CollisionUtil
                     collisionNormal = tempCollisionNormal;
                 }
             }
+
+            if (Application.isEditor)
+            {
+                if (GetCollisionValue(point) != MapConstants.CollWalkable)
+                {
+                    // After resolving collision this point is still inside a collider
+                    Debug.LogErrorFormat("Error resolving collision, newPos = {0}, velocity = {1}, normal = {2}", point.ToString("0.00000000"), velocity.ToString("0.00000000"), collisionNormal.ToString("0.00000000"));
+                }
+            }
         }
+
         return allMoved;
     }
 
@@ -124,6 +134,7 @@ public static class CollisionUtil
             // Moving right, clamp x to left side of cell
             result.x = x * 0.5f - Nudge;
         }
+
         return result;
     }
 
@@ -144,6 +155,7 @@ public static class CollisionUtil
             // Moving down, clamp y to top side of cell
             result.y = -(y * 0.5f) + Nudge;
         }
+
         return result;
     }
 

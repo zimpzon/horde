@@ -5,7 +5,6 @@ namespace HordeEngine
     [RequireComponent(typeof(Camera))]
     public class LightingCamera : MonoBehaviour
     {
-        public LayerMask LightingLayer;
         public RenderTextureFormat LightingTextureFormat;
         public Camera ParentCamera;
         public float LightingResolution = 1.0f;
@@ -43,14 +42,6 @@ namespace HordeEngine
 
             // Align size with main camera
             lightingCam_.orthographicSize = parent.orthographicSize;
-
-            // Make sure main camera does not render lighting
-            lightingCam_.cullingMask = LightingLayer.value;
-            if ((parent.cullingMask & LightingLayer.value) != 0)
-            {
-                Debug.Log("Disabling lighting layer in main camera");
-                parent.cullingMask = parent.cullingMask & ~LightingLayer.value;
-            }
         }
     }
 }

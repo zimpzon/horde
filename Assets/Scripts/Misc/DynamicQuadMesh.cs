@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace HordeEngine
 {
+    // Optimization:
+    // It might be worth it to manage own arrays since this is called so often.
     public class DynamicQuadMesh
     {
         Mesh mesh_ = new Mesh();
@@ -20,6 +22,11 @@ namespace HordeEngine
             UV_ = new List<Vector2>(initialCapacity * VerticesPerQuad);
             colors_ = new List<Color>(initialCapacity * VerticesPerQuad);
             indices_ = new List<int>(initialCapacity * IndicesPerQuad);
+        }
+
+        public int QuadCount()
+        {
+            return vertices_.Count / 4;
         }
 
         public void Clear()
@@ -43,17 +50,18 @@ namespace HordeEngine
             return mesh_;
         }
 
-        public void AddQuad(Vector3 center, float w, float h, float topZSkew, Color color)
+        public void AddQuad(Vector3 center, float w, float h, float rotationDegrees, float topZSkew, Color color)
         {
-            AddQuad(center, w, h, topZSkew, Vector2.up, 1.0f, 1.0f, color);
+            AddQuad(center, w, h, rotationDegrees, topZSkew, Vector2.up, 1.0f, 1.0f, color);
         }
 
-        public void AddQuad(Vector3 center, float w, float h, float topZSkew, Vector2 UVTopLeft, float uvW, float uvH, Color color)
+        public void AddQuad(Vector3 center, float w, float h, float rotationDegrees, float topZSkew, Vector2 UVTopLeft, float uvW, float uvH, Color color)
         {
             // 0---1
             // | / | = [0, 1, 3] and [1, 2, 3]
             // 3---2
 
+            // TODO: Rotation. Remember z skewing. SKEWING MIGHT also be doable in vertex shader? Just need to know base of object.
             float halfW = w * 0.5f;
             float halfH = h * 0.5f;
             vertices_.Add(new Vector3(center.x - halfW, center.y + halfH, center.z + topZSkew));

@@ -45,7 +45,7 @@ namespace HordeEngine
                         float occlusionLength = occlusionEndX - occlusionBeginX;
                         float centerX = ((occlusionBeginX + occlusionLength * 0.5f) - chunk.TopLeftX * 2) * 0.5f;
                         float centerY = (-y + chunk.TopLeftY * 2) * 0.5f - 0.5f;
-                        targetMesh.AddQuad(new Vector3(centerX, centerY, -0.1f), occlusionLength * 0.5f, 0.75f, -1.0f, Color.white);
+                        targetMesh.AddQuad(new Vector3(centerX, centerY, -0.1f), occlusionLength * 0.5f, 0.75f, 0.0f, -1.0f, Color.white);
 
                         occlusionBeginX = -1;
                     }

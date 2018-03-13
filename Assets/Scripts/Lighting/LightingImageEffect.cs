@@ -29,7 +29,6 @@ namespace HordeEngine
             EffectMaterial.SetFloat("_MonochromeDisplayG", MonochromeDisplayG);
             EffectMaterial.SetFloat("_MonochromeDisplayB", MonochromeDisplayB);
 
-            // Can blend in 2 textures with 0's and 1's, scrolling down
             Graphics.Blit(source, destination, EffectMaterial);
         }
     }
