@@ -48,7 +48,7 @@ namespace HordeEngine
             float td = Global.TimeManager.DeltaSlowableTime;
 
             if (Random.value < 0.005f)
-                actorBody_.AddForce(Random.insideUnitCircle.normalized * (Random.value * 5.0f + 10));
+                actorBody_.AddForce(Random.insideUnitCircle.normalized * (Random.value * 5.0f));
 
             bool isRunning = dir_.sqrMagnitude > 0.0f;
             if (isRunning)

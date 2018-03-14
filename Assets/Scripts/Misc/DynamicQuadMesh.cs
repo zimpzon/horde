@@ -39,6 +39,7 @@ namespace HordeEngine
 
         public void ApplyChanges()
         {
+            mesh_.Clear();
             mesh_.SetVertices(vertices_);
             mesh_.SetUVs(0, UV_);
             mesh_.SetColors(colors_);

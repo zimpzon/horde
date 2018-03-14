@@ -9,11 +9,26 @@ namespace HordeEngine
         public float Mass = 1.0f; // TODO
         public float Bounciness = 0.5f;
         public float CollisionGranularity = 0.49f;
+        public Vector2 Offset;
         public bool UseSlowableTime = true;
 
         Vector2 force_;
         Vector2 pendingMovement_;
         Transform trans_;
+
+        void OnDrawGizmosSelected()
+        {
+            int pointCount = Mathf.CeilToInt(Width / CollisionGranularity);
+            float pointStep = Width / pointCount;
+            CollisionUtil.AddPointsForLine(CollisionUtil.TempList, transform.localPosition + (Vector3)Offset, Width, CollisionGranularity);
+
+            Gizmos.color = Color.green;
+            for (int i = 0; i < CollisionUtil.TempList.Count; ++i)
+            {
+                Vector3 point = CollisionUtil.TempList[i];
+                Gizmos.DrawWireCube(point, Vector3.one * 0.1f);
+            }
+        }
 
         private void Awake()
         {
@@ -56,8 +71,7 @@ namespace HordeEngine
                 float pointStep = Width / pointCount;
 
                 // Start at the left edge of the body, then step right and add points.
-                Vector2 point = trans_.localPosition + Vector3.left * Width;
-                CollisionUtil.AddPointsForLine(CollisionUtil.TempList, trans_.localPosition, Width, CollisionGranularity);
+                CollisionUtil.AddPointsForLine(CollisionUtil.TempList, trans_.localPosition + (Vector3)Offset, Width, CollisionGranularity);
 
                 Vector2 maxAllowedMove;
                 Vector2 collisionNormal;

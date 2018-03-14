@@ -1,18 +1,14 @@
-﻿Shader "Engine/CustomSprite"
+﻿Shader "Engine/AdditiveVertexColor"
 {
     Properties
     {
         _MainTex("Sprite Texture", 2D) = "white" {}
-        [MaterialToggle] PixelSnap("Pixel snap", float) = 1
-        _Clarity("Clarity", float) = 1.0
-        _Color("Color", Color) = (1,1,1,1)
     }
         SubShader
     {
         Tags
     {
-        "RenderType" = "Opaque"
-        "Queue" = "Transparent+1"
+        "Queue" = "Transparent"
         "PreviewType" = "Plane"
         "CanUseSpriteAtlas" = "True"
     }
@@ -21,7 +17,7 @@
     {
         ZWrite Off
         Cull Off
-        Blend One Zero
+        Blend SrcAlpha One
 
         CGPROGRAM
 #pragma vertex vert
@@ -31,19 +27,19 @@
 #include "UnityCG.cginc"
 
         sampler2D _MainTex;
-        float _Clarity;
-        fixed4 _Color;
 
     struct Vertex
     {
         float4 vertex : POSITION;
         float2 uv_MainTex : TEXCOORD0;
+        float4 color : COLOR;
     };
 
     struct Fragment
     {
         float4 vertex : POSITION;
         float2 uv_MainTex : TEXCOORD0;
+        float4 color : COLOR;
     };
 
     Fragment vert(Vertex v)
@@ -52,6 +48,7 @@
 
         o.vertex = UnityObjectToClipPos(v.vertex);
         o.uv_MainTex = v.uv_MainTex;
+        o.color = v.color;
 #ifdef PIXELSNAP_ON
         o.vertex = UnityPixelSnap(o.vertex);
 #endif
@@ -60,9 +57,7 @@
 
     float4 frag(Fragment IN) : COLOR
     {
-        half4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
-        if (c.a < 0.5) discard; // Fixed cut-off at 0.5
-        c.a = _Clarity;
+        half4 c = tex2D(_MainTex, IN.uv_MainTex) * IN.color;
 		return c;
     }
         ENDCG

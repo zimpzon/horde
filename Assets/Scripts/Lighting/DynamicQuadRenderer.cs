@@ -1,6 +1,7 @@
 ﻿using HordeEngine;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class DynamicQuadRenderer : MonoBehaviour
 {
     public Material Material;
@@ -8,27 +9,35 @@ public class DynamicQuadRenderer : MonoBehaviour
     public int InitialCapacity = 100;
 
     [Header("Debug")]
-    public int LatestQuadsRendered;
+    public int QuadCount;
 
-    [System.NonSerialized] public DynamicQuadMesh Mesh;
+    public DynamicQuadMesh QuadMesh { get { return GetQuadMesh(); } }
 
-    int layerNumber_;
+    DynamicQuadMesh quadMesh_;
 
-    void Awake()
+    DynamicQuadMesh GetQuadMesh()
     {
-        Mesh = new DynamicQuadMesh(InitialCapacity);
-        layerNumber_ = Layer.value;
+        EnsureInit();
+        return quadMesh_;
+    }
+
+    void EnsureInit()
+    {
+        if (quadMesh_ == null)
+            quadMesh_ = new DynamicQuadMesh(InitialCapacity);
     }
 
     public void LateUpdate()
     {
-        Mesh.ApplyChanges();
-        LatestQuadsRendered = Mesh.QuadCount();
+        EnsureInit();
+
+        quadMesh_.ApplyChanges();
+        QuadCount = quadMesh_.QuadCount();
 
         Matrix4x4 matrix = Matrix4x4.identity;
         matrix.SetTRS(Vector3.zero, Quaternion.identity, Vector3.one);
-        Graphics.DrawMesh(Mesh.GetMesh(), matrix, Material, layerNumber_);
+        Graphics.DrawMesh(QuadMesh.GetMesh(), matrix, Material, Layer.value);
 
-        Mesh.Clear();
+        QuadMesh.Clear();
     }
 }

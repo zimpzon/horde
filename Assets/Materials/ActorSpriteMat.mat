@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: CustomSpriteMat
-  m_Shader: {fileID: 4800000, guid: f8058be84aa632c468a71ab556c43de1, type: 3}
+  m_Name: ActorSpriteMat
+  m_Shader: {fileID: 4800000, guid: 4c2f18cde7361c3479a01245c39f0d62, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA PIXELSNAP_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

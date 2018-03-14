@@ -45,7 +45,7 @@ namespace HordeEngine
             foreach (var pass in passes)
             {
                 var list = passes_[pass];
-                if (Application.isEditor)
+                if (Application.isEditor && Application.isPlaying)
                 {
                     if (list.Contains(component))
                         Debug.LogErrorFormat("Component (hash {0}) is already added for priority {1}.", component.GetHashCode(), pass);
@@ -60,7 +60,7 @@ namespace HordeEngine
             foreach (var pass in passes)
             {
                 var list = passes_[pass];
-                if (Application.isEditor)
+                if (Application.isEditor && Application.isPlaying)
                 {
                     if (!list.Contains(component))
                         Debug.LogErrorFormat("Component (hash {0}) was not found in priority {1}.", component.GetHashCode(), pass);
