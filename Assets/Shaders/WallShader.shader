@@ -5,8 +5,7 @@ Shader "Engine/WallShader"
     Properties
     {
         _MainTex("Texture", 2D) = "white" {}
-        _HeightTex("Height Map", 2D) = "black" {}
-        [MaterialToggle] PixelSnap("Pixel snap", float) = 1
+        _LightContribTex("Light Contribution Map", 2D) = "black" {}
     }
 
         SubShader
@@ -15,7 +14,6 @@ Shader "Engine/WallShader"
             {
                 "RenderType" = "Opaque"
                 "PreviewType" = "Plane"
-                "CanUseSpriteAtlas" = "True"
             }
             LOD 100
 
@@ -24,7 +22,6 @@ Shader "Engine/WallShader"
                 CGPROGRAM
                 #pragma vertex vert
                 #pragma fragment frag
-                #pragma multi_compile DUMMY PIXELSNAP_ON
 
                 #include "UnityCG.cginc"
 
@@ -38,11 +35,11 @@ Shader "Engine/WallShader"
                 {
                     float2 uv : TEXCOORD0;
                     float4 vertex : SV_POSITION;
-                    float3 worldPos : TEXCOORD1;
+//                    float3 worldPos : TEXCOORD1;
                 };
 
                 sampler2D _MainTex;
-                sampler2D _HeightTex;
+                sampler2D _LightContribTex;
                 float4 _MainTex_ST;
 
                 v2f vert(appdata v)
@@ -50,22 +47,17 @@ Shader "Engine/WallShader"
                     v2f o;
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-    #ifdef PIXELSNAP_ON
                     o.vertex = UnityPixelSnap(o.vertex);
-    #endif
-                    o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+//                    o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                     return o;
                 }
 
                 fixed4 frag(v2f i) : SV_Target
                 {
                     fixed4 col = tex2D(_MainTex, i.uv);
-                    fixed height = tex2D(_HeightTex, i.uv);
+                    fixed lightContribution = tex2D(_LightContribTex, i.uv);
                     if (col.a < 0.5) discard;
-
-                    // Make top of walls less effected by lighting (alpha is used to blend between base color and lighting color)
-                    fixed a = clamp(-i.worldPos.z + height, 0, 1.0);
-                    col.a = a * a * 0.3;
+                    col.a = lightContribution;
                     return col;
                 }
                 ENDCG

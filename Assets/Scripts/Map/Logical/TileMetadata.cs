@@ -10,10 +10,7 @@ public class TileMetadata
     public const int NoTile = -1;
 
     public int TileId;
-    public string CollisionStr;
-    // TODO: Maybe normal can be calculated from collision map? Collision blocks are steep if neighbor is empty?
-    public float LightMultiplier;
-    public bool IsDoor;
+    public bool Block;
 
     public void UpdateInferredValues(TileMapMetadata meta)
     {

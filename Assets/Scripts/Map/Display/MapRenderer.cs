@@ -5,9 +5,7 @@ public class MapRenderer : MonoBehaviour, IComponentUpdate
 {
     public Material FloorMaterial;
     public Material WallMaterial;
-    public Material AmbientOcclusionMaterial;
-    public bool EnableAmbientOcclusion = true;
-
+    public float OffsetY;
     Transform trans_;
 
     DisplayMap displayMap_ = new DisplayMap(MapConstants.ChunkW, MapConstants.ChunkH, MapConstants.TileW, MapConstants.TileH, MapConstants.LightmapResolution);
@@ -24,7 +22,7 @@ public class MapRenderer : MonoBehaviour, IComponentUpdate
 
     public void DrawMap()
     {
-        displayMap_.DrawMap(FloorMaterial, WallMaterial, AmbientOcclusionMaterial, EnableAmbientOcclusion, trans_.position.z);
+        displayMap_.DrawMap(FloorMaterial, WallMaterial, trans_.position.z, OffsetY);
     }
 
     void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }

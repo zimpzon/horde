@@ -349,10 +349,10 @@
     <Compile Include="Assets\Editor\MapDataImporter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Maps\Tiled\roomProto_empty.txt" />
-    <None Include="Assets\Maps\Tiled\roomProto_simple.txt" />
+    <None Include="Assets\Shaders\ActorSprite.shader" />
+    <None Include="Assets\Shaders\ActorSpriteVertexColor.shader" />
     <None Include="Assets\Shaders\AdditiveTint.shader" />
-    <None Include="Assets\Shaders\CustomSprite.shader" />
+    <None Include="Assets\Shaders\AdditiveVertexColor.shader" />
     <None Include="Assets\Shaders\CutoutTransparent.shader" />
     <None Include="Assets\Shaders\FloorShader.shader" />
     <None Include="Assets\Shaders\LightingBlend.shader" />

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace HordeEngine
 {
+    // REWRITE THIS so we have flat floor tiles and then Wall tiles that have a height. Extend vertices and UV to cover full height.
+    // ADD BOTTOM tiles first to lessen overdraw!!
+    // When chained to bottom this should align perfectly with all tilted sprites. ONE slope for full tile height.
     /// <summary>
     /// Vertices are initialized once and never changed.
     /// UV and Triangles are also fixed size but values are updated from a tile
@@ -87,12 +90,15 @@ namespace HordeEngine
                         UV[vertex0 + 2] = tileMapMeta.CalcUV(tileId, 1, 1) - uvNudgeX + uvNudgeY;
                         UV[vertex0 + 3] = tileMapMeta.CalcUV(tileId, 0, 1) + uvNudgeX + uvNudgeY;
 
-                        Debug.DrawLine(SharedVertices[vertex0 + 0], SharedVertices[vertex0 + 1], Color.green);
-                        Debug.DrawLine(SharedVertices[vertex0 + 1], SharedVertices[vertex0 + 3], Color.green);
-                        Debug.DrawLine(SharedVertices[vertex0 + 3], SharedVertices[vertex0 + 0], Color.green);
+                        if (Global.DebugDrawing)
+                        {
+                            Debug.DrawLine(SharedVertices[vertex0 + 0], SharedVertices[vertex0 + 1], Color.green);
+                            Debug.DrawLine(SharedVertices[vertex0 + 1], SharedVertices[vertex0 + 3], Color.green);
+                            Debug.DrawLine(SharedVertices[vertex0 + 3], SharedVertices[vertex0 + 0], Color.green);
 
-                        Debug.DrawLine(SharedVertices[vertex0 + 1], SharedVertices[vertex0 + 2], Color.green);
-                        Debug.DrawLine(SharedVertices[vertex0 + 2], SharedVertices[vertex0 + 3], Color.green);
+                            Debug.DrawLine(SharedVertices[vertex0 + 1], SharedVertices[vertex0 + 2], Color.green);
+                            Debug.DrawLine(SharedVertices[vertex0 + 2], SharedVertices[vertex0 + 3], Color.green);
+                        }
 
                         tileNonEmptyCount++;
                     }

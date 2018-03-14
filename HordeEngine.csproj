@@ -308,13 +308,13 @@
     <Compile Include="Assets\Scripts\Camera\CameraShake.cs" />
     <Compile Include="Assets\Scripts\Data\SpriteAnimationFrames_IdleRun.cs" />
     <Compile Include="Assets\Scripts\Game\ComponentUpdater.cs" />
+    <Compile Include="Assets\Scripts\Game\EditorGameManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameStateBoot.cs" />
     <Compile Include="Assets\Scripts\Game\GameStateHandler.cs" />
     <Compile Include="Assets\Scripts\Game\GameStateHub.cs" />
     <Compile Include="Assets\Scripts\Game\SceneAccessScript.cs" />
     <Compile Include="Assets\Scripts\Lighting\DynamicQuadRenderer.cs" />
-    <Compile Include="Assets\Scripts\Lighting\EmitLight.cs" />
     <Compile Include="Assets\Scripts\Lighting\FlashingLight.cs" />
     <Compile Include="Assets\Scripts\Lighting\LightingCamera.cs" />
     <Compile Include="Assets\Scripts\Lighting\LightingImageEffect.cs" />
@@ -333,6 +333,7 @@
     <Compile Include="Assets\Scripts\Map\MapObjects\MapObjectBase.cs" />
     <Compile Include="Assets\Scripts\Map\MapObjects\MapObjectPlayerStartTile.cs" />
     <Compile Include="Assets\Scripts\Map\MapUtil.cs" />
+    <Compile Include="Assets\Scripts\Misc\ActorSprite.cs" />
     <Compile Include="Assets\Scripts\Misc\CrosshairController.cs" />
     <Compile Include="Assets\Scripts\Misc\DebugUtil.cs" />
     <Compile Include="Assets\Scripts\Misc\DynamicQuadMesh.cs" />
@@ -347,10 +348,10 @@
     <Compile Include="Assets\SimpleJSON\SimpleJSON.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Maps\Tiled\roomProto_empty.txt" />
-    <None Include="Assets\Maps\Tiled\roomProto_simple.txt" />
+    <None Include="Assets\Shaders\ActorSprite.shader" />
+    <None Include="Assets\Shaders\ActorSpriteVertexColor.shader" />
     <None Include="Assets\Shaders\AdditiveTint.shader" />
-    <None Include="Assets\Shaders\CustomSprite.shader" />
+    <None Include="Assets\Shaders\AdditiveVertexColor.shader" />
     <None Include="Assets\Shaders\CutoutTransparent.shader" />
     <None Include="Assets\Shaders\FloorShader.shader" />
     <None Include="Assets\Shaders\LightingBlend.shader" />

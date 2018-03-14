@@ -406,7 +406,7 @@ MonoBehaviour:
   Mass: 1
   Bounciness: 0.5
   CollisionGranularity: 0.3
-  Offset: {x: 0.04, y: -0.46}
+  Offset: {x: 0, y: -0.7}
   UseSlowableTime: 0
 --- !u!4 &280185228
 Transform:
@@ -415,8 +415,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 280185226}
   m_LocalRotation: {x: -0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 6.4, y: -14.73, z: -0.5}
-  m_LocalScale: {x: 1, y: 1.4121, z: 1}
+  m_LocalPosition: {x: 2, y: -2, z: -0.5}
+  m_LocalScale: {x: 1.5, y: 2.115, z: 1}
   m_Children:
   - {fileID: 1215833981}
   m_Father: {fileID: 225641331}
@@ -428,16 +428,16 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 280185226}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9217b1eb7f98a994eb06ad7bb03d0d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0.49032992, g: 0.50980395, b: 0.27450982, a: 0.9647059}
+  Color: {r: 1, g: 1, b: 1, a: 0.9647059}
   Enabled: 0
-  Scale: {x: 5, y: 3}
+  Scale: {x: 10, y: 7}
   Offset: {x: 0.05, y: -0.3, z: 0}
-  UpdatePass: 4
+  UpdatePass: 2
   QuadRenderer: {fileID: 1020930672}
 --- !u!114 &280185230
 MonoBehaviour:
@@ -751,7 +751,7 @@ Transform:
   m_GameObject: {fileID: 602781952}
   m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
   m_LocalPosition: {x: 17.2, y: -17, z: -1}
-  m_LocalScale: {x: 8, y: 11.28, z: 1}
+  m_LocalScale: {x: 5, y: 7.05, z: 1}
   m_Children: []
   m_Father: {fileID: 928618050}
   m_RootOrder: 0
@@ -800,7 +800,7 @@ MonoBehaviour:
   Mass: 1
   Bounciness: 0.9
   CollisionGranularity: 0.49
-  Offset: {x: 0, y: -0.88}
+  Offset: {x: 0, y: 0}
   UseSlowableTime: 1
 --- !u!114 &602781957
 MonoBehaviour:
@@ -813,11 +813,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9217b1eb7f98a994eb06ad7bb03d0d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0.36234283, g: 1, b: 0, a: 0.30980393}
+  Color: {r: 0.24053724, g: 0.4056604, b: 0.1473389, a: 1}
   Enabled: 0
   Scale: {x: 5, y: 4}
   Offset: {x: 0, y: -0.39, z: 0}
-  UpdatePass: 5
+  UpdatePass: 2
   QuadRenderer: {fileID: 1020930672}
 --- !u!114 &602781958
 MonoBehaviour:
@@ -834,7 +834,7 @@ MonoBehaviour:
   Enabled: 0
   Scale: {x: 0.7, y: 0.3}
   Offset: {x: 0, y: -0.89, z: 0}
-  UpdatePass: 4
+  UpdatePass: 2
   QuadRenderer: {fileID: 1973295350}
 --- !u!212 &602781959
 SpriteRenderer:
@@ -1333,9 +1333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FloorMaterial: {fileID: 2100000, guid: 528cfc1b8a06fe8488e763dfeee5bc2b, type: 2}
   WallMaterial: {fileID: 2100000, guid: e79b7cd083f20cd4c84766f8ec5d3a9d, type: 2}
-  AmbientOcclusionMaterial: {fileID: 2100000, guid: c3cebe5e8f72f0d4e8d5ff13a10f3f5f,
-    type: 2}
-  EnableAmbientOcclusion: 1
+  OffsetY: 0.7
 --- !u!4 &986637835
 Transform:
   m_ObjectHideFlags: 0
@@ -1395,7 +1393,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   InitialCapacity: 100
-  QuadCount: 2
+  QuadCount: 1
 --- !u!1 &1215833980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1727,17 +1725,17 @@ Prefab:
     - target: {fileID: 20159449440241956, guid: d3bbea34a94f6ac48b22b8f51f33d603,
         type: 2}
       propertyPath: m_BackGroundColor.r
-      value: 0.31132078
+      value: 0.8867924
       objectReference: {fileID: 0}
     - target: {fileID: 20159449440241956, guid: d3bbea34a94f6ac48b22b8f51f33d603,
         type: 2}
       propertyPath: m_BackGroundColor.g
-      value: 0.29467785
+      value: 0.8867924
       objectReference: {fileID: 0}
     - target: {fileID: 20159449440241956, guid: d3bbea34a94f6ac48b22b8f51f33d603,
         type: 2}
       propertyPath: m_BackGroundColor.b
-      value: 0.23642758
+      value: 0.8867924
       objectReference: {fileID: 0}
     - target: {fileID: 20159449440241956, guid: d3bbea34a94f6ac48b22b8f51f33d603,
         type: 2}

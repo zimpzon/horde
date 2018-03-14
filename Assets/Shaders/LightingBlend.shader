@@ -60,16 +60,19 @@
         half4 frag(v2f IN) : SV_Target
         {
             fixed4 base = tex2D(_MainTex, IN.uv);
-            fixed lightingBlendFactor = base.a;
-            fixed4 lighting = tex2D(_LightingTex, IN.uv);
+            fixed lightContribution = base.a;
+            fixed4 lighting = tex2D(_LightingTex, IN.uv) * 0.75;
             // Lighting.a is available for additional effects
 
             fixed4 col = base * lighting * _Brightness;
 
-            fixed mono = col.r * _MonochromeFactorR + col.g * _MonochromeFactorG + col.b * _MonochromeFactorB;
-            fixed4 monoDisplay = fixed4(mono * _MonochromeDisplayR, mono * _MonochromeDisplayG, mono * _MonochromeDisplayB, 1.0);
-            fixed4 albedoAndLight = monoDisplay * _MonochromeAmount + col * (1.0 - _MonochromeAmount);
-            return lightingBlendFactor * base + (1 - lightingBlendFactor) * albedoAndLight;
+            //fixed mono = col.r * _MonochromeFactorR + col.g * _MonochromeFactorG + col.b * _MonochromeFactorB;
+            //fixed4 monoDisplay = fixed4(mono * _MonochromeDisplayR, mono * _MonochromeDisplayG, mono * _MonochromeDisplayB, 1.0);
+            //fixed4 albedoAndLight = monoDisplay * _MonochromeAmount + col * (1.0 - _MonochromeAmount);
+            //return lightingBlendFactor * base + (1 - lightingBlendFactor) * albedoAndLight;
+
+            // Higher base factor means more ambient light on top of tiles where light contribution is low
+            return lightContribution * col + (1 - lightContribution) * base;
         }
 
             ENDCG

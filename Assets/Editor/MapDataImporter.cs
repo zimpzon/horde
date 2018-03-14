@@ -68,8 +68,6 @@ public class MenuItems
 
     static void ImportTileMetadata()
     {
-        // Currently the input metadata file could just have been copied, but this way
-        // syntax is verified and unneeded fields are stripped.
         var inputPath = "Assets/Maps/Tiled/tilesets/metadata";
         var outputPath = "Assets/Resources/TileMetadata";
 
@@ -96,9 +94,7 @@ public class MenuItems
 
                 // New tile metadata fields must be added here:
                 tileMeta.TileId = key.AsInt;
-                tileMeta.IsDoor = value["isDoor"].AsBool;
-                tileMeta.LightMultiplier = value["LightMultiplier"].AsFloat;
-                tileMeta.CollisionStr = value["Collision"];
+                tileMeta.Block = value["Block"].AsBool;
 
                 tileMetadata.tileproperties.Add(tileMeta);
             }
@@ -147,7 +143,7 @@ public class MenuItems
         File.WriteAllText(outputFile, jsonRooms);
         AssetDatabase.ImportAsset(outputFile, ImportAssetOptions.ForceUpdate);
 
-        Debug.Log(string.Format("Imported {0} rooms.", rooms.Count));
+        Debug.Log(string.Format("Imported {0} room(s).", rooms.Count));
     }
 
     static LogicalMapRoom GetRoom(JsonMap map)

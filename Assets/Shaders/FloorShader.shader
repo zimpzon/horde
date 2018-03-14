@@ -3,7 +3,6 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-        [MaterialToggle] PixelSnap("Pixel snap", float) = 1
     }
 
 	SubShader
@@ -21,7 +20,6 @@
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-            #pragma multi_compile DUMMY PIXELSNAP_ON
 
 			#include "UnityCG.cginc"
 
@@ -45,9 +43,7 @@
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-#ifdef PIXELSNAP_ON
                 o.vertex = UnityPixelSnap(o.vertex);
-#endif
                 return o;
 			}
 			
@@ -55,7 +51,7 @@
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
                 // Make floor 100% affected by lighting (alpha is used to blend between base color and lighting color)
-				col.a = 0.0f;
+				col.a = 1.0f;
                 return col;
 			}
 			ENDCG

@@ -5,55 +5,6 @@ namespace HordeEngine
 {
     public static class MapUtil
     {
-        public static void BuildChunkAmbientOcclusion(byte[] collision, int stride, DisplayMapChunk chunk, DynamicQuadMesh targetMesh)
-        {
-            targetMesh.Clear();
-            int x0 = chunk.TopLeftX * 2;
-            int x1 = x0 + chunk.ActiveWidth * 2 + 1;
-
-            // Trace every second row (bottom of each tile) in collision map
-            int y0 = chunk.TopLeftY * 2 + 1;
-            int y1 = (y0 + chunk.ActiveHeight * 2) - 2;
-
-            float occlusionBeginX = -1;
-            for (int y = y0; y < y1; y += 2)
-            {
-                for (int x = x0; x < x1; ++x)
-                {
-                    int collisionIdx = y * stride + x;
-                    bool isBottomOfWall =
-                        collision[collisionIdx] == MapConstants.CollBlocked &&
-                        collision[collisionIdx + stride] == MapConstants.CollWalkable;
-
-                    if (isBottomOfWall && x != x1 - 1)
-                    {
-                        if (occlusionBeginX < 0.0f)
-                        {
-                            occlusionBeginX = x;
-//                            if (x > 0 && collision[collisionIdx + stride - 1] == MapConstants.CollBlocked)
-                            if (x > x0)
-                                occlusionBeginX -= 0.5f;
-                        }
-                    }
-                    else if (occlusionBeginX != -1)
-                    {
-                        float occlusionEndX = x;
-                        //if (x < x1 - 1 && collision[collisionIdx + stride + 1] == MapConstants.CollBlocked
-                        if (x < x1 - 1)
-                            occlusionEndX += 0.5f;
-
-                        float occlusionLength = occlusionEndX - occlusionBeginX;
-                        float centerX = ((occlusionBeginX + occlusionLength * 0.5f) - chunk.TopLeftX * 2) * 0.5f;
-                        float centerY = (-y + chunk.TopLeftY * 2) * 0.5f - 0.5f;
-                        targetMesh.AddQuad(new Vector3(centerX, centerY, -0.1f), occlusionLength * 0.5f, 0.75f, 0.0f, -1.0f, Color.white);
-
-                        occlusionBeginX = -1;
-                    }
-                }
-            }
-            targetMesh.ApplyChanges();
-        }
-
         public static void PlaceRoom(LogicalMapRoom room, Vector3Int pos, LogicalMap mapDst)
         {
             for (int y = 0; y < room.Height; ++y)

@@ -2,14 +2,13 @@
 using HordeEngine;
 using UnityEngine;
 
-// TODO: Can walk right through walls on low frame rates. Do stepping.
 public static class CollisionUtil
 {
     public static byte[] CollisionMap;
     public static int Width;
     public static int Height;
     public static List<Vector2> TempList = new List<Vector2>(20);
-    const float MaxVelocity = 0.49f; // A collision tile is 0.5. Limit speed to just below that.
+    const float MaxVelocity = 0.75f;
 
     public static void SetCollisionMap(byte[] map, int w, int h)
     {
@@ -90,22 +89,20 @@ public static class CollisionUtil
             if (!reactToCollision)
                 return false;
 
-            // There is a collision, adjust movement
-            // Do x and y movement separate so we can glide against walls
+            // There is a collision, adjust movement.
+            // Do x and y movement separate so we can glide against walls.
             newPos = pos;
             newPos.x += velocity.x;
             if (GetCollisionValue(newPos) != MapConstants.CollWalkable)
             {
-                int x = (int)(newPos.x * 2);
-                newPos = ClampToCellX(pos, newPos, x);
+                newPos = ClampToCellX(pos, newPos);
                 collisionNormal += velocity.x < 0.0f ? Vector2.right : Vector2.left;
             }
 
             newPos.y += velocity.y;
             if (GetCollisionValue(newPos) != MapConstants.CollWalkable)
             {
-                int y = -(int)(newPos.y * 2);
-                newPos = ClampToCellY(pos, newPos, y);
+                newPos = ClampToCellY(pos, newPos);
                 collisionNormal += velocity.y < 0.0f ? Vector2.up: Vector2.down;
             }
 
@@ -118,42 +115,44 @@ public static class CollisionUtil
     }
 
     // Will not clamp if pos and newPos are in the same X cell.
-    private static Vector2 ClampToCellX(Vector2 pos, Vector2 newPos, int x)
+    private static Vector2 ClampToCellX(Vector2 pos, Vector2 newPos)
     {
         Vector2 result = newPos;
-        int oldX = (int)(pos.x * 2);
+        int oldX = (int)pos.x;
+        int newX = (int)newPos.x;
 
         const float Nudge = 0.01f; // When clamping to a cell border move a tiny bit away from the cell
-        if (x < oldX)
+        if (newX < oldX)
         {
             // Moving left, clamp x to right side of cell
-            result.x = (x + 1) * 0.5f + Nudge;
+            result.x = newX + 1 + Nudge;
         }
-        else if (x > oldX)
+        else if (newX > oldX)
         {
             // Moving right, clamp x to left side of cell
-            result.x = x * 0.5f - Nudge;
+            result.x = newX - Nudge;
         }
 
         return result;
     }
 
     // Will not clamp if pos and newPos are in the same Y cell.
-    private static Vector2 ClampToCellY(Vector2 pos, Vector2 newPos, int y)
+    private static Vector2 ClampToCellY(Vector2 pos, Vector2 newPos)
     {
         Vector2 result = newPos;
-        int oldY = -(int)(pos.y * 2);
+        int oldY = (int)-pos.y;
+        int newY = (int)-newPos.y;
 
         const float Nudge = 0.01f; // When clamping to a cell border move a tiny bit away from the cell
-        if (y < oldY)
+        if (newY < oldY)
         {
             // Moving up, clamp y to bottom side of cell
-            result.y = -((y + 1) * 0.5f) - Nudge;
+            result.y = -newY - 1 - Nudge;
         }
-        else if (y > oldY)
+        else if (newY > oldY)
         {
             // Moving down, clamp y to top side of cell
-            result.y = -(y * 0.5f) + Nudge;
+            result.y = -newY + Nudge;
         }
 
         return result;
@@ -161,8 +160,8 @@ public static class CollisionUtil
 
     public static int GetCollisionValue(Vector2 pos)
     {
-        int x = (int)(pos.x * 2);
-        int y = -(int)(pos.y * 2);
+        int x = (int)pos.x;
+        int y = -(int)pos.y;
         int collIdx = y * Width + x;
         var collision = CollisionMap[collIdx];
         return collision;

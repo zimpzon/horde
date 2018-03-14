@@ -12,7 +12,6 @@ namespace HordeEngine
 
         Texture2D texture_;
         Color32[] pixels_;
-        Color32[] pixelsCopy_;
 
         const float PixelWorldSize = 0.1f;
         RawImage image_;
@@ -27,33 +26,10 @@ namespace HordeEngine
             image_ = GetComponent<RawImage>();
         }
 
-        //private void LateUpdate()
-        //{
-        //    if (pixels_ != null)
-        //        Array.Copy(pixelsCopy_, pixels_, pixels_.Length);
-        //}
-
-        public void SetDebugPixel(int idx, Color col)
-        {
-            // NB NB Requires margin of 0 atm
-            //int w = texture_.width;
-            //int h = texture_.height;
-            //int y = idx / w;
-            //int x = idx % w;
-            //pixels_[(h - y - 1) * w + x] = col;
-            ////texture_ = new Texture2D(texture_.width, texture_.height, TextureFormat.RGBA32, false)
-            ////{
-            ////    filterMode = FilterMode.Point
-            ////};
-            //texture_.SetPixels32(pixels_);
-            //texture_.Apply();
-//            image_.texture = texture_;
-        }
-
         public void SetMap(LogicalMap map)
         {
-            int w = map.Width * 2;
-            int h = map.Height * 2;
+            int w = map.Width;
+            int h = map.Height;
             int stride = map.CollisionWidth;
             const int PixelMargin = 0;
             const int PixelMargin2 = PixelMargin * 2;
@@ -83,11 +59,9 @@ namespace HordeEngine
             texture_.Apply();
             image_.texture = texture_;
 
-//            pixelsCopy_ = (Color32[])pixels_.Clone();
-
             if (Global.WriteDebugPngFiles)
             {
-                Global.WriteDebugPng("mini_in", Array.ConvertAll(map.CollisionMap, item => (int)item), map.Width * 2, map.Height * 2, 0);
+                Global.WriteDebugPng("mini_in", Array.ConvertAll(map.CollisionMap, item => (int)item), map.Width, map.Height, 0);
                 Global.WriteDebugPng("mini_out", texture_);
             }
         }
