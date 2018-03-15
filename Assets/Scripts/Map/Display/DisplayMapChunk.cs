@@ -34,6 +34,7 @@ namespace HordeEngine
             Indices = new List<int>(tileCount * 6);
         }
 
+        // TODO: Add a quad mesh for shadows
         public void Update(LogicalMap mapData, int[] tiles, int topLeftX, int topLeftY, TileMapMetadata tileMapMeta, bool skewTileTop)
         {
             Vertices.Clear();

@@ -66,13 +66,10 @@
 
             fixed4 col = base * lighting * _Brightness;
 
-            //fixed mono = col.r * _MonochromeFactorR + col.g * _MonochromeFactorG + col.b * _MonochromeFactorB;
-            //fixed4 monoDisplay = fixed4(mono * _MonochromeDisplayR, mono * _MonochromeDisplayG, mono * _MonochromeDisplayB, 1.0);
-            //fixed4 albedoAndLight = monoDisplay * _MonochromeAmount + col * (1.0 - _MonochromeAmount);
-            //return lightingBlendFactor * base + (1 - lightingBlendFactor) * albedoAndLight;
-
-            // Higher base factor means more ambient light on top of tiles where light contribution is low
-            return lightContribution * col + (1 - lightContribution) * base;
+            fixed mono = col.r * _MonochromeFactorR + col.g * _MonochromeFactorG + col.b * _MonochromeFactorB;
+            fixed4 monoDisplay = fixed4(mono * _MonochromeDisplayR, mono * _MonochromeDisplayG, mono * _MonochromeDisplayB, 1.0);
+            fixed4 albedoAndLight = monoDisplay * _MonochromeAmount + col * (1.0 - _MonochromeAmount);
+            return lightContribution * albedoAndLight + (1 - lightContribution) * base;
         }
 
             ENDCG
