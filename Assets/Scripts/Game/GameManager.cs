@@ -11,17 +11,23 @@ namespace HordeEngine
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        MapResources mapResources_ = new MapResources();
+        public float SlowableTimeScale = 1.0f;
+
         GameState CurrentGameState { get { return gameStateStack_.Peek(); } }
         Stack<GameState> gameStateStack_ = new Stack<GameState>();
         Dictionary<GameState, GameStateHandler> gameStateHandlers_ = new Dictionary<GameState, GameStateHandler>();
 
         Dictionary<string, string> debugLines_ = new Dictionary<string, string>();
-        public void ShowDebug(object key, object text, params object[] param)
+        private void ShowDebugInternal(object key, object text, params object[] param)
         {
             string formatted = string.Format("{0}: {1} ({2})", key.ToString(), string.Format(text.ToString(), param), Time.frameCount);
             debugLines_[key.ToString()] = formatted;
             Global.SceneAccess.DebugText.text = string.Join(Environment.NewLine, debugLines_.Values.ToArray());
+        }
+
+        public static void ShowDebug(object key, object text, params object[] param)
+        {
+            Global.GameManager.ShowDebugInternal(key, text, param);
         }
 
         void Awake()
@@ -33,7 +39,7 @@ namespace HordeEngine
             Global.TimeManager = new TimeManager();
             Global.ComponentUpdater = new ComponentUpdater();
             Global.Crosshair = new CrosshairController();
-            Global.MapResources = mapResources_;
+            Global.MapResources = new MapResources();
             Global.SceneAccess = FindObjectOfType<SceneAccessScript>();
 
             gameStateHandlers_[GameState.Boot] = new GameStateBoot();
@@ -48,6 +54,7 @@ namespace HordeEngine
 
         private void Application_lowMemory()
         {
+            Debug.LogError("Low memory callback");
             // TODO
             // Send this to Playfab if possible
         }
@@ -78,7 +85,9 @@ namespace HordeEngine
         void Update()
         {
             // This is the first Update() to be called in every frame
+            Global.TimeManager.SlowableTimeScale = SlowableTimeScale;
             Global.TimeManager.UpdateTime(Time.deltaTime);
+
             Global.ComponentUpdater.DoUpdate();
 
             Global.SceneAccess.LightDebugView.texture = Global.SceneAccess.LightingCam.targetTexture;

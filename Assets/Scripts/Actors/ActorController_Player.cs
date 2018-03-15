@@ -21,6 +21,12 @@ namespace HordeEngine
             dodge_ = GetComponent<ActorAbility_Dodge>();
         }
 
+        void OnValidate()
+        {
+            if (Anim != null && Anim.Idle != null && Anim.Idle.Length > 0 && PlayerSpriteRenderer != null)
+                PlayerSpriteRenderer.sprite = Anim.Idle[0];
+        }
+
         void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
         void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
@@ -30,6 +36,11 @@ namespace HordeEngine
 
             if (Input.GetKeyDown(KeyCode.R))
                 Global.SceneAccess.CameraShake.AddTrauma(1.0f);
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                Global.SceneAccess.ProjectileManager.FireProjectile(trans_.localPosition);
+            }
 
             Vector3 inputVec = Vector3.zero;
             inputVec.x = Input.GetAxis("Horizontal");

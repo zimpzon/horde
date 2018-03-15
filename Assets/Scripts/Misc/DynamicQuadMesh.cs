@@ -51,29 +51,30 @@ namespace HordeEngine
             return mesh_;
         }
 
-        public void AddQuad(Vector3 center, float w, float h, float rotationDegrees, float topZSkew, Color color)
+        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color color)
         {
-            AddQuad(center, w, h, rotationDegrees, topZSkew, Vector2.up, 1.0f, 1.0f, color);
+            AddQuad(center, size, rotationDegrees, zSkew, Vector2.up, Vector2.one, color);
         }
 
-        public void AddQuad(Vector3 center, float w, float h, float rotationDegrees, float topZSkew, Vector2 UVTopLeft, float uvW, float uvH, Color color)
+        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Vector2 UVTopLeft, Vector2 uvSize, Color color)
         {
             // 0---1
             // | / | = [0, 1, 3] and [1, 2, 3]
             // 3---2
 
             // TODO: Rotation. Remember z skewing. SKEWING MIGHT also be doable in vertex shader? Just need to know base of object.
-            float halfW = w * 0.5f;
-            float halfH = h * 0.5f;
-            vertices_.Add(new Vector3(center.x - halfW, center.y + halfH, center.z + topZSkew));
-            vertices_.Add(new Vector3(center.x + halfW, center.y + halfH, center.z + topZSkew));
-            vertices_.Add(new Vector3(center.x + halfW, center.y - halfH, center.z));
-            vertices_.Add(new Vector3(center.x - halfW, center.y - halfH, center.z));
+            float halfW = size.x * 0.5f;
+            float halfH = size.y * 0.5f;
+            float halfSkew = zSkew * 0.5f;
+            vertices_.Add(new Vector3(center.x - halfW, center.y + halfH, center.z - halfSkew));
+            vertices_.Add(new Vector3(center.x + halfW, center.y + halfH, center.z - halfSkew));
+            vertices_.Add(new Vector3(center.x + halfW, center.y - halfH, center.z + halfSkew));
+            vertices_.Add(new Vector3(center.x - halfW, center.y - halfH, center.z + halfSkew));
 
             UV_.Add(UVTopLeft);
-            UV_.Add(new Vector2(UVTopLeft.x + uvW, UVTopLeft.y));
-            UV_.Add(new Vector2(UVTopLeft.x + uvW, UVTopLeft.y - uvH));
-            UV_.Add(new Vector2(UVTopLeft.x, UVTopLeft.y - uvH));
+            UV_.Add(new Vector2(UVTopLeft.x + uvSize.x, UVTopLeft.y));
+            UV_.Add(new Vector2(UVTopLeft.x + uvSize.x, UVTopLeft.y - uvSize.y));
+            UV_.Add(new Vector2(UVTopLeft.x, UVTopLeft.y - uvSize.y));
 
             colors_.Add(color);
             colors_.Add(color);

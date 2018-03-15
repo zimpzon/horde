@@ -8,14 +8,14 @@ public static class CollisionUtil
     public static int Width;
     public static int Height;
     public static List<Vector2> TempList = new List<Vector2>(20);
-    const float MaxVelocity = 0.75f;
+    public const float MaxVelocityPerFrame = 0.75f;
+    public const float MaxVelocitySqrPerFrame = MaxVelocityPerFrame * MaxVelocityPerFrame;
 
     public static void SetCollisionMap(byte[] map, int w, int h)
     {
         CollisionMap = map;
         Width = w;
         Height = h;
-        Global.GameManager.ShowDebug("CollisionMap", "w = {0}, h = {1}", w, h);
     }
 
     public static void AddCollisionPoints(List<Vector2> list, Vector2 lineCenter, float width, float depth, float granularity)
@@ -47,8 +47,8 @@ public static class CollisionUtil
     {
         collisionNormal = Vector2.zero;
 
-        if (velocity.sqrMagnitude > MaxVelocity * MaxVelocity)
-            velocity = velocity.normalized * MaxVelocity;
+        if (velocity.sqrMagnitude > MaxVelocitySqrPerFrame)
+            velocity = velocity.normalized * MaxVelocityPerFrame;
 
         maxAllowedMove = velocity;
         bool allMoved = true;
@@ -104,8 +104,8 @@ public static class CollisionUtil
     {
         collisionNormal = Vector2.zero;
 
-        if (velocity.sqrMagnitude > MaxVelocity * MaxVelocity)
-            velocity = velocity.normalized * MaxVelocity;
+        if (velocity.sqrMagnitude > MaxVelocityPerFrame * MaxVelocityPerFrame)
+            velocity = velocity.normalized * MaxVelocityPerFrame;
 
         var newPos = pos + velocity;
         if (GetCollisionValue(newPos) != MapConstants.CollWalkable)
@@ -180,6 +180,34 @@ public static class CollisionUtil
         }
 
         return result;
+    }
+
+    public static bool IsCircleColliding(Vector2 pos, float size)
+    {
+        float halfSize = size * 0.5f;
+        Vector2 testPos = Vector2.zero;
+
+        // Top
+        testPos.x = pos.x;
+        testPos.y = pos.y + halfSize;
+        int count = GetCollisionValue(testPos);
+
+        // Bottom
+        testPos.x = pos.x;
+        testPos.y = pos.y - halfSize;
+        count += GetCollisionValue(testPos);
+
+        // Left
+        testPos.x = pos.x - halfSize;
+        testPos.y = pos.y;
+        count += GetCollisionValue(testPos);
+
+        // Right
+        testPos.x = pos.x + halfSize;
+        testPos.y = pos.y;
+        count += GetCollisionValue(testPos);
+
+        return count != MapConstants.CollWalkable * 4;
     }
 
     public static int GetCollisionValue(Vector2 pos)

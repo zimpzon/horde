@@ -356,6 +356,7 @@
     <None Include="Assets\Shaders\CutoutTransparent.shader" />
     <None Include="Assets\Shaders\FloorShader.shader" />
     <None Include="Assets\Shaders\LightingBlend.shader" />
+    <None Include="Assets\Shaders\ProjectileDefault.shader" />
     <None Include="Assets\Shaders\SpriteAdditive.shader" />
     <None Include="Assets\Shaders\WallShader.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />

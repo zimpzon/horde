@@ -33,7 +33,7 @@ public class PerfTestManager : MonoBehaviour
         mesh = new DynamicQuadMesh(1000);
     }
 
-    void TickProjectile(ref Projectile projectile, int idx)
+    bool TickProjectile(ref Projectile projectile, int idx)
     {
         projectile.Origin += projectile.Velocity * dt_;
         projectile.ActualPos.x = projectile.Origin.x + Mathf.Sin(Time.time + idx);
@@ -49,11 +49,12 @@ public class PerfTestManager : MonoBehaviour
         }
 
         RenderProjectile(ref projectile);
+        return true;
     }
 
     void RenderProjectile(ref Projectile projectile)
     {
-        mesh.AddQuad(projectile.ActualPos, projectile.Size, projectile.Size, 0.0f, 0.0f, Vector2.zero, 1.0f, 1.0f, projectile.Color);
+        mesh.AddQuad(projectile.ActualPos, projectile.Size, 0.0f, projectile.Size.y, projectile.Color);
     }
 
     void Update()
@@ -93,14 +94,14 @@ public class PerfTestManager : MonoBehaviour
         CreateSprites(count);
     }
 
-    void CreateSprites(int count) 
+    void CreateSprites(int count)
     {
         sprites_ = new Projectile[count];
         for (int i = 0; i < count; ++i)
         {
             var spr = new Projectile()
             {
-                Size = 0.5f,
+                Size = Vector2.one * 0.5f,
                 StartPos = Random.insideUnitCircle * 2,
                 Velocity = Random.insideUnitCircle * 0.5f,
                 Color = new Color(Random.value, Random.value, Random.value),

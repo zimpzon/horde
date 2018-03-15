@@ -20,5 +20,6 @@ namespace HordeEngine
         public Camera OverlayCam;
         public DynamicQuadRenderer PointLightRenderer;
         public RawImage LightDebugView;
+        public ProjectileManager ProjectileManager;
     }
 }

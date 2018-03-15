@@ -6,7 +6,7 @@ namespace HordeEngine
     {
         LogicalMap hubMap_;
 
-        void EnsureHubMap()
+        void EnsureHubMapCreated()
         {
             if (hubMap_ == null)
             {
@@ -18,7 +18,7 @@ namespace HordeEngine
 
         public override bool TryEnterState()
         {
-            EnsureHubMap();
+            EnsureHubMapCreated();
 
             Global.SceneAccess.MiniMap.SetMap(hubMap_);
             Global.SetMap(hubMap_);

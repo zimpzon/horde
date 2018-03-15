@@ -24,7 +24,7 @@ namespace HordeEngine
 
         private void Start()
         {
-            StartCoroutine(Think());
+//            StartCoroutine(Think());
         }
 
         Vector2 dir_ = Vector2.zero;
@@ -53,8 +53,8 @@ namespace HordeEngine
         {
             float td = Global.TimeManager.DeltaSlowableTime;
 
-            if (Random.value < 0.005f)
-                actorBody_.AddForce(Random.insideUnitCircle.normalized * (Random.value * 5.0f));
+            if (Random.value < 0.01f)
+                actorBody_.AddForce(Random.insideUnitCircle.normalized * (Random.value * 50.0f + 1.0f));
 
             bool isRunning = dir_.sqrMagnitude > 0.0f;
             if (isRunning)

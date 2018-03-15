@@ -4,9 +4,6 @@ using UnityEngine;
 
 namespace HordeEngine
 {
-    // REWRITE THIS so we have flat floor tiles and then Wall tiles that have a height. Extend vertices and UV to cover full height.
-    // ADD BOTTOM tiles first to lessen overdraw!!
-    // When chained to bottom this should align perfectly with all tilted sprites. ONE slope for full tile height.
     public class DisplayMapChunk
     {
         const float TileTopZSkew = -1.0f;

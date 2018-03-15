@@ -9,6 +9,6 @@
 
         public const byte CollOutsideMap = 0;
         public const byte CollBlocked = 255;
-        public const byte CollWalkable = 127;
+        public const byte CollWalkable = 1;
     }
 }
