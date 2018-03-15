@@ -6,7 +6,6 @@
         public const float TileH = 1.0f;
         public const int ChunkW = 8;
         public const int ChunkH = 8;
-        public const int LightmapResolution = 2;
 
         public const byte CollOutsideMap = 0;
         public const byte CollBlocked = 255;

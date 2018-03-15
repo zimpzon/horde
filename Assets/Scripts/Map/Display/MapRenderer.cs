@@ -8,7 +8,7 @@ public class MapRenderer : MonoBehaviour, IComponentUpdate
     public float OffsetY;
     Transform trans_;
 
-    DisplayMap displayMap_ = new DisplayMap(MapConstants.ChunkW, MapConstants.ChunkH, MapConstants.TileW, MapConstants.TileH, MapConstants.LightmapResolution);
+    DisplayMap displayMap_ = new DisplayMap(MapConstants.ChunkW, MapConstants.ChunkH, MapConstants.TileW, MapConstants.TileH);
 
     void Awake()
     {
@@ -20,16 +20,11 @@ public class MapRenderer : MonoBehaviour, IComponentUpdate
         displayMap_.SetMap(mapData);
     }
 
-    public void DrawMap()
-    {
-        displayMap_.DrawMap(FloorMaterial, WallMaterial, trans_.position.z, OffsetY);
-    }
-
     void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
     void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
 
     public void ComponentUpdate(ComponentUpdatePass pass)
     {
-        DrawMap();
+        displayMap_.DrawMap(FloorMaterial, WallMaterial, trans_.position.z, OffsetY);
     }
 }

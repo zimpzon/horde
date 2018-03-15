@@ -15,11 +15,14 @@ namespace HordeEngine
         public int CollisionWidth;
         public int CollisionHeight;
 
-        public void SetBounds(int w, int h, int stride)
+        public void SetBounds(int w, int h)
         {
-            Width = w;
-            Height = h;
-            Stride = stride;
+            // Round up to a whole number of chunks
+            int chunkCountX = ((w - 1) / MapConstants.ChunkW) + 1;
+            int chunkCountY = ((h - 1) / MapConstants.ChunkH) + 1;
+            Width = chunkCountX * MapConstants.ChunkW;
+            Height = chunkCountY * MapConstants.ChunkH;
+            Stride = Width;
             CollisionWidth = Width;
             CollisionHeight = Height;
         }
@@ -49,12 +52,22 @@ namespace HordeEngine
                         continue;
                     }
 
-                    CollisionMap[collisionIdx0] = tileProperties.Block ? MapConstants.CollBlocked : MapConstants.CollWalkable;
+                    CollisionMap[collisionIdx0] = tileProperties.Blocking ? MapConstants.CollBlocked : MapConstants.CollWalkable;
                 }
             }
 
             if (Global.WriteDebugPngFiles)
                 Global.WriteDebugPng("collision", Array.ConvertAll(CollisionMap, item => (int)item), Width, Height, 0);
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < Walls.Length; ++i)
+            {
+                Walls[i] = TileMetadata.NoTile;
+                Floor[i] = TileMetadata.NoTile;
+                Props[i] = TileMetadata.NoTile;
+            }
         }
 
         public void EnsureAllocatedSizeFromBounds()

@@ -8,8 +8,9 @@ namespace HordeEngine
         {
             const int Margin = 0;
             mapDst.Margin = Margin;
-            mapDst.SetBounds(room.Width + Margin * 2, room.Height + Margin * 2, stride: room.Width + Margin * 2);
+            mapDst.SetBounds(room.Width + Margin * 2, room.Height + Margin * 2);
             mapDst.EnsureAllocatedSizeFromBounds();
+            mapDst.Clear();
 
             MapUtil.PlaceRoom(room, new Vector3Int(Margin, Margin, 0), mapDst);
             mapDst.UpdateCollisionMap();

@@ -18,16 +18,24 @@ public static class CollisionUtil
         Global.GameManager.ShowDebug("CollisionMap", "w = {0}, h = {1}", w, h);
     }
 
-    public static void AddPointsForLine(List<Vector2> list, Vector2 lineCenter, float lineWidth, float granularity)
+    public static void AddCollisionPoints(List<Vector2> list, Vector2 lineCenter, float width, float depth, float granularity)
+    {
+        // TODO: This should be a rectangle
+        AddCollisionPointsForLine(list, lineCenter + Vector2.up * depth * 0.5f, width, granularity, clearList: true);
+        AddCollisionPointsForLine(list, lineCenter + Vector2.down * depth * 0.5f, width, granularity, clearList: false);
+    }
+
+    public static void AddCollisionPointsForLine(List<Vector2> list, Vector2 lineCenter, float width, float granularity, bool clearList)
     {
         // From left to right with at least a granularity of [granularity]
-        int sliceCount = Mathf.CeilToInt(lineWidth / granularity);
-        float stepX = lineWidth / sliceCount;
+        int sliceCount = Mathf.CeilToInt(width / granularity);
+        float stepX = width / sliceCount;
         Vector2 point = lineCenter;
-        point.x -= lineWidth * 0.5f;
+        point.x -= width * 0.5f;
 
         int pointCount = sliceCount + 1;
-        list.Clear();
+        if (clearList)
+            list.Clear();
         for (int i = 0; i < pointCount; ++i)
         {
             list.Add(point);
@@ -50,6 +58,7 @@ public static class CollisionUtil
         {
             Vector2 tempCollisionNormal;
             var point = pointsToMove[i];
+            var p = point;
             bool couldMove = TryMovePoint(ref point, velocity, out tempCollisionNormal, reactToCollision);
             if (!couldMove)
             {
@@ -69,6 +78,21 @@ public static class CollisionUtil
                 {
                     // After resolving collision this point is still inside a collider
                     Debug.LogErrorFormat("Error resolving collision, newPos = {0}, velocity = {1}, normal = {2}", point.ToString("0.00000000"), velocity.ToString("0.00000000"), collisionNormal.ToString("0.00000000"));
+                }
+            }
+        }
+
+        if (!allMoved)
+        {
+            // There was a collision. If all points can move the shortest
+            // distance found then allow the move. Else we stop right here.
+            for (int i = 0; i < pointsToMove.Count; ++i)
+            {
+                var newPoint = pointsToMove[i] + maxAllowedMove;
+                if (GetCollisionValue(newPoint) != MapConstants.CollWalkable)
+                {
+                    maxAllowedMove = Vector2.zero;
+                    break;
                 }
             }
         }

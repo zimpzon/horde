@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#pragma warning disable CS0649
-
 [Serializable]
 public class TileMetadata
 {
+    public static TileMetadata Default = new TileMetadata();
     public const int NoTile = -1;
 
     public int TileId;
-    public bool Block;
+    public bool Blocking;
+    public float Height = 1.0f;
+    public float ShadowLength;
 
     public void UpdateInferredValues(TileMapMetadata meta)
     {
@@ -22,11 +23,16 @@ public class TileMetadata
 [Serializable]
 public class TileMapMetadata
 {
+    // The following names correspond to fields in json imported from Tiled.
+    // They must match (case-sensitive) so don't change them.
+    // Begin json field names ---->
     public int imagewidth;
     public int imageheight;
     public int tilecount;
     public int columns;
     public int tileheight;
+    // <---- End json field names
+
     public List<TileMetadata> tileproperties = new List<TileMetadata>();
     public Dictionary<int, TileMetadata> tileLookup = new Dictionary<int, TileMetadata>();
 
@@ -34,13 +40,12 @@ public class TileMapMetadata
     int tilesPerCol;
     float tileUvSize;
 
-    public Vector2 CalcUV(int tileId, int cornerX, int cornerY)
+    public Vector2 CalcUV(int tileId, int cornerX, int cornerY, float tileScale)
     {
         int tileX = tileId % columns;
         int tileY = tileId / columns;
-        float uvTopLeftX = tileX * tileUvSize;
-        float uvTopLeftY = 1.0f - (tileY * tileUvSize);
-        return new Vector2(uvTopLeftX + cornerX * tileUvSize, uvTopLeftY - cornerY * tileUvSize);
+        float tileUvBottom = 1.0f - ((tileY + 1) * tileUvSize);
+        return new Vector2((tileX + cornerX) * tileUvSize, tileUvBottom + (cornerY * tileUvSize * 1.5f));
     }
 
     /// <summary>
@@ -62,5 +67,3 @@ public class TileMapMetadata
         }
     }
 }
-
-#pragma warning restore CS0649

@@ -94,7 +94,9 @@ public class MenuItems
 
                 // New tile metadata fields must be added here:
                 tileMeta.TileId = key.AsInt;
-                tileMeta.Block = value["Block"].AsBool;
+                tileMeta.Blocking = value["Blocking"].AsBool;
+                tileMeta.Height = value["Height"].AsFloat;
+                tileMeta.ShadowLength = value["ShadowLength"].AsFloat;
 
                 tileMetadata.tileproperties.Add(tileMeta);
             }

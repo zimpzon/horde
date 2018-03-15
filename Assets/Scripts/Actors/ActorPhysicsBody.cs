@@ -5,6 +5,7 @@ namespace HordeEngine
     public class ActorPhysicsBody : MonoBehaviour, IComponentUpdate
     {
         public float Width = 1.0f;
+        public float Depth = 0.25f;
         public float Drag = 1.0f;
         public float Mass = 1.0f; // TODO
         public float Bounciness = 0.5f;
@@ -18,10 +19,7 @@ namespace HordeEngine
 
         void OnDrawGizmosSelected()
         {
-            int pointCount = Mathf.CeilToInt(Width / CollisionGranularity);
-            float pointStep = Width / pointCount;
-            CollisionUtil.AddPointsForLine(CollisionUtil.TempList, transform.localPosition + (Vector3)Offset, Width, CollisionGranularity);
-
+            CollisionUtil.AddCollisionPoints(CollisionUtil.TempList, transform.localPosition + (Vector3)Offset, Width, Depth, CollisionGranularity);
             Gizmos.color = Color.green;
             for (int i = 0; i < CollisionUtil.TempList.Count; ++i)
             {
@@ -71,7 +69,7 @@ namespace HordeEngine
                 float pointStep = Width / pointCount;
 
                 // Start at the left edge of the body, then step right and add points.
-                CollisionUtil.AddPointsForLine(CollisionUtil.TempList, trans_.localPosition + (Vector3)Offset, Width, CollisionGranularity);
+                CollisionUtil.AddCollisionPoints(CollisionUtil.TempList, trans_.localPosition + (Vector3)Offset, Width, Depth, CollisionGranularity);
 
                 Vector2 maxAllowedMove;
                 Vector2 collisionNormal;

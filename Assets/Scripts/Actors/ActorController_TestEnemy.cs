@@ -40,6 +40,12 @@ namespace HordeEngine
             }
         }
 
+        void OnValidate()
+        {
+            if (Anim != null && Anim.Idle != null && Anim.Idle.Length > 0 && ActorSpriteRenderer != null)
+                ActorSpriteRenderer.sprite = Anim.Idle[0];
+        }
+
         void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
         void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 

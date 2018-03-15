@@ -11,30 +11,42 @@
     {
      "33":
         {
-         "Height":2
+         "Blocking":true,
+         "Height":1.5,
+         "ShadowLength":0
         },
      "34":
         {
-         "Height":2
+         "Blocking":true,
+         "Height":1.5,
+         "ShadowLength":0
         },
      "35":
         {
-         "Height":2
+         "Blocking":true,
+         "Height":1.5,
+         "ShadowLength":0
         }
     },
  "tilepropertytypes":
     {
      "33":
         {
-         "Height":"int"
+         "Blocking":"bool",
+         "Height":"float",
+         "ShadowLength":"float"
         },
      "34":
         {
-         "Height":"int"
+         "Blocking":"bool",
+         "Height":"float",
+         "ShadowLength":"float"
         },
      "35":
         {
-         "Height":"int"
+         "Blocking":"bool",
+         "Height":"float",
+         "ShadowLength":"float"
         }
     },
  "tilewidth":16,

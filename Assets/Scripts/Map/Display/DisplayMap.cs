@@ -16,11 +16,8 @@ Very important rendering info
 
 namespace HordeEngine
 {
-    /// <summary>
-    /// </summary>
     public class DisplayMap
     {
-#pragma warning disable CS0649
         class ChunkData
         {
             public static long CalcId(int x, int y) { return y * 10000 + x; }
@@ -30,9 +27,8 @@ namespace HordeEngine
             public DisplayMapChunk layerFloor;
             public DisplayMapChunk layerWalls;
             public DisplayMapChunk layerProps;
-            public TextMeshPro DebugText;
 
-            public void Initialize(int w, int h, float tileW, float tileH, int lightmapResolution)
+            public void Initialize(int w, int h, float tileW, float tileH)
             {
                 layerFloor = new DisplayMapChunk(w, h, tileW, tileH);
                 layerWalls = new DisplayMapChunk(w, h, tileW, tileH);
@@ -40,32 +36,29 @@ namespace HordeEngine
                 int initialCapacityEstimate = (w * h) / 16;
             }
         }
-#pragma warning restore CS0649
 
         int chunkW_;
         int chunkH_;
         float tileW_;
         float tileH_;
-        int lightmapResulution_;
         LogicalMap logicalMap_;
         ReusableObject<ChunkData> chunkCache_;
 
         List<ChunkData> chunks_ = new List<ChunkData>();
 
-        public DisplayMap(int chunkW, int chunkH, float tileW, float tileH, int lightmapResolution)
+        public DisplayMap(int chunkW, int chunkH, float tileW, float tileH)
         {
             chunkW_ = chunkW;
             chunkH_ = chunkH;
             tileW_ = tileW;
             tileH_ = tileH;
-            lightmapResulution_ = lightmapResolution;
 
             chunkCache_ = new ReusableObject<ChunkData>(initializeMethod: InitializeChunk);
         }
 
         void InitializeChunk(ChunkData chunk)
         {
-            chunk.Initialize(chunkW_, chunkH_, tileW_, tileH_, lightmapResulution_);
+            chunk.Initialize(chunkW_, chunkH_, tileW_, tileH_);
         }
 
         void ClearChunks()
@@ -100,10 +93,10 @@ namespace HordeEngine
             for (int i = 0; i < chunks_.Count; ++i)
             {
                 var chunk = chunks_[i];
-                matrix.SetTRS(new Vector3(chunk.Cx * chunkW_, -chunk.Cy * chunkH_ + offsetY, floorZ), Quaternion.identity, Vector3.one);
+                matrix.SetTRS(new Vector3(0, 0, floorZ), Quaternion.identity, Vector3.one);
                 Graphics.DrawMesh(chunk.layerWalls.Mesh, matrix, wallMat, 0);
-                Graphics.DrawMesh(chunk.layerProps.Mesh, matrix, wallMat, 0);
                 Graphics.DrawMesh(chunk.layerFloor.Mesh, matrix, floorMat, 0);
+                //                Graphics.DrawMesh(chunk.layerProps.Mesh, matrix, wallMat, 0);
             }
 
             if (Global.DebugDrawing)
@@ -125,8 +118,8 @@ namespace HordeEngine
             if (Global.DebugLogging)
                 Debug.LogFormat("LogicalMap size: {0}, {1}", logicalMap.Width, logicalMap.Height);
 
-            int chunksX = (logicalMap.Width + (chunkW_ - 1)) / chunkW_;
-            int chunksY = (logicalMap.Height + (chunkH_ - 1)) / chunkH_;
+            int chunksX = logicalMap.Width / chunkW_;
+            int chunksY = logicalMap.Height / chunkH_;
             for (int cy = 0; cy < chunksY; ++cy)
             {
                 for (int cx = 0; cx < chunksX; ++cx)
@@ -136,9 +129,9 @@ namespace HordeEngine
                     chunk.Cx = cx;
                     chunk.Cy = cy;
 
-                    chunk.layerFloor.Update(logicalMap, logicalMap.Floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: false, debugName: "floor");
-                    chunk.layerWalls.Update(logicalMap, logicalMap.Walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "walls");
-                    chunk.layerProps.Update(logicalMap, logicalMap.Props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "props");
+                    chunk.layerFloor.Update(logicalMap, logicalMap.Floor, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: false);
+                    chunk.layerWalls.Update(logicalMap, logicalMap.Walls, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true);
+//                    chunk.layerProps.Update(logicalMap, logicalMap.Props, cx * chunkW_, cy * chunkH_, Global.MapResources.TilemapMetaData, skewTileTop: true, debugName: "props");
 
                     bool isEmpty = chunk.layerFloor.ActiveTiles + chunk.layerWalls.ActiveTiles + chunk.layerProps.ActiveTiles == 0;
                     if (!isEmpty)
@@ -147,9 +140,8 @@ namespace HordeEngine
 
                         if (Global.DebugLogging)
                         {
-                            Debug.LogFormat("Floor tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerFloor.ActiveTiles, chunk.layerFloor.ActiveWidth, chunk.layerFloor.ActiveHeight);
-                            Debug.LogFormat("Walls tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerWalls.ActiveTiles, chunk.layerWalls.ActiveWidth, chunk.layerWalls.ActiveHeight);
-                            Debug.LogFormat("Props tile {0} ({1}, {2}): active = {3} ({4}, {5})", chunk.Id, cx, cy, chunk.layerProps.ActiveTiles, chunk.layerProps.ActiveWidth, chunk.layerProps.ActiveHeight);
+                            Debug.LogFormat("Floor tile {0} ({1}, {2}): active = {3}", chunk.Id, cx, cy, chunk.layerFloor.ActiveTiles);
+                            Debug.LogFormat("Walls tile {0} ({1}, {2}): active = {3}", chunk.Id, cx, cy, chunk.layerWalls.ActiveTiles);
                         }
                     }
                 }
