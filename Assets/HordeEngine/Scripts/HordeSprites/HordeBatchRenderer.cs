@@ -14,7 +14,7 @@ namespace HordeEngine
         public Material Material;
         public long Id;
         public int Layer;
-        public int BatchMeshQuadCapacity = 16;
+        public int BatchMeshQuadCapacity = 128;
         public List<HordeBatchMesh> Meshes = new List<HordeBatchMesh>();
         public int QuadCount;
 

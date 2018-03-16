@@ -4,12 +4,6 @@ using UnityEngine;
 public class ProjectileManager : MonoBehaviour, IComponentUpdate
 {
     public int InitialCapacity = 1000;
-    public Sprite Sprite;
-    public Material Material;
-    public DynamicQuadRenderer ProjectileRenderer;
-    public DynamicQuadRenderer LightRenderer;
-    public Material SoftLightMaterial;
-    public Material HardLightMaterial;
 
     // To allow updating structs in place we have to use array. A List<> will return a copy when accessing an element.
     Projectile[] projectiles_;
@@ -24,17 +18,6 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
         projectiles_ = new Projectile[InitialCapacity];
     }
 
-    public Material GetLightMaterial(ProjectileLight lightType)
-    {
-        switch (lightType)
-        {
-            case ProjectileLight.None: return null;
-            case ProjectileLight.Soft: return SoftLightMaterial;
-            case ProjectileLight.Hard: return HardLightMaterial;
-        }
-        return null;
-    }
-
     public void Clear()
     {
         ActiveProjectiles = 0;
@@ -46,8 +29,9 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
         ActiveProjectiles--;
     }
 
-    public void FireProjectile(Vector2 p)
+    public void FireProjectile(Vector3 pos)
     {
+        Vector3 p = pos;
         if (ActiveProjectiles == projectiles_.Length)
         {
             // TODO: After 3375 something throws. Vertex limit?
@@ -55,23 +39,26 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
             Debug.Log("Projectile array was expanded. Consider increasing initial capacity. New size: " + projectiles_.Length);
         }
 
-        int steps = 1;
+        int steps = 20;
         for (int i = 0; i < steps; ++i)
         {
             float angle = (Mathf.Deg2Rad * 360 / steps) * i;
             var spr = new Projectile()
             {
+                Z = -2,
                 Size = Vector2.one * 1f,
                 LightSize = Vector2.one * 2.0f,
                 StartPos = p,
                 Origin = p,
                 EmitLight = ProjectileLight.None,
                 LightOffsetY = 0.25f,
-                Velocity = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * 0.1f,
+                Velocity = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * 0.5f,
                 CollisionSize = 1.0f,
                 Color = Color.white,
                 UpdateCallback = TickProjectile2
             };
+            spr.ApplyDescription(Global.SceneAccess.ProjectileDescriptions.Yellow);
+
             spr.LightColor = spr.Color;
             spr.ActualPos = spr.StartPos;
             projectiles_[ActiveProjectiles++] = spr;
@@ -91,12 +78,19 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
     bool TickProjectile2(ref Projectile p, int idx)
     {
         p.ActualPos += p.Velocity * Global.TimeManager.DeltaTime;
-//        p.Velocity += p.Velocity * 1.5f * Time.deltaTime;
+        p.Velocity += p.Velocity * 1.5f * Time.deltaTime;
         return !CollisionUtil.IsCircleColliding(p.ActualPos, p.CollisionSize);
     }
 
     void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
     void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
+
+    void RenderProjectile(ref Projectile p)
+    {
+        Vector3 pos = p.ActualPos;
+        pos.z = p.Z;
+        Horde.Sprites.AddQuad(pos, p.Size, 0.0f, p.Size.y, p.Color, p.Sprite, p.Material, p.Layer);
+    }
 
     public void ComponentUpdate(ComponentUpdatePass pass)
     {
@@ -112,25 +106,7 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
                 continue;
             }
 
-            Vector2 size = projectiles_[i].Size;
-            Vector2 lightSize = projectiles_[i].LightSize;
-
-            //Rect rect = Test.rect;
-            //Vector2 uvBase = new Vector2(rect.xMin / Test.texture.width, rect.yMin / Test.texture.height);
-            //Vector2 uvSize = new Vector2(rect.width / Test.texture.width, -rect.height / Test.texture.height);
-            //ProjectileRenderer.Material.mainTexture = Test.texture;
-
-            // Might split these into different passes. Seems nicer. How about perf?
-//            ProjectileRenderer.QuadMesh.AddQuad(projectiles_[i].ActualPos, size, 0.0f, size.y, uvBase, uvSize, projectiles_[i].Color);
-            Horde.Sprites.AddQuad(projectiles_[i].ActualPos, size, 0.0f, size.y, projectiles_[i].Color, Sprite, Material, 0);
-//            ProjectileRenderer.QuadMesh.AddQuad(projectiles_[i].ActualPos, size, 0.0f, size.y, projectiles_[i].Color);
-            var lightMaterial = GetLightMaterial(projectiles_[i].EmitLight);
-            if (lightMaterial != null)
-            {
-                Vector2 pos = projectiles_[i].ActualPos;
-                pos.y += projectiles_[i].LightOffsetY;
-                LightRenderer.QuadMesh.AddQuad(pos, lightSize, 0.0f, lightSize.y, projectiles_[i].LightColor);
-            }
+            RenderProjectile(ref projectiles_[i]);
 
             i++;
         }

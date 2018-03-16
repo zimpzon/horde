@@ -43,23 +43,26 @@ namespace HordeEngine
 
             ApplyChanges();
 
-            // This happens only once
-            Mesh.SetTriangles(indices_, 0);
-//            Mesh.triangles = indices_;
+            // Triangles are set only once
+            Mesh.SetTriangles(indices_, 0, false);
+
             Mesh.UploadMeshData(false);
         }
 
         void InitializeIndices()
         {
+            int vert0 = 0;
             for (int i = 0; i < indices_.Length; i += IndicesPerQuad)
             {
-                indices_[i + 0] = 0;
-                indices_[i + 1] = 1;
-                indices_[i + 2] = 3;
+                indices_[i + 0] = vert0 + 0;
+                indices_[i + 1] = vert0 + 1;
+                indices_[i + 2] = vert0 + 3;
 
-                indices_[i + 3] = 1;
-                indices_[i + 4] = 2;
-                indices_[i + 5] = 3;
+                indices_[i + 3] = vert0 + 1;
+                indices_[i + 4] = vert0 + 2;
+                indices_[i + 5] = vert0 + 3;
+
+                vert0 += 4;
             }
         }
 
@@ -72,20 +75,34 @@ namespace HordeEngine
         {
             ZeroVertices(ActiveQuadCount, idxAlreadyZeroed_ - 1);
             idxAlreadyZeroed_ = ActiveQuadCount;
-
+            Mesh.RecalculateBounds();
             Mesh.vertices = vertices_;
             Mesh.uv = UV_;
             Mesh.colors32 = colors_;
+
             Mesh.UploadMeshData(false);
         }
 
-        void ZeroVertices(int first, int last)
+        void ZeroVertices(int firstQuad, int lastQuad)
         {
-            for (int i = first; i <= last; ++i)
+            for (int i = firstQuad; i <= lastQuad; ++i)
             {
-                vertices_[i].x = 0.0f;
-                vertices_[i].y = 0.0f;
-                vertices_[i].z = 0.0f;
+                int vert0 = i * 4;
+                vertices_[vert0 + 0].x = 0.0f;
+                vertices_[vert0 + 0].y = 0.0f;
+                vertices_[vert0 + 0].z = 0.0f;
+
+                vertices_[vert0 + 1].x = 0.0f;
+                vertices_[vert0 + 1].y = 0.0f;
+                vertices_[vert0 + 1].z = 0.0f;
+
+                vertices_[vert0 + 2].x = 0.0f;
+                vertices_[vert0 + 2].y = 0.0f;
+                vertices_[vert0 + 2].z = 0.0f;
+
+                vertices_[vert0 + 3].x = 0.0f;
+                vertices_[vert0 + 3].y = 0.0f;
+                vertices_[vert0 + 3].z = 0.0f;
             }
         }
 
@@ -120,13 +137,6 @@ namespace HordeEngine
             vertices_[vert0 + 1].z = center.z - halfSkew;
             vertices_[vert0 + 2].z = center.z + halfSkew;
             vertices_[vert0 + 3].z = center.z + halfSkew;
-
-            float duration = 0;
-            Debug.DrawLine(vertices_[vert0 + 0], vertices_[vert0 + 1], Color.green, duration);
-            Debug.DrawLine(vertices_[vert0 + 1], vertices_[vert0 + 3], Color.green, duration);
-            Debug.DrawLine(vertices_[vert0 + 3], vertices_[vert0 + 0], Color.green, duration);
-            Debug.DrawLine(vertices_[vert0 + 1], vertices_[vert0 + 2], Color.green, duration);
-            Debug.DrawLine(vertices_[vert0 + 2], vertices_[vert0 + 3], Color.green, duration);
 
             UV_[vert0 + 0].x = UVTopLeft.x;
             UV_[vert0 + 0].y = UVTopLeft.y;

@@ -1,6 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace HordeEngine
 {
@@ -20,7 +19,7 @@ namespace HordeEngine
 
         public HordeBatchRenderer GetBatchRenderer(Sprite sprite, Material material, int layer)
         {
-            long key = sprite.GetInstanceID() * material.GetInstanceID() << 6 + layer;
+            long key = sprite.GetInstanceID() << 29 + material.GetInstanceID() << 6 + layer;
             int idx = keys_.IndexOf(key);
             if (idx < 0)
                 idx = CreateBatch(key, sprite.texture, material, layer);
@@ -49,7 +48,6 @@ namespace HordeEngine
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            GameManager.ShowDebug("render", Time.time);
             Matrix4x4 matrix = Matrix4x4.identity;
             matrix.SetTRS(Offset, Quaternion.identity, Vector3.one);
 
@@ -59,11 +57,8 @@ namespace HordeEngine
                 batch.ApplyChanges();
 
                 int activeMeshes = batch.GetActiveMeshCount();
-                GameManager.ShowDebug("batch activemeshes " + i, activeMeshes);
-                GameManager.ShowDebug("batch quads " + i, batch.QuadCount);
                 for (int j = 0; j < activeMeshes; ++j)
                 {
-                    GameManager.ShowDebug("batch mesh quads " + (i + 1) * j, batch.Meshes[j].ActiveQuadCount);
                     Graphics.DrawMesh(batch.Meshes[j].Mesh, matrix, batch.Material, batch.Layer);
                 }
 

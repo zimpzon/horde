@@ -7,6 +7,7 @@ namespace HordeEngine
     {
         public Sprite Sprite;
         public Material Material;
+        [SerializeField, Layer] public LayerMask Layer;
         public Vector2 Size = Vector2.one;
         public Color Color = Color.white;
 

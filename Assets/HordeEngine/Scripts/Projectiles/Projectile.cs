@@ -30,6 +30,9 @@ namespace HordeEngine
 
         public void ApplyDescription(ProjectileDescription desc)
         {
+            Sprite = desc.Sprite;
+            Material = desc.Material;
+            Layer = desc.Layer.GetSingleLayerNumber();
             Size = desc.Size;
             Color = desc.Color;
 
@@ -46,6 +49,9 @@ namespace HordeEngine
             MaxTime = desc.MaxTime;
         }
 
+        public Sprite Sprite;
+        public Material Material;
+        public int Layer;
         public float StartTime;
         public Vector2 StartPos;
         public Vector2 Origin;
@@ -66,6 +72,7 @@ namespace HordeEngine
 
         public Vector2 Velocity;
         public Vector2 ActualPos;
+        public float Z;
 
         public delegate bool TickDelegate(ref Projectile projectile, int idx);
         public TickDelegate UpdateCallback;

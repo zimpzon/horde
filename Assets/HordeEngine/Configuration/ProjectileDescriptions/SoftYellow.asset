@@ -15,7 +15,7 @@ MonoBehaviour:
   Material: {fileID: 2100000, guid: af61deeb06b5a4a469cbd23111a5ed8f, type: 2}
   Size: {x: 1, y: 1}
   Color: {r: 1, g: 1, b: 1, a: 1}
-  RenderLight: 0
+  EmitLight: 0
   LightSize: {x: 1, y: 1}
   LightColor: {r: 1, g: 1, b: 1, a: 1}
   LightOffsetY: 0
