@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1394803210e4a414ebe4a6652d8ee43f, type: 3}
+  m_Name: Player1_IdleRun
+  m_EditorClassIdentifier: 
+  DefaultAnimationFramesPerSecond: 6
+  Idle:
+  - {fileID: 21300000, guid: bbe7971d3a3cc124f9d02a6e6a4f4033, type: 3}
+  - {fileID: 21300000, guid: e12f1ddd5a271b048840578d848258b8, type: 3}
+  - {fileID: 21300000, guid: f88ed525c1093454db77196fa9c24ff0, type: 3}
+  - {fileID: 21300000, guid: 748dddb4953866c4da3810fc26eabe2f, type: 3}
+  - {fileID: 21300000, guid: e78746b5af79db74389f8db5c1384a5b, type: 3}
+  Run:
+  - {fileID: 21300000, guid: c40f7ddc6c474b04c858b3a8249dc596, type: 3}
+  - {fileID: 21300000, guid: ea448afa734c3e64aa80aae36602679d, type: 3}
+  - {fileID: 21300000, guid: 3ea957a5fa834de4ea4d6fc6348169c1, type: 3}
+  - {fileID: 21300000, guid: 5c63b6f8111031a4ca03c2ef9bd77319, type: 3}

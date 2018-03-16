@@ -345,10 +345,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Editor\LayerSelectionHelper.cs" />
-    <Compile Include="Assets\Editor\MapDataImporter.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\Editor\LayerSelectionHelper.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\Editor\MapDataImporter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\HordeEngine\Scripts\Projectiles\ProjectileDefault.shader" />
     <None Include="Assets\Shaders\ActorSprite.shader" />
     <None Include="Assets\Shaders\ActorSpriteVertexColor.shader" />
     <None Include="Assets\Shaders\AdditiveTint.shader" />
@@ -356,7 +357,6 @@
     <None Include="Assets\Shaders\CutoutTransparent.shader" />
     <None Include="Assets\Shaders\FloorShader.shader" />
     <None Include="Assets\Shaders\LightingBlend.shader" />
-    <None Include="Assets\Shaders\ProjectileDefault.shader" />
     <None Include="Assets\Shaders\SpriteAdditive.shader" />
     <None Include="Assets\Shaders\WallShader.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />

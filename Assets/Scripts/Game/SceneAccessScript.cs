@@ -21,5 +21,6 @@ namespace HordeEngine
         public DynamicQuadRenderer PointLightRenderer;
         public RawImage LightDebugView;
         public ProjectileManager ProjectileManager;
+        public ProjectileDescriptions ProjectileDescriptions;
     }
 }

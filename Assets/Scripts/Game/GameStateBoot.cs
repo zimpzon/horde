@@ -23,7 +23,7 @@ namespace HordeEngine
         {
             var jsonTilemetaData = Resources.Load(@"TileMetadata\TileMetadata");
             Global.MapResources.TilemapMetaData = JsonUtility.FromJson<TileMapMetadata>(jsonTilemetaData.ToString());
-            Global.MapResources.TilemapMetaData.UpdateInferredValues();
+            Global.MapResources.TilemapMetaData.CreatePropertyLookup();
 
             var jsonRooms = Resources.Load(@"Rooms\Rooms");
             var roomWrapper = JsonUtility.FromJson<RoomWrapper>(jsonRooms.ToString());
