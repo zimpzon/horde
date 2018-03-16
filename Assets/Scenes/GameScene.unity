@@ -11646,3 +11646,4 @@ MonoBehaviour:
   ProjectileRenderer: {fileID: 2118963244}
   LightRenderer: {fileID: 1240518633}
   ActiveProjectiles: 0
+  Test: {fileID: 21300092, guid: c06c7c7308b7a864d8561de763f226da, type: 3}

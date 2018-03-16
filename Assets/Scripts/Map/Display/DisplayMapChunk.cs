@@ -120,8 +120,9 @@ namespace HordeEngine
 
             Mesh.Clear();
             Mesh.SetVertices(Vertices);
-            Mesh.SetTriangles(Indices, 0);
+            Mesh.SetTriangles(Indices, 0, false);
             Mesh.SetUVs(0, UV);
+            Mesh.UploadMeshData(false);
         }
     }
 }

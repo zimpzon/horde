@@ -7,7 +7,7 @@ namespace HordeEngine
     // It might be worth it to manage own arrays since this is called so often.
     public class DynamicQuadMesh
     {
-        Mesh mesh_ = new Mesh();
+        Mesh mesh_;
 
         List<Vector3> vertices_;
         List<Vector2> UV_;
@@ -16,6 +16,9 @@ namespace HordeEngine
 
         public DynamicQuadMesh(int initialCapacity)
         {
+            mesh_ = new Mesh();
+            mesh_.MarkDynamic();
+
             const int VerticesPerQuad = 4;
             const int IndicesPerQuad = 6;
             vertices_ = new List<Vector3>(initialCapacity * VerticesPerQuad);
@@ -43,7 +46,8 @@ namespace HordeEngine
             mesh_.SetVertices(vertices_);
             mesh_.SetUVs(0, UV_);
             mesh_.SetColors(colors_);
-            mesh_.SetTriangles(indices_, 0);
+            mesh_.SetTriangles(indices_, 0, false);
+            mesh_.UploadMeshData(false);
         }
 
         public Mesh GetMesh()

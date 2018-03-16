@@ -13,7 +13,9 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
     [Header("Debug")]
     public int ActiveProjectiles;
 
-    private void Awake()
+    public Sprite Test;
+
+    void Awake()
     {
         projectiles_ = new Projectile[InitialCapacity];
     }
@@ -98,7 +100,13 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
             Vector2 size = projectiles_[i].Size;
             Vector2 lightSize = projectiles_[i].LightSize;
 
+            //Rect rect = Test.rect;
+            //Vector2 uvBase = new Vector2(rect.xMin / Test.texture.width, rect.yMin / Test.texture.height);
+            //Vector2 uvSize = new Vector2(rect.width / Test.texture.width, -rect.height / Test.texture.height);
+            //ProjectileRenderer.Material.mainTexture = Test.texture;
+
             // Might split these into different passes. Seems nicer. How about perf?
+//            ProjectileRenderer.QuadMesh.AddQuad(projectiles_[i].ActualPos, size, 0.0f, size.y, uvBase, uvSize, projectiles_[i].Color);
             ProjectileRenderer.QuadMesh.AddQuad(projectiles_[i].ActualPos, size, 0.0f, size.y, projectiles_[i].Color);
             if (projectiles_[i].RenderLight)
             {
