@@ -24,8 +24,8 @@ public class CameraPositioner : MonoBehaviour, IComponentUpdate
         currentPos_ = pos;
     }
 
-    void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
-    void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
 
     public void ComponentUpdate(ComponentUpdatePass pass)
     {
@@ -40,7 +40,7 @@ public class CameraPositioner : MonoBehaviour, IComponentUpdate
         if (movement.sqrMagnitude < MinimumMovement * MinimumMovement)
             movement = movement.normalized * MinimumMovement;
 
-        currentPos_ += movement * Global.TimeManager.DeltaSlowableTime;
+        currentPos_ += movement * Horde.Time.DeltaSlowableTime;
         trans_.localPosition = currentPos_;
     }
 }

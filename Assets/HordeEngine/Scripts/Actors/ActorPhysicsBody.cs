@@ -53,12 +53,12 @@ namespace HordeEngine
             pendingMovement_ += velocity;
         }
 
-        void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
-        void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+        void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
+        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            float dt = Global.TimeManager.GetDeltaTime(UseSlowableTime);
+            float dt = Horde.Time.GetDeltaTime(UseSlowableTime);
             var totalMove = force_ * dt + pendingMovement_;
             pendingMovement_ = Vector2.zero;
 

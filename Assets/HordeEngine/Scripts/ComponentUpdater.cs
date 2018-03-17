@@ -24,7 +24,7 @@ namespace HordeEngine
     {
         CollisionSetup, Early, Default,
         // Unity Update() happens here
-        Late,
+        Late, Internal_DrawMeshes,
         // Unity LateUpdate() happens here
     }; 
 

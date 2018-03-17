@@ -14,36 +14,36 @@ namespace HordeEngine
         public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color color, Sprite sprite, Material material, int layer)
         {
             var batch = GetBatchRenderer(sprite, material, layer);
-            batch.AddQuad(center, size, rotationDegrees, zSkew, color);
+            batch.AddQuad(center, size, rotationDegrees, zSkew, color, sprite);
         }
 
         public HordeBatchRenderer GetBatchRenderer(Sprite sprite, Material material, int layer)
         {
-            long key = sprite.GetInstanceID() << 29 + material.GetInstanceID() << 6 + layer;
+            long key = sprite.texture.GetInstanceID() << 29 + material.GetInstanceID() << 6 + layer;
             int idx = keys_.IndexOf(key);
             if (idx < 0)
-                idx = CreateBatch(key, sprite.texture, material, layer);
+                idx = CreateBatchRenderer(key, sprite.texture, material, layer);
 
             return Batches[idx];
         }
 
-        private int CreateBatch(long key, Texture sprite, Material material, int layer)
+        private int CreateBatchRenderer(long key, Texture sprite, Material material, int layer)
         {
             HordeBatchRenderer batch = new HordeBatchRenderer(key, sprite, material, layer);
             Batches.Add(batch);
             keys_.Add(key);
             return Batches.Count - 1;
         }
-
+        
         void OnEnable()
         {
             Horde.Sprites = this;
-            Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late);
+            Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Internal_DrawMeshes);
         }
 
         void OnDisable()
         {
-            Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late);
+            Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Internal_DrawMeshes);
         }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
@@ -55,7 +55,7 @@ namespace HordeEngine
             {
                 var batch = Batches[i];
                 batch.ApplyChanges();
-
+                GameManager.ShowDebug("batch " + i, batch.QuadCount);
                 int activeMeshes = batch.GetActiveMeshCount();
                 for (int j = 0; j < activeMeshes; ++j)
                 {

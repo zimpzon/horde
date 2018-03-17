@@ -26,14 +26,14 @@ namespace HordeEngine
             IsDodging = dodgeVelocity_.sqrMagnitude > 0.0f;
         }
 
-        void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
-        void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
+        void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
+        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
             if (dodgeVelocity_.sqrMagnitude > 0.0f)
             {
-                var dodgeVec = dodgeVelocity_ * Global.TimeManager.GetDeltaTime(UseSlowableTime);
+                var dodgeVec = dodgeVelocity_ * Horde.Time.GetDeltaTime(UseSlowableTime);
                 float frameDodgeLen = dodgeVec.magnitude;
                 currentDodgeLen_ += frameDodgeLen;
                 if (currentDodgeLen_ >= DodgeLength)

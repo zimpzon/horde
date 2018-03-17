@@ -4,14 +4,23 @@ using UnityEngine;
 public class ProjectileManager : MonoBehaviour, IComponentUpdate
 {
     public int InitialCapacity = 1000;
+    [SerializeField, Layer] public LayerMask ProjectileLayer;
+    [SerializeField, Layer] public LayerMask LightLayer;
+    public float OffsetY;
 
     // To allow updating structs in place we have to use array. A List<> will return a copy when accessing an element.
     Projectile[] projectiles_;
+    int projectileLayer_;
+    int lightLayer_;
 
     [Header("Debug")]
     public int ActiveProjectiles;
 
-    public Sprite Test;
+    void UpdateLayers()
+    {
+        projectileLayer_ = (int)ProjectileLayer;
+        lightLayer_ = (int)LightLayer;
+    }
 
     void Awake()
     {
@@ -32,14 +41,8 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
     public void FireProjectile(Vector3 pos)
     {
         Vector3 p = pos;
-        if (ActiveProjectiles == projectiles_.Length)
-        {
-            // TODO: After 3375 something throws. Vertex limit?
-            System.Array.Resize(ref projectiles_, projectiles_.Length + (projectiles_.Length / 2));
-            Debug.Log("Projectile array was expanded. Consider increasing initial capacity. New size: " + projectiles_.Length);
-        }
 
-        int steps = 20;
+        int steps = 100;
         for (int i = 0; i < steps; ++i)
         {
             float angle = (Mathf.Deg2Rad * 360 / steps) * i;
@@ -50,9 +53,9 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
                 LightSize = Vector2.one * 2.0f,
                 StartPos = p,
                 Origin = p,
-                EmitLight = ProjectileLight.None,
+                EmitLight = false,
                 LightOffsetY = 0.25f,
-                Velocity = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * 0.5f,
+                Velocity = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * 0.1f,
                 CollisionSize = 1.0f,
                 Color = Color.white,
                 UpdateCallback = TickProjectile2
@@ -62,12 +65,19 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
             spr.LightColor = spr.Color;
             spr.ActualPos = spr.StartPos;
             projectiles_[ActiveProjectiles++] = spr;
+
+            // Not here
+            if (ActiveProjectiles == projectiles_.Length)
+            {
+                System.Array.Resize(ref projectiles_, projectiles_.Length + (projectiles_.Length / 2));
+                Debug.Log("Projectile array was expanded. Consider increasing initial capacity. New size: " + projectiles_.Length);
+            }
         }
     }
 
     bool TickProjectile(ref Projectile projectile, int idx)
     {
-        projectile.Origin += projectile.Velocity * Global.TimeManager.DeltaTime;
+        projectile.Origin += projectile.Velocity * Horde.Time.DeltaTime;
 
         projectile.ActualPos.x = projectile.Origin.x + Mathf.Sin(Time.time * 4 + idx);
         projectile.ActualPos.y = projectile.Origin.y + Mathf.Cos(Time.time * 4 + idx);
@@ -77,19 +87,34 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
 
     bool TickProjectile2(ref Projectile p, int idx)
     {
-        p.ActualPos += p.Velocity * Global.TimeManager.DeltaTime;
-        p.Velocity += p.Velocity * 1.5f * Time.deltaTime;
+        p.ActualPos += p.Velocity * Horde.Time.DeltaTime;
+//        p.Velocity += p.Velocity * 1.5f * Time.deltaTime;
         return !CollisionUtil.IsCircleColliding(p.ActualPos, p.CollisionSize);
     }
-
-    void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
-    void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
     void RenderProjectile(ref Projectile p)
     {
         Vector3 pos = p.ActualPos;
         pos.z = p.Z;
-        Horde.Sprites.AddQuad(pos, p.Size, 0.0f, p.Size.y, p.Color, p.Sprite, p.Material, p.Layer);
+        pos.y += OffsetY;
+        Horde.Sprites.AddQuad(pos, p.Size, 0.0f, p.Size.y, p.Color, p.Sprite, p.Material, projectileLayer_);
+
+        if (p.EmitLight)
+        {
+            pos.y += p.LightOffsetY;
+            Horde.Sprites.AddQuad(pos, p.LightSize, 0.0f, p.Size.y, p.LightColor, p.Sprite, p.Material, lightLayer_);
+        }
+    }
+
+    void OnEnable()
+    {
+        UpdateLayers();
+        Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late);
+    }
+
+    void OnDisable()
+    {
+        Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late);
     }
 
     public void ComponentUpdate(ComponentUpdatePass pass)

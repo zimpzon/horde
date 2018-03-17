@@ -30,7 +30,7 @@ public class FlashingLight : MonoBehaviour
 
     void Update()
     {
-        if (Global.TimeManager.SlowableTime > nextFlash_)
+        if (Horde.Time.SlowableTime > nextFlash_)
         {
             trans_.localScale = baseScale_ + Vector2.one * (Random.value - 0.5f) * ScaleVariance;
 
@@ -41,7 +41,7 @@ public class FlashingLight : MonoBehaviour
             colorSetter_.Color = Color.HSVToRGB(h, s, v);
             colorSetter_.Color.a = a;
 
-            nextFlash_ = Global.TimeManager.SlowableTime + Random.value * 0.1f + 0.1f;
+            nextFlash_ = Horde.Time.SlowableTime + Random.value * 0.1f + 0.1f;
         }
     }
 }

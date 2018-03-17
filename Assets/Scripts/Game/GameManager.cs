@@ -36,8 +36,6 @@ namespace HordeEngine
             Application.lowMemory += Application_lowMemory;
 
             Global.GameManager = this;
-            Global.TimeManager = new TimeManager();
-            Global.ComponentUpdater = new ComponentUpdater();
             Global.Crosshair = new CrosshairController();
             Global.MapResources = new MapResources();
             Global.SceneAccess = FindObjectOfType<SceneAccessScript>();
@@ -77,26 +75,14 @@ namespace HordeEngine
             Application.Quit();
         }
 
+        private void Update()
+        {
+            Global.SceneAccess.LightDebugView.texture = Global.SceneAccess.LightingCam.targetTexture;
+        }
+        
         void Start()
         {
             StartCoroutine(GameStateLoop());
-        }
-
-        void Update()
-        {
-            // This is the first Update() to be called in every frame
-            Global.TimeManager.SlowableTimeScale = SlowableTimeScale;
-            Global.TimeManager.UpdateTime(Time.deltaTime);
-
-            Global.ComponentUpdater.DoUpdate();
-
-            Global.SceneAccess.LightDebugView.texture = Global.SceneAccess.LightingCam.targetTexture;
-        }
-
-        void LateUpdate()
-        {
-            // This is the first LateUpdate() to be called in every frame
-            Global.ComponentUpdater.DoLateUpdate();
         }
 
         IEnumerator EnterState(GameState state)

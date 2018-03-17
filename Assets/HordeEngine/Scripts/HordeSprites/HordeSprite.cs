@@ -5,27 +5,42 @@ namespace HordeEngine
     [ExecuteInEditMode]
     public class HordeSprite : MonoBehaviour, IComponentUpdate
     {
+        public Sprite Sprite;
+        public Material Material;
+        public bool FlipX;
         [SerializeField, Layer] public LayerMask Layer;
         public Color Color = Color.white;
         public Vector2 Scale = Vector2.one;
         public Vector3 Offset = Vector3.zero;
-        public ComponentUpdatePass UpdatePass = ComponentUpdatePass.Default;
-        public DynamicQuadRenderer QuadRenderer;
+
+        int layer_;
 
         Transform trans_;
 
+        void UpdateLayer()
+        {
+            layer_ = Layer;
+        }
+
+        void OnValidate()
+        {
+            UpdateLayer();
+        }
+        
         void OnEnable()
         {
             trans_ = transform;
-            Global.ComponentUpdater.RegisterForUpdate(this, UpdatePass);
+            UpdateLayer();
+            Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default);
         }
 
-        void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, UpdatePass); }
+        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            if (QuadRenderer != null && QuadRenderer.QuadMesh != null)
-                QuadRenderer.QuadMesh.AddQuad(trans_.position + Offset, Scale, 0.0f, Scale.y, Color); // , layer)
+            var scale = Scale;
+            scale.x *= FlipX ? -1 : 1;
+            Horde.Sprites.AddQuad(trans_.position + Offset, scale, 0.0f, Scale.y, Color, Sprite, Material, layer_);
         }
     }
 }

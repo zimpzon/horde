@@ -2,8 +2,6 @@
 
 namespace HordeEngine
 {
-    public enum ProjectileLight { None, Soft, Hard };
-
     public struct Projectile
     {
         public void Reset()
@@ -14,7 +12,7 @@ namespace HordeEngine
             OriginOffset = Vector2.zero;
             MaxDist = float.MaxValue;
             MaxTime = float.MaxValue;
-            EmitLight = ProjectileLight.Hard;
+            EmitLight = false;
             LightOffsetY = 0.0f;
             Size = Vector2.one;
             Color = Color.white;
@@ -32,11 +30,12 @@ namespace HordeEngine
         {
             Sprite = desc.Sprite;
             Material = desc.Material;
-            Layer = desc.Layer.GetSingleLayerNumber();
             Size = desc.Size;
             Color = desc.Color;
 
             EmitLight = desc.EmitLight;
+            LightSprite = desc.LightSprite;
+            LightMaterial = desc.LightMaterial;
             LightSize = desc.LightSize;
             LightColor = desc.LightColor;
             LightOffsetY = desc.LightOffsetY;
@@ -49,9 +48,6 @@ namespace HordeEngine
             MaxTime = desc.MaxTime;
         }
 
-        public Sprite Sprite;
-        public Material Material;
-        public int Layer;
         public float StartTime;
         public Vector2 StartPos;
         public Vector2 Origin;
@@ -59,9 +55,13 @@ namespace HordeEngine
         public float MaxDist;
         public float MaxTime;
 
+        public Sprite Sprite;
+        public Material Material;
         public Vector2 Size;
         public Color Color;
-        public ProjectileLight EmitLight;
+        public bool EmitLight;
+        public Sprite LightSprite;
+        public Material LightMaterial;
         public Vector2 LightSize;
         public Color LightColor;
         public float LightOffsetY;

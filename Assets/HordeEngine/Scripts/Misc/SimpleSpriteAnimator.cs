@@ -21,7 +21,7 @@ public class SimpleSpriteAnimator : MonoBehaviour
 
     public static Sprite GetAnimationSprite(Sprite[] sprites, float animationFramesPerSecond)
     {
-        int id = (int)(Global.TimeManager.SlowableTime * animationFramesPerSecond) % sprites.Length;
+        int id = (int)(Horde.Time.SlowableTime * animationFramesPerSecond) % sprites.Length;
         return sprites[id];
     }
 

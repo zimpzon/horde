@@ -6,7 +6,6 @@ namespace HordeEngine
     /// <summary>
     /// Fixed size mesh. Triangles that are not in use will be rendered as degenerate (empty) by setting all vertices to 0.
     /// </summary>
-    [Serializable]
     public class HordeBatchMesh
     {
         public Mesh Mesh;
@@ -75,7 +74,7 @@ namespace HordeEngine
         {
             ZeroVertices(ActiveQuadCount, idxAlreadyZeroed_ - 1);
             idxAlreadyZeroed_ = ActiveQuadCount;
-            Mesh.RecalculateBounds();
+            Mesh.RecalculateBounds(); // TODO: no no no
             Mesh.vertices = vertices_;
             Mesh.uv = UV_;
             Mesh.colors32 = colors_;
@@ -111,16 +110,14 @@ namespace HordeEngine
             AddQuad(center, size, rotationDegrees, zSkew, Vector2.up, Vector2.one, color);
         }
 
-        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Vector2 UVTopLeft, Vector2 uvSize, Color color)
+        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Vector2 uvTopLeft, Vector2 uvSize, Color color)
         {
-            zSkew = 0;
             // 0---1
             // | / | = [0, 1, 3] and [1, 2, 3]
             // 3---2
 
             float halfW = size.x * 0.5f;
             float halfH = size.y * 0.5f;
-            float halfSkew = zSkew * 0.5f;
 
             int vert0 = ActiveQuadCount * 4;
             vertices_[vert0 + 0].x = center.x - halfW;
@@ -133,22 +130,22 @@ namespace HordeEngine
             vertices_[vert0 + 2].y = center.y - halfH;
             vertices_[vert0 + 3].y = center.y - halfH;
 
-            vertices_[vert0 + 0].z = center.z - halfSkew;
-            vertices_[vert0 + 1].z = center.z - halfSkew;
-            vertices_[vert0 + 2].z = center.z + halfSkew;
-            vertices_[vert0 + 3].z = center.z + halfSkew;
+            vertices_[vert0 + 0].z = center.z - zSkew;
+            vertices_[vert0 + 1].z = center.z - zSkew;
+            vertices_[vert0 + 2].z = center.z;
+            vertices_[vert0 + 3].z = center.z;
 
-            UV_[vert0 + 0].x = UVTopLeft.x;
-            UV_[vert0 + 0].y = UVTopLeft.y;
+            UV_[vert0 + 0].x = uvTopLeft.x;
+            UV_[vert0 + 0].y = uvTopLeft.y;
 
-            UV_[vert0 + 1].x = UVTopLeft.x + uvSize.x;
-            UV_[vert0 + 1].y = UVTopLeft.y;
+            UV_[vert0 + 1].x = uvTopLeft.x + uvSize.x;
+            UV_[vert0 + 1].y = uvTopLeft.y;
 
-            UV_[vert0 + 2].x = UVTopLeft.x + uvSize.x;
-            UV_[vert0 + 2].y = UVTopLeft.y - uvSize.y;
+            UV_[vert0 + 2].x = uvTopLeft.x + uvSize.x;
+            UV_[vert0 + 2].y = uvTopLeft.y - uvSize.y;
 
-            UV_[vert0 + 3].x = UVTopLeft.x;
-            UV_[vert0 + 3].y = UVTopLeft.y - uvSize.y;
+            UV_[vert0 + 3].x = uvTopLeft.x;
+            UV_[vert0 + 3].y = uvTopLeft.y - uvSize.y;
 
             colors_[vert0 + 0] = color;
             colors_[vert0 + 1] = color;

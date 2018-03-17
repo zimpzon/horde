@@ -7,7 +7,7 @@ namespace HordeEngine
     {
         public float MoveSpeed = 5.0f;
         public SpriteAnimationFrames_IdleRun Anim;
-        public SpriteRenderer PlayerSpriteRenderer;
+        public HordeSprite PlayerSpriteRenderer;
 
         Transform trans_;
         ActorPhysicsBody actorBody_;
@@ -24,15 +24,15 @@ namespace HordeEngine
         void OnValidate()
         {
             if (Anim != null && Anim.Idle != null && Anim.Idle.Length > 0 && PlayerSpriteRenderer != null)
-                PlayerSpriteRenderer.sprite = Anim.Idle[0];
+                PlayerSpriteRenderer.Sprite = Anim.Idle[0];
         }
 
-        void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
-        void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
+        void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
+        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            float td = Global.TimeManager.DeltaTime;
+            float td = Horde.Time.DeltaTime;
 
             if (Input.GetKeyDown(KeyCode.R))
                 Global.SceneAccess.CameraShake.AddTrauma(1.0f);
@@ -58,8 +58,8 @@ namespace HordeEngine
 
             flipX_ = Global.Crosshair.GetDirectionVector(trans_.localPosition).x < 0.0f;
 
-            PlayerSpriteRenderer.sprite = SimpleSpriteAnimator.GetAnimationSprite(isRunning ? Anim.Run : Anim.Idle, Anim.DefaultAnimationFramesPerSecond);
-            PlayerSpriteRenderer.flipX = flipX_;
+            PlayerSpriteRenderer.Sprite = SimpleSpriteAnimator.GetAnimationSprite(isRunning ? Anim.Run : Anim.Idle, Anim.DefaultAnimationFramesPerSecond);
+            PlayerSpriteRenderer.FlipX = flipX_;
         }
     }
 }

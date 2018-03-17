@@ -5,22 +5,6 @@ namespace HordeEngine
 {
     public static class Global
     {
-        static Global()
-        {
-            // When in edit mode we cannot be sure of execution order so initialize these if missing
-            if (TimeManager == null)
-            {
-                Debug.Log("Creating TimeManager for edit mode");
-                TimeManager = new TimeManager();
-            }
-
-            if (ComponentUpdater == null)
-            {
-                Debug.Log("Creating ComponentUpdater for edit mode");
-                ComponentUpdater = new ComponentUpdater();
-            }
-        }
-
         // TODO: This does NOT belong here. Probably GameManager but that will make it crazy big.
         public static void SetMap(LogicalMap map)
         {
@@ -31,8 +15,6 @@ namespace HordeEngine
 
         public static GameManager GameManager;
         public static SceneAccessScript SceneAccess;
-        public static TimeManager TimeManager;
-        public static ComponentUpdater ComponentUpdater;
         public static MapResources MapResources;
         public static LogicalMap CurrentMap;
         public static CrosshairController Crosshair;

@@ -24,13 +24,13 @@ public class CameraShake : MonoBehaviour, IComponentUpdate
         traumaValue_ = Mathf.Clamp01(traumaValue_ + amount);
     }
 
-    void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
-    void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
 
     public void ComponentUpdate(ComponentUpdatePass pass)
     {
-        float t = Global.TimeManager.SlowableTime * 10.0f;
-        float dt = Global.TimeManager.DeltaSlowableTime;
+        float t = Horde.Time.SlowableTime * 10.0f;
+        float dt = Horde.Time.DeltaSlowableTime;
         float power = traumaValue_ * traumaValue_ * traumaValue_;
         trans_.localPosition = new Vector3(
             Scale * power * Mathf.PerlinNoise(t + 1, t + 3.33f),

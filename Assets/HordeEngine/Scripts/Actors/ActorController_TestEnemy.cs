@@ -8,7 +8,7 @@ namespace HordeEngine
     {
         public float MoveSpeed = 3.0f;
         public SpriteAnimationFrames_IdleRun Anim;
-        public SpriteRenderer ActorSpriteRenderer;
+        public HordeSprite ActorSpriteRenderer;
 
         Transform trans_;
         ActorPhysicsBody actorBody_;
@@ -43,15 +43,15 @@ namespace HordeEngine
         void OnValidate()
         {
             if (Anim != null && Anim.Idle != null && Anim.Idle.Length > 0 && ActorSpriteRenderer != null)
-                ActorSpriteRenderer.sprite = Anim.Idle[0];
+                ActorSpriteRenderer.Sprite = Anim.Idle[0];
         }
 
-        void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
-        void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
+        void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
+        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            float td = Global.TimeManager.DeltaSlowableTime;
+            float td = Horde.Time.DeltaSlowableTime;
 
             if (Random.value < 0.01f)
                 actorBody_.AddForce(Random.insideUnitCircle.normalized * (Random.value * 50.0f + 1.0f));
@@ -65,8 +65,8 @@ namespace HordeEngine
                 actorBody_.Move(velocity);
             }
 
-            ActorSpriteRenderer.sprite = SimpleSpriteAnimator.GetAnimationSprite(isRunning ? Anim.Run : Anim.Idle, Anim.DefaultAnimationFramesPerSecond);
-            ActorSpriteRenderer.flipX = flipX_;
+            ActorSpriteRenderer.Sprite = SimpleSpriteAnimator.GetAnimationSprite(isRunning ? Anim.Run : Anim.Idle, Anim.DefaultAnimationFramesPerSecond);
+            ActorSpriteRenderer.FlipX = flipX_;
         }
     }
 }

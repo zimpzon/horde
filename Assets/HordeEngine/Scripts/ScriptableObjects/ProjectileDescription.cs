@@ -7,11 +7,12 @@ namespace HordeEngine
     {
         public Sprite Sprite;
         public Material Material;
-        [SerializeField, Layer] public LayerMask Layer;
         public Vector2 Size = Vector2.one;
         public Color Color = Color.white;
 
-        public ProjectileLight EmitLight;
+        public bool EmitLight;
+        public Sprite LightSprite;
+        public Material LightMaterial;
         public Vector2 LightSize = Vector2.one;
         public Color LightColor = Color.white;
         public float LightOffsetY;

@@ -11,8 +11,8 @@ public class CameraController_PlayerAndCrosshair : MonoBehaviour, IComponentUpda
         positioner_ = GetComponent<CameraPositioner>();
     }
 
-    void OnEnable() { Global.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
-    void OnDisable() { Global.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
+    void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
 
     public void ComponentUpdate(ComponentUpdatePass pass)
     {
