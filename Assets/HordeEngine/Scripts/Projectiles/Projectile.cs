@@ -6,8 +6,8 @@ namespace HordeEngine
     {
         public void Reset()
         {
-            StartTime = 0.0f;
             StartPos = Vector2.zero;
+            StartTime = 0.0f;
             Origin = Vector2.zero;
             OriginOffset = Vector2.zero;
             MaxDist = float.MaxValue;

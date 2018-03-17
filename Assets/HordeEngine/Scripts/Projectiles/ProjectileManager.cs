@@ -38,58 +38,15 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
         ActiveProjectiles--;
     }
 
-    public void FireProjectile(Vector3 pos)
+    public void SpawnProjectile(ref Projectile p)
     {
-        Vector3 p = pos;
+        projectiles_[ActiveProjectiles++] = p;
 
-        int steps = 100;
-        for (int i = 0; i < steps; ++i)
+        if (ActiveProjectiles == projectiles_.Length)
         {
-            float angle = (Mathf.Deg2Rad * 360 / steps) * i;
-            var spr = new Projectile()
-            {
-                Z = -2,
-                Size = Vector2.one * 1f,
-                LightSize = Vector2.one * 2.0f,
-                StartPos = p,
-                Origin = p,
-                EmitLight = false,
-                LightOffsetY = 0.25f,
-                Velocity = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * 0.1f,
-                CollisionSize = 1.0f,
-                Color = Color.white,
-                UpdateCallback = TickProjectile2
-            };
-            spr.ApplyDescription(Global.SceneAccess.ProjectileDescriptions.Yellow);
-
-            spr.LightColor = spr.Color;
-            spr.ActualPos = spr.StartPos;
-            projectiles_[ActiveProjectiles++] = spr;
-
-            // Not here
-            if (ActiveProjectiles == projectiles_.Length)
-            {
-                System.Array.Resize(ref projectiles_, projectiles_.Length + (projectiles_.Length / 2));
-                Debug.Log("Projectile array was expanded. Consider increasing initial capacity. New size: " + projectiles_.Length);
-            }
+            System.Array.Resize(ref projectiles_, projectiles_.Length + (projectiles_.Length / 2));
+            Debug.Log("Projectile array was expanded. Consider increasing initial capacity. New size: " + projectiles_.Length);
         }
-    }
-
-    bool TickProjectile(ref Projectile projectile, int idx)
-    {
-        projectile.Origin += projectile.Velocity * Horde.Time.DeltaTime;
-
-        projectile.ActualPos.x = projectile.Origin.x + Mathf.Sin(Time.time * 4 + idx);
-        projectile.ActualPos.y = projectile.Origin.y + Mathf.Cos(Time.time * 4 + idx);
-
-        return !CollisionUtil.IsCircleColliding(projectile.ActualPos, projectile.CollisionSize);
-    }
-
-    bool TickProjectile2(ref Projectile p, int idx)
-    {
-        p.ActualPos += p.Velocity * Horde.Time.DeltaTime;
-//        p.Velocity += p.Velocity * 1.5f * Time.deltaTime;
-        return !CollisionUtil.IsCircleColliding(p.ActualPos, p.CollisionSize);
     }
 
     void RenderProjectile(ref Projectile p)
@@ -102,7 +59,7 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
         if (p.EmitLight)
         {
             pos.y += p.LightOffsetY;
-            Horde.Sprites.AddQuad(pos, p.LightSize, 0.0f, p.Size.y, p.LightColor, p.Sprite, p.Material, lightLayer_);
+            Horde.Sprites.AddQuad(pos, p.LightSize, 0.0f, p.Size.y, p.LightColor, p.LightSprite, p.LightMaterial, lightLayer_);
         }
     }
 
