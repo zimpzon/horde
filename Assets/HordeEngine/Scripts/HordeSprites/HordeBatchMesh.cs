@@ -9,7 +9,6 @@ namespace HordeEngine
     public class HordeBatchMesh
     {
         [NonSerialized] public Mesh Mesh;
-
         [NonSerialized] public int Capacity;
         [NonSerialized] public int ActiveQuadCount;
 

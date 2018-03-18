@@ -28,7 +28,7 @@ namespace HordeEngine
 
         public void SetDebugTexture(Texture tex)
         {
-//            Global.SceneAccess.LightDebugView.texture = tex;
+            Global.SceneAccess.LightDebugView.texture = tex;
         }
 
         void Update()

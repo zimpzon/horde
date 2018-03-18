@@ -67,7 +67,7 @@ namespace HordeEngine
             int meshIdx = (QuadCount - 1) / BatchMeshQuadCapacity;
             var currentMesh = Meshes[meshIdx];
 
-            var textureRect = sprite.textureRect;
+            var textureRect = sprite.rect;
             Vector2 uvTopLeft = new Vector2(textureRect.x * textureXToUV_, (textureRect.y + textureRect.height) * textureYToUV_);
             Vector2 uvSize = new Vector2(textureRect.width * textureXToUV_, textureRect.height * textureYToUV_);
             currentMesh.AddQuad(center, size, rotationDegrees, zSkew, uvTopLeft, uvSize, color);

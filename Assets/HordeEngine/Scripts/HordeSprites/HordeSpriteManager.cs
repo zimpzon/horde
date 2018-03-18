@@ -29,11 +29,6 @@ namespace HordeEngine
                 Debug.LogFormat("HordeBatchRenderer created, idx = {0}, key = {1}", idx, key);
             }
 
-            if (idx < 0 || idx >= Batches.Count)
-            {
-                Debug.LogErrorFormat("ERROR, idx = {0}, Batches.count = {1}", idx, Batches.Count);
-            }
-
             return Batches[idx];
         }
 

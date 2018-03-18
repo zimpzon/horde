@@ -24,12 +24,6 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
         ActiveProjectiles = 0;
     }
 
-    public void RemoveProjectile(int idx)
-    {
-        projectiles_[idx] = projectiles_[ActiveProjectiles - 1];
-        ActiveProjectiles--;
-    }
-
     public void SpawnProjectile(ref Projectile p)
     {
         projectiles_[ActiveProjectiles++] = p;
@@ -66,9 +60,9 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
             bool success = projectiles_[i].UpdateCallback(ref projectiles_[i]);
             if (!success)
             {
-                RemoveProjectile(i);
-                // Don't increase i. The last item in list is moved
-                // to current spot so next iteration will process that.
+                // Overwrite current with bottom of list
+                projectiles_[i] = projectiles_[ActiveProjectiles - 1];
+                ActiveProjectiles--;
                 continue;
             }
 

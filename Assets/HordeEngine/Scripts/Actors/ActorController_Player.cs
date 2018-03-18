@@ -41,7 +41,6 @@ namespace HordeEngine
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            Horde.Engine.SetDebugTexture(PlayerSpriteRenderer.Sprite.texture);
             actorBody_.AddForce(frameForce_.normalized * 2);
             frameForce_ = Vector2.zero;
 

@@ -40,7 +40,8 @@ namespace HordeEngine
         {
             var scale = Scale;
             scale.x *= FlipX ? -1 : 1;
-            Horde.Sprites.AddQuad(trans_.position + Offset, scale, 0.0f, Scale.y, Color, Sprite, Material, layer_);
+            if (Sprite != null && Material != null)
+                Horde.Sprites.AddQuad(trans_.position + Offset, scale, 0.0f, Scale.y, Color, Sprite, Material, layer_);
         }
     }
 }
