@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class ProjectileManager : MonoBehaviour, IComponentUpdate
 {
-    public int InitialCapacity = 1000;
-    [SerializeField, Layer] public LayerMask ProjectileLayer;
-    [SerializeField, Layer] public LayerMask LightLayer;
+    public int InitialCapacity = 5000;
     public float OffsetY;
 
     // To allow updating structs in place we have to use array. A List<> will return a copy when accessing an element.
@@ -15,12 +13,6 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
 
     [Header("Debug")]
     public int ActiveProjectiles;
-
-    void UpdateLayers()
-    {
-        projectileLayer_ = (int)ProjectileLayer;
-        lightLayer_ = (int)LightLayer;
-    }
 
     void Awake()
     {
@@ -54,32 +46,24 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
         Vector3 pos = p.ActualPos;
         pos.z = p.Z;
         pos.y += OffsetY;
-        Horde.Sprites.AddQuad(pos, p.Size, 0.0f, p.Size.y, p.Color, p.Sprite, p.Material, projectileLayer_);
+        Horde.Sprites.AddQuad(pos, p.Size, p.RotationDegrees, p.Size.y, p.Color, p.Sprite, p.Material, projectileLayer_);
 
         if (p.EmitLight)
         {
             pos.y += p.LightOffsetY;
-            Horde.Sprites.AddQuad(pos, p.LightSize, 0.0f, p.Size.y, p.LightColor, p.LightSprite, p.LightMaterial, lightLayer_);
+            Horde.Sprites.AddQuad(pos, p.LightSize, p.RotationDegrees, p.Size.y, p.LightColor, p.LightSprite, p.LightMaterial, lightLayer_);
         }
     }
 
-    void OnEnable()
-    {
-        UpdateLayers();
-        Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late);
-    }
-
-    void OnDisable()
-    {
-        Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late);
-    }
+    void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Internal_DrawMeshes); }
+    void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Internal_DrawMeshes); }
 
     public void ComponentUpdate(ComponentUpdatePass pass)
     {
         int i = 0;
         while (i < ActiveProjectiles)
         {
-            bool success = projectiles_[i].UpdateCallback(ref projectiles_[i], i);
+            bool success = projectiles_[i].UpdateCallback(ref projectiles_[i]);
             if (!success)
             {
                 RemoveProjectile(i);

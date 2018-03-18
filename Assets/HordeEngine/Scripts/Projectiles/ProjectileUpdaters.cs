@@ -4,23 +4,49 @@ namespace HordeEngine
 {
     public static class ProjectileUpdaters
     {
-        public static bool BasicMove(ref Projectile projectile, int idx)
+        public static ActorController_Player Player;
+        public static Vector2 PlayerPos;
+        public static float PlayerSize;
+
+        static void CollidePlayer(Vector2 pos, float size, Vector2 dir)
         {
-            projectile.ActualPos += projectile.Velocity * Horde.Time.DeltaTime;
-            return !CollisionUtil.IsCircleColliding(projectile.ActualPos, projectile.CollisionSize * 0.8f);
+            float s2 = PlayerSize + size;
+            if (Mathf.Abs(pos.x - PlayerPos.x) < s2 && Mathf.Abs(pos.y - PlayerPos.y) < s2)
+            {
+                Player.Hit(dir);
+            }
         }
 
-        public static bool UpdateProjectile(ref Projectile projectile, int idx)
+        public static bool BasicMove(ref Projectile p)
         {
-            projectile.Origin += projectile.Velocity * Horde.Time.DeltaTime;
+            p.ActualPos += p.Velocity * Horde.Time.DeltaTime;
+            if (p.CollidePlayer)
+                CollidePlayer(p.ActualPos, p.CollisionSize, p.Velocity);
 
-            projectile.ActualPos.x = projectile.Origin.x + Mathf.Sin(Time.time * 4 + idx);
-            projectile.ActualPos.y = projectile.Origin.y + Mathf.Cos(Time.time * 4 + idx);
-
-            return !CollisionUtil.IsCircleColliding(projectile.ActualPos, projectile.CollisionSize);
+            return !CollisionUtil.IsCircleColliding(p.ActualPos, p.CollisionSize);
         }
 
-        public static bool UpdateProjectile2(ref Projectile p, int idx)
+        public static bool CirclingMove(ref Projectile p)
+        {
+            p.Origin += p.Velocity * Horde.Time.DeltaTime;
+            var oldPos = p.ActualPos;
+
+            float deg = Time.time * 100 + p.Idx * 5;
+            float sin = Mathf.Sin(-deg * Mathf.Deg2Rad);
+            float cos = Mathf.Cos(-deg * Mathf.Deg2Rad);
+
+            p.ActualPos.x = p.Origin.x + cos - sin;
+            p.ActualPos.y = p.Origin.y + sin + cos; 
+
+            var move = p.ActualPos - oldPos;
+            p.RotationDegrees = Mathf.Atan2(move.x, move.y) * Mathf.Rad2Deg;
+            if (p.CollidePlayer)
+                CollidePlayer(p.ActualPos, p.CollisionSize, p.Velocity);
+
+            return !CollisionUtil.IsCircleColliding(p.ActualPos, p.CollisionSize);
+        }
+
+        public static bool UpdateProjectile2(ref Projectile p)
         {
             p.ActualPos += p.Velocity * Horde.Time.DeltaTime;
             float dist = (p.ActualPos - p.StartPos).sqrMagnitude;

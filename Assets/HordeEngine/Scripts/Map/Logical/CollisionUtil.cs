@@ -11,11 +11,15 @@ public static class CollisionUtil
     public const float MaxVelocityPerFrame = 0.75f;
     public const float MaxVelocitySqrPerFrame = MaxVelocityPerFrame * MaxVelocityPerFrame;
 
+    static int lastMapIdx_;
+
     public static void SetCollisionMap(byte[] map, int w, int h)
     {
         CollisionMap = map;
         Width = w;
         Height = h;
+        lastMapIdx_ = (w * h) - 1;
+        Debug.LogFormat("Collision map, w = {0}, h = {1}, length = {2}", w, h, map.Length);
     }
 
     public static void AddCollisionPoints(List<Vector2> list, Vector2 lineCenter, float width, float depth, float granularity)
@@ -214,6 +218,9 @@ public static class CollisionUtil
         int x = (int)pos.x;
         int y = -(int)pos.y;
         int collIdx = y * Width + x;
+        if (collIdx > lastMapIdx_ || collIdx < 0)
+            return MapConstants.CollOutsideMap;
+
         var collision = CollisionMap[collIdx];
         return collision;
     }

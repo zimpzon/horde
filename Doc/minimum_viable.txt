@@ -1,3 +1,0 @@
-Main platform is WebGL. Bullettime was selling point.
-Sacrifice dynamic chunk updates and batch the ¤#"! out of it.
-Draw dynamic objects on top (doors)

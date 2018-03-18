@@ -20,7 +20,7 @@ namespace HordeEngine
         {
             EnsureHubMapCreated();
 
-            Global.SceneAccess.MiniMap.SetMap(hubMap_);
+//            Global.SceneAccess.MiniMap.SetMap(hubMap_);
             Global.SetMap(hubMap_);
             return true;
         }

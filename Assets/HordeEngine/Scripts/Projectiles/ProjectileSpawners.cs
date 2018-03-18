@@ -4,22 +4,28 @@ namespace HordeEngine
 {
     public static class ProjectileSpawners
     {
-        public static void SpawnCircle(ProjectileDescription desc, Vector2 origin, int count, float velocity, ProjectileManager manager, Projectile.TickDelegate updateFunc)
+        public static void SpawnCircle(ProjectileDescription desc, bool collidePlayer, Vector2 origin, int count, float velocity, ProjectileManager manager, Projectile.TickDelegate updateFunc)
         {
             for (int i = 0; i < count; ++i)
             {
-                float angle = (Mathf.Deg2Rad * 360 / count) * i;
+                float angleDegrees = (360.0f / count) * i;
+                float angle = angleDegrees * Mathf.Deg2Rad;
                 var dir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * 0.5f;
                 var pos = origin + dir * 0.5f;
+
                 var p = new Projectile()
                 {
+                    Idx = i,
                     StartPos = pos,
                     Origin = pos,
                     ActualPos = pos,
+                    RotationDegrees = angleDegrees,
                     Velocity = dir * velocity,
-                    UpdateCallback = updateFunc
+                    UpdateCallback = updateFunc,
+                    CollidePlayer = collidePlayer,
                 };
-                p.ApplyDescription(Global.SceneAccess.ProjectileDescriptions.Yellow);
+
+                p.ApplyDescription(desc);
                 manager.SpawnProjectile(ref p);
             }
         }
@@ -34,7 +40,7 @@ namespace HordeEngine
                     StartPos = origin + pos,
                     OriginOffset = origin + pos,
                     Velocity = velocity,
-                    UpdateCallback = ProjectileUpdaters.UpdateProjectile,
+                    UpdateCallback = ProjectileUpdaters.BasicMove,
                 };
                 p.ActualPos = p.StartPos;
                 p.ApplyDescription(desc);

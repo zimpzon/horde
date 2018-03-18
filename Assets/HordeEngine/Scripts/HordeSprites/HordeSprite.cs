@@ -31,10 +31,10 @@ namespace HordeEngine
         {
             trans_ = transform;
             UpdateLayer();
-            Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default);
+            Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late);
         }
 
-        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
+        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {

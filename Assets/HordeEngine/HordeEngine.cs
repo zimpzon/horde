@@ -7,6 +7,7 @@ namespace HordeEngine
     /// </summary>
     public static class Horde
     {
+        public static HordeEngine Engine;
         public static ComponentUpdater ComponentUpdater = new ComponentUpdater();
         public static TimeManager Time = new TimeManager();
         public static HordeSpriteManager Sprites;
@@ -19,6 +20,16 @@ namespace HordeEngine
     public class HordeEngine : MonoBehaviour
     {
         public float SlowableTimeScale = 1.0f;
+
+        void Awake()
+        {
+            Horde.Engine = this;
+        }
+
+        public void SetDebugTexture(Texture tex)
+        {
+//            Global.SceneAccess.LightDebugView.texture = tex;
+        }
 
         void Update()
         {

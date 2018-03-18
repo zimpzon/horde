@@ -30,17 +30,33 @@ namespace HordeEngine
         void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
         void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
+        Vector2 frameForce_;
+        public void Hit(Vector2 direction)
+        {
+            if (dodge_.IsDodging)
+                return;
+
+            frameForce_ += direction.normalized;
+        }
+
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
+            Horde.Engine.SetDebugTexture(PlayerSpriteRenderer.Sprite.texture);
+            actorBody_.AddForce(frameForce_.normalized * 2);
+            frameForce_ = Vector2.zero;
+
+            ProjectileUpdaters.Player = this;
+            ProjectileUpdaters.PlayerPos = trans_.position + (Vector3)actorBody_.CollisionCircleOffset;
+            ProjectileUpdaters.PlayerSize = actorBody_.CollisionCircleSize;
+
             float td = Horde.Time.DeltaTime;
 
             if (Input.GetKeyDown(KeyCode.R))
                 Global.SceneAccess.CameraShake.AddTrauma(1.0f);
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))
             {
-                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileDescriptions.Yellow, trans_.localPosition, 10, 5.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
-//                ProjectileSpawners.SpawnPattern(Global.SceneAccess.ProjectileDescriptions.Yellow, trans_.localPosition, Random.insideUnitCircle.normalized, ProjectilePatterns.Test, Global.SceneAccess.ProjectileManager);
+                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileDescriptions.Yellow, false, trans_.localPosition, 200, 5.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
             }
 
             Vector3 inputVec = Vector3.zero;

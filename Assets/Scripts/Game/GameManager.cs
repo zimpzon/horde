@@ -75,11 +75,7 @@ namespace HordeEngine
             Application.Quit();
         }
 
-        private void Update()
-        {
-            Global.SceneAccess.LightDebugView.texture = Global.SceneAccess.LightingCam.targetTexture;
-        }
-        
+       
         void Start()
         {
             StartCoroutine(GameStateLoop());

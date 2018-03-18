@@ -9,19 +9,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 324343e13017d384895b49303c9d6ca3, type: 3}
-  m_Name: SoftYellow
+  m_Name: NpcBullet
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: 410a3a589052dd44f983e2091bed430c, type: 3}
+  Sprite: {fileID: 21300072, guid: c06c7c7308b7a864d8561de763f226da, type: 3}
   Material: {fileID: 2100000, guid: af61deeb06b5a4a469cbd23111a5ed8f, type: 2}
-  Size: {x: 1, y: 1}
+  Size: {x: 0.25, y: 0.5}
   Color: {r: 1, g: 1, b: 1, a: 1}
   EmitLight: 1
   LightSprite: {fileID: 21300000, guid: b0b471c1f44cc2a4e81613274f102186, type: 3}
   LightMaterial: {fileID: 2100000, guid: f37c811320e1e24418a34046d01f8a5c, type: 2}
-  LightSize: {x: 4, y: 3}
-  LightColor: {r: 1, g: 0.64893967, b: 0, a: 1}
+  LightSize: {x: 3, y: 3}
+  LightColor: {r: 0.9716981, g: 0.9716907, b: 0.637104, a: 1}
   LightOffsetY: 0
-  CollisionSize: 0.8
+  CollisionSize: 0.3
   BounceWalls: 0
   MaxWallBounces: 2
   MaxDistance: 20

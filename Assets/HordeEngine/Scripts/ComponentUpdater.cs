@@ -22,7 +22,7 @@ namespace HordeEngine
     /// </summary>
     public enum ComponentUpdatePass
     {
-        CollisionSetup, Early, Default,
+        CollisionSetup, Early, Default, Physics,
         // Unity Update() happens here
         Late, Internal_DrawMeshes,
         // Unity LateUpdate() happens here

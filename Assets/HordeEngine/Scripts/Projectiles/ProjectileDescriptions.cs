@@ -5,6 +5,7 @@ namespace HordeEngine
     public class ProjectileDescriptions : MonoBehaviour
     {
         public ProjectileDescription Yellow;
-        public ProjectileDescription PurpleSomething;
+        public ProjectileDescription NpcBullet;
+        public ProjectileDescription NpcBullet2;
     }
 }

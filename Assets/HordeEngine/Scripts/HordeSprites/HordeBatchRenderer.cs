@@ -9,13 +9,13 @@ namespace HordeEngine
     /// </summary>
     public class HordeBatchRenderer
     {
-        public Texture Texture;
-        public Material Material;
-        public long Id;
-        public int Layer;
-        public int BatchMeshQuadCapacity = 256;
-        public List<HordeBatchMesh> Meshes = new List<HordeBatchMesh>();
-        public int QuadCount;
+        [NonSerialized]public Texture Texture;
+        [NonSerialized]public Material Material;
+        [NonSerialized]public long Id;
+        [NonSerialized]public int Layer;
+        [NonSerialized]public int BatchMeshQuadCapacity = 256;
+        [NonSerialized]public List<HordeBatchMesh> Meshes = new List<HordeBatchMesh>();
+        [NonSerialized] public int QuadCount;
 
         int totalQuadCapacity_;
         float textureXToUV_;
@@ -67,7 +67,7 @@ namespace HordeEngine
             int meshIdx = (QuadCount - 1) / BatchMeshQuadCapacity;
             var currentMesh = Meshes[meshIdx];
 
-            var textureRect = sprite.rect;
+            var textureRect = sprite.textureRect;
             Vector2 uvTopLeft = new Vector2(textureRect.x * textureXToUV_, (textureRect.y + textureRect.height) * textureYToUV_);
             Vector2 uvSize = new Vector2(textureRect.width * textureXToUV_, textureRect.height * textureYToUV_);
             currentMesh.AddQuad(center, size, rotationDegrees, zSkew, uvTopLeft, uvSize, color);

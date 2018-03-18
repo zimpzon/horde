@@ -8,10 +8,10 @@ namespace HordeEngine
     /// </summary>
     public class HordeBatchMesh
     {
-        public Mesh Mesh;
+        [NonSerialized] public Mesh Mesh;
 
-        public int Capacity;
-        public int ActiveQuadCount;
+        [NonSerialized] public int Capacity;
+        [NonSerialized] public int ActiveQuadCount;
 
         Vector3[] vertices_;
         Vector2[] UV_;
@@ -119,16 +119,23 @@ namespace HordeEngine
             float halfW = size.x * 0.5f;
             float halfH = size.y * 0.5f;
 
-            int vert0 = ActiveQuadCount * 4;
-            vertices_[vert0 + 0].x = center.x - halfW;
-            vertices_[vert0 + 1].x = center.x + halfW;
-            vertices_[vert0 + 2].x = center.x + halfW;
-            vertices_[vert0 + 3].x = center.x - halfW;
+            float sin = Mathf.Sin(-rotationDegrees * Mathf.Deg2Rad);
+            float cos = Mathf.Cos(-rotationDegrees * Mathf.Deg2Rad);
+            float sinX = halfW * sin;
+            float cosX = halfW * cos;
+            float sinY = halfH * sin;
+            float cosY = halfH * cos;
 
-            vertices_[vert0 + 0].y = center.y + halfH;
-            vertices_[vert0 + 1].y = center.y + halfH;
-            vertices_[vert0 + 2].y = center.y - halfH;
-            vertices_[vert0 + 3].y = center.y - halfH;
+            int vert0 = ActiveQuadCount * 4;
+            vertices_[vert0 + 0].x = (-halfW * cos -  halfH * sin) + center.x;
+            vertices_[vert0 + 1].x = ( halfW * cos -  halfH * sin) + center.x;
+            vertices_[vert0 + 2].x = ( halfW * cos - -halfH * sin) + center.x;
+            vertices_[vert0 + 3].x = (-halfW * cos - -halfH * sin) + center.x;
+
+            vertices_[vert0 + 0].y = (-halfW * sin +  halfH * cos) + center.y;
+            vertices_[vert0 + 1].y = ( halfW * sin +  halfH * cos) + center.y;
+            vertices_[vert0 + 2].y = ( halfW * sin + -halfH * cos) + center.y;
+            vertices_[vert0 + 3].y = (-halfW * sin + -halfH * cos) + center.y;
 
             vertices_[vert0 + 0].z = center.z - zSkew;
             vertices_[vert0 + 1].z = center.z - zSkew;

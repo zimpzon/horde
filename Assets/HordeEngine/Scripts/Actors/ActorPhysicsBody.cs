@@ -10,8 +10,10 @@ namespace HordeEngine
         public float Mass = 1.0f;
         [Range(0.0f, 1.0f)]
         public float Bounciness = 0.5f;
-        public float CollisionGranularity = 0.49f;
-        public Vector2 Offset;
+        public float MapCollisionGranularity = 0.49f;
+        public Vector2 MapCollisionOffset;
+        public float CollisionCircleSize = 1.0f;
+        public Vector2 CollisionCircleOffset;
         public bool UseSlowableTime = true;
 
         Vector2 force_;
@@ -20,13 +22,14 @@ namespace HordeEngine
 
         void OnDrawGizmosSelected()
         {
-            CollisionUtil.AddCollisionPoints(CollisionUtil.TempList, transform.localPosition + (Vector3)Offset, Width, Depth, CollisionGranularity);
+            CollisionUtil.AddCollisionPoints(CollisionUtil.TempList, transform.localPosition + (Vector3)MapCollisionOffset, Width, Depth, MapCollisionGranularity);
             Gizmos.color = Color.green;
             for (int i = 0; i < CollisionUtil.TempList.Count; ++i)
             {
                 Vector3 point = CollisionUtil.TempList[i];
                 Gizmos.DrawWireCube(point, Vector3.one * 0.1f);
             }
+            Gizmos.DrawWireSphere(transform.localPosition + (Vector3)CollisionCircleOffset, CollisionCircleSize);
         }
 
         private void Awake()
@@ -53,8 +56,8 @@ namespace HordeEngine
             pendingMovement_ += velocity;
         }
 
-        void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
-        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+        void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Physics); }
+        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Physics); }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
@@ -66,7 +69,7 @@ namespace HordeEngine
             if (isMoving && CollisionUtil.CollisionMap != null)
             {
                 // Start at the left edge of the body, then step right and add points.
-                CollisionUtil.AddCollisionPoints(CollisionUtil.TempList, trans_.localPosition + (Vector3)Offset, Width, Depth, CollisionGranularity);
+                CollisionUtil.AddCollisionPoints(CollisionUtil.TempList, trans_.localPosition + (Vector3)MapCollisionOffset, Width, Depth, MapCollisionGranularity);
 
                 Vector2 maxAllowedMove;
                 Vector2 collisionNormal;

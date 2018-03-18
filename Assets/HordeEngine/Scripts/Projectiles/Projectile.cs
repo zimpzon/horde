@@ -6,6 +6,7 @@ namespace HordeEngine
     {
         public void Reset()
         {
+            Idx = 0;
             StartPos = Vector2.zero;
             StartTime = 0.0f;
             Origin = Vector2.zero;
@@ -48,6 +49,7 @@ namespace HordeEngine
             MaxTime = desc.MaxTime;
         }
 
+        public int Idx;
         public float StartTime;
         public Vector2 StartPos;
         public Vector2 Origin;
@@ -66,15 +68,17 @@ namespace HordeEngine
         public Color LightColor;
         public float LightOffsetY;
 
+        public bool CollidePlayer;
         public float CollisionSize;
         public bool BounceWalls;
         public int BouncesLeft;
 
         public Vector2 Velocity;
         public Vector2 ActualPos;
+        public float RotationDegrees;
         public float Z;
 
-        public delegate bool TickDelegate(ref Projectile projectile, int idx);
+        public delegate bool TickDelegate(ref Projectile projectile);
         public TickDelegate UpdateCallback;
     }
 }

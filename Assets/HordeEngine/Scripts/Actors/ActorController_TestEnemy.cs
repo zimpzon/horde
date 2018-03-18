@@ -24,7 +24,7 @@ namespace HordeEngine
 
         private void Start()
         {
-//            StartCoroutine(Think());
+            StartCoroutine(Think());
         }
 
         Vector2 dir_ = Vector2.zero;
@@ -33,10 +33,14 @@ namespace HordeEngine
         {
             while (true)
             {
-                yield return new WaitForSeconds(Random.value * 1 + 0.5f);
+                // Walk
                 dir_ = Random.insideUnitCircle.normalized;
-                yield return new WaitForSeconds(Random.value * 1 + 0.5f);
+                yield return new WaitForSeconds(Random.value * 3 + 3);
                 dir_ = Vector2.zero;
+                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileDescriptions.NpcBullet2, true, trans_.localPosition + Vector3.down * 0.5f, 50, 10.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.CirclingMove);
+                yield return new WaitForSeconds(2);
+                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileDescriptions.NpcBullet, true, trans_.localPosition + Vector3.down * 0.5f, 100, 8.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
+                yield return new WaitForSeconds(2);
             }
         }
 
@@ -52,9 +56,6 @@ namespace HordeEngine
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
             float td = Horde.Time.DeltaSlowableTime;
-
-            if (Random.value < 0.01f)
-                actorBody_.AddForce(Random.insideUnitCircle.normalized * (Random.value * 50.0f + 1.0f));
 
             bool isRunning = dir_.sqrMagnitude > 0.0f;
             if (isRunning)
