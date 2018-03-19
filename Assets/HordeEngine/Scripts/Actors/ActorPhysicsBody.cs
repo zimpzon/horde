@@ -20,7 +20,7 @@ namespace HordeEngine
         Vector2 pendingMovement_;
         Transform trans_;
 
-        void OnDrawGizmosSelected()
+        void OnDrawGizmos()
         {
             CollisionUtil.AddCollisionPoints(CollisionUtil.TempList, transform.localPosition + (Vector3)MapCollisionOffset, Width, Depth, MapCollisionGranularity);
             Gizmos.color = Color.green;

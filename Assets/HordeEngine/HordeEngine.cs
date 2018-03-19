@@ -38,7 +38,6 @@ namespace HordeEngine
             Horde.Time.UpdateTime(Time.deltaTime);
 
             Horde.ComponentUpdater.DoUpdate();
-
         }
 
         void LateUpdate()

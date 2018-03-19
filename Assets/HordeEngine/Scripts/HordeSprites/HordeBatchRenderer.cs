@@ -13,7 +13,7 @@ namespace HordeEngine
         [NonSerialized]public Material Material;
         [NonSerialized]public UInt64 Id;
         [NonSerialized]public int Layer;
-        [NonSerialized]public int BatchMeshQuadCapacity = 256;
+        [NonSerialized]public int QuadsPerMesh;
         [NonSerialized]public List<HordeBatchMesh> Meshes = new List<HordeBatchMesh>();
         [NonSerialized] public int QuadCount;
 
@@ -21,9 +21,10 @@ namespace HordeEngine
         float textureXToUV_;
         float textureYToUV_;
 
-        public HordeBatchRenderer(UInt64 id, Texture texture, Material material, int layer)
+        public HordeBatchRenderer(UInt64 id, Texture texture, Material material, int layer, int quadsPerMesh)
         {
             Layer = layer;
+            QuadsPerMesh = quadsPerMesh;
 
             Texture = texture;
             textureXToUV_ = 1.0f / Texture.width;
@@ -38,7 +39,7 @@ namespace HordeEngine
 
         public int GetActiveMeshCount()
         {
-            return (QuadCount + BatchMeshQuadCapacity - 1) / BatchMeshQuadCapacity;
+            return (QuadCount + QuadsPerMesh - 1) / QuadsPerMesh;
         }
 
         public void Clear()
@@ -60,12 +61,12 @@ namespace HordeEngine
             if (QuadCount > totalQuadCapacity_)
             {
                 // Optimization TODO: Could get this from a cache and return them on clear.
-                var newMesh = new HordeBatchMesh(BatchMeshQuadCapacity);
+                var newMesh = new HordeBatchMesh(QuadsPerMesh);
                 Meshes.Add(newMesh);
-                totalQuadCapacity_ += BatchMeshQuadCapacity;
+                totalQuadCapacity_ += QuadsPerMesh;
             }
 
-            int meshIdx = (QuadCount - 1) / BatchMeshQuadCapacity;
+            int meshIdx = (QuadCount - 1) / QuadsPerMesh;
             var currentMesh = Meshes[meshIdx];
 
             var textureRect = sprite.rect;

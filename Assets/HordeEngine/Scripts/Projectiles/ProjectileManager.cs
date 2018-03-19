@@ -14,6 +14,18 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
     [Header("Debug")]
     public int ActiveProjectiles;
 
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        for (int i = 0; i < ActiveProjectiles; ++i)
+        {
+            var p = projectiles_[i];
+            var pos = p.ActualPos;
+            pos.y += OffsetY;
+            Gizmos.DrawWireSphere(pos, p.CollisionSize);
+        }
+    }
+
     void Awake()
     {
         projectiles_ = new Projectile[InitialCapacity];

@@ -43,6 +43,7 @@ namespace HordeEngine
             Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late);
         }
 
+        // TODO
         // Enable whole GO: nothing drawn.
         // Click any component in inspector: drawn
         public void ComponentUpdate(ComponentUpdatePass pass)

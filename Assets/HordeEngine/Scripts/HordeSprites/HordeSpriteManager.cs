@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEditor;
 
 namespace HordeEngine
 {
@@ -9,20 +8,11 @@ namespace HordeEngine
     public class HordeSpriteManager : MonoBehaviour, IComponentUpdate
     {
         public Vector3 Offset = Vector3.zero;
+        [NonSerialized] public int QuadsPerBatchMesh = 256;
         [NonSerialized] public int SpritesRendered;
 
         [NonSerialized] public List<HordeBatchRenderer> Batches = new List<HordeBatchRenderer>();
         [NonSerialized] List<UInt64> keys_ = new List<UInt64>();
-
-        public HordeSpriteManager()
-        {
-            Debug.Log("HordeSpriteManager created");
-        }
-
-        public void OnDestroy()
-        {
-            Debug.Log("HordeSpriteManager destroy");
-        }
 
         public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color color, Sprite sprite, Material material, int layer)
         {
@@ -45,7 +35,7 @@ namespace HordeEngine
 
         private int CreateBatchRenderer(UInt64 key, Texture sprite, Material material, int layer)
         {
-            HordeBatchRenderer batch = new HordeBatchRenderer(key, sprite, material, layer);
+            HordeBatchRenderer batch = new HordeBatchRenderer(key, sprite, material, layer, QuadsPerBatchMesh);
             Batches.Add(batch);
             keys_.Add(key);
             return Batches.Count - 1;
@@ -75,10 +65,10 @@ namespace HordeEngine
                 int activeMeshes = batch.GetActiveMeshCount();
                 for (int j = 0; j < activeMeshes; ++j)
                 {
+                    // TODO: DrawMesh does not always show in the editor. Toggling a sprite on/off lags behind one update.
                     Graphics.DrawMesh(batch.Meshes[j].Mesh, matrix, batch.Material, batch.Layer);
                     SpritesRendered += batch.Meshes[j].ActiveQuadCount;
                 }
-
                 batch.Clear();
             }
         }
