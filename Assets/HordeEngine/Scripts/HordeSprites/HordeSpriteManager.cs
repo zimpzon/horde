@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace HordeEngine
 {
@@ -11,7 +12,17 @@ namespace HordeEngine
         [NonSerialized] public int SpritesRendered;
 
         [NonSerialized] public List<HordeBatchRenderer> Batches = new List<HordeBatchRenderer>();
-        [NonSerialized] List<long> keys_ = new List<long>();
+        [NonSerialized] List<UInt64> keys_ = new List<UInt64>();
+
+        public HordeSpriteManager()
+        {
+            Debug.Log("HordeSpriteManager created");
+        }
+
+        public void OnDestroy()
+        {
+            Debug.Log("HordeSpriteManager destroy");
+        }
 
         public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color color, Sprite sprite, Material material, int layer)
         {
@@ -21,7 +32,7 @@ namespace HordeEngine
 
         public HordeBatchRenderer GetBatchRenderer(Sprite sprite, Material material, int layer)
         {
-            long key = sprite.texture.GetInstanceID() << 29 + material.GetInstanceID() << 6 + layer;
+            UInt64 key = ((UInt64)sprite.texture.GetInstanceID() << 29) + ((UInt64)material.GetInstanceID() << 6) + (UInt64)layer;
             int idx = keys_.IndexOf(key);
             if (idx < 0)
             {
@@ -32,7 +43,7 @@ namespace HordeEngine
             return Batches[idx];
         }
 
-        private int CreateBatchRenderer(long key, Texture sprite, Material material, int layer)
+        private int CreateBatchRenderer(UInt64 key, Texture sprite, Material material, int layer)
         {
             HordeBatchRenderer batch = new HordeBatchRenderer(key, sprite, material, layer);
             Batches.Add(batch);

@@ -11,7 +11,7 @@ namespace HordeEngine
     {
         [NonSerialized]public Texture Texture;
         [NonSerialized]public Material Material;
-        [NonSerialized]public long Id;
+        [NonSerialized]public UInt64 Id;
         [NonSerialized]public int Layer;
         [NonSerialized]public int BatchMeshQuadCapacity = 256;
         [NonSerialized]public List<HordeBatchMesh> Meshes = new List<HordeBatchMesh>();
@@ -21,7 +21,7 @@ namespace HordeEngine
         float textureXToUV_;
         float textureYToUV_;
 
-        public HordeBatchRenderer(long id, Texture texture, Material material, int layer)
+        public HordeBatchRenderer(UInt64 id, Texture texture, Material material, int layer)
         {
             Layer = layer;
 
@@ -31,6 +31,7 @@ namespace HordeEngine
 
             Material = new Material(material)
             {
+                hideFlags = HideFlags.HideAndDontSave,
                 mainTexture = texture
             };
         }

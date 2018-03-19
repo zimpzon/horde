@@ -585,9 +585,9 @@ GameObject:
   - component: {fileID: 280185227}
   - component: {fileID: 280185231}
   - component: {fileID: 280185230}
+  - component: {fileID: 280185232}
   - component: {fileID: 280185233}
   - component: {fileID: 280185229}
-  - component: {fileID: 280185232}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -649,6 +649,7 @@ MonoBehaviour:
   Color: {r: 0.501958, g: 0.754717, b: 0.5297119, a: 1}
   Scale: {x: 6, y: 4}
   Offset: {x: 0.05, y: -1.02, z: 0}
+  Rotation: 0
 --- !u!114 &280185230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,7 +663,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 8
   Anim: {fileID: 11400000, guid: 29b7102305a0d6a45b13abed44da03ea, type: 2}
-  PlayerSpriteRenderer: {fileID: 0}
+  PlayerSpriteRenderer: {fileID: 280185232}
 --- !u!114 &280185231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -688,15 +689,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9217b1eb7f98a994eb06ad7bb03d0d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 0}
-  Material: {fileID: 0}
+  Sprite: {fileID: 21300002, guid: b23c0558d8a497542a8e7c715f99ac45, type: 3}
+  Material: {fileID: 2100000, guid: c36c29970b9b17347acc7eda37b670ab, type: 2}
   FlipX: 0
   Layer:
     serializedVersion: 2
     m_Bits: 0
   Color: {r: 1, g: 1, b: 1, a: 1}
-  Scale: {x: 1, y: 1}
+  Scale: {x: 1.5, y: 1.5}
   Offset: {x: 0, y: 0, z: 0}
+  Rotation: 0
 --- !u!114 &280185233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -717,6 +719,7 @@ MonoBehaviour:
   Color: {r: 0, g: 1, b: 0.092865944, a: 1}
   Scale: {x: 1.5, y: 0.5}
   Offset: {x: 0, y: -0.88, z: 0}
+  Rotation: 0
 --- !u!20 &396260837
 Camera:
   m_ObjectHideFlags: 0
@@ -1493,7 +1496,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 3
   Anim: {fileID: 11400000, guid: c76a6674d88df344ca094d26dce7a38c, type: 2}
-  ActorSpriteRenderer: {fileID: 0}
+  ActorSpriteRenderer: {fileID: 954179259}
 --- !u!114 &954179257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1514,6 +1517,7 @@ MonoBehaviour:
   Color: {r: 0.501958, g: 0.754717, b: 0.5297119, a: 1}
   Scale: {x: 6, y: 4}
   Offset: {x: 0.05, y: -1.02, z: 0}
+  Rotation: 0
 --- !u!114 &954179258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1525,8 +1529,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9217b1eb7f98a994eb06ad7bb03d0d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300000, guid: f7d5ea9e498708342bd06845d05945db, type: 3}
-  Material: {fileID: 2100000, guid: 7e34f71e6090897448332fe724a852a4, type: 2}
+  Sprite: {fileID: 21300000, guid: 682b167072b6774478c9d8034f115b62, type: 3}
+  Material: {fileID: 2100000, guid: c36c29970b9b17347acc7eda37b670ab, type: 2}
   FlipX: 0
   Layer:
     serializedVersion: 2
@@ -1534,6 +1538,7 @@ MonoBehaviour:
   Color: {r: 0, g: 1, b: 0.092865944, a: 1}
   Scale: {x: 1.5, y: 0.5}
   Offset: {x: 0, y: -0.88, z: 0}
+  Rotation: 0
 --- !u!114 &954179259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1545,15 +1550,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9217b1eb7f98a994eb06ad7bb03d0d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 21300002, guid: b23c0558d8a497542a8e7c715f99ac45, type: 3}
+  Sprite: {fileID: 21300002, guid: aef89d2c85eb8f040897175efa3e8bb4, type: 3}
   Material: {fileID: 2100000, guid: c36c29970b9b17347acc7eda37b670ab, type: 2}
   FlipX: 0
   Layer:
     serializedVersion: 2
     m_Bits: 0
   Color: {r: 1, g: 1, b: 1, a: 1}
-  Scale: {x: 1.2, y: 2}
+  Scale: {x: 1, y: 1}
   Offset: {x: 0, y: 0, z: -0.5}
+  Rotation: 0
 --- !u!114 &954179260
 MonoBehaviour:
   m_ObjectHideFlags: 0

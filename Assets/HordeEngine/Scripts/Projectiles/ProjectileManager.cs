@@ -45,7 +45,7 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
         if (p.EmitLight)
         {
             pos.y += p.LightOffsetY;
-            Horde.Sprites.AddQuad(pos, p.LightSize, p.RotationDegrees, p.Size.y, p.LightColor, p.LightSprite, p.LightMaterial, lightLayer_);
+            Horde.Sprites.AddQuad(pos, p.LightSize, p.RotationDegrees, p.LightSize.y, p.LightColor, p.LightSprite, p.LightMaterial, lightLayer_);
         }
     }
 

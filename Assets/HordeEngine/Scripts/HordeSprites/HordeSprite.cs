@@ -12,14 +12,18 @@ namespace HordeEngine
         public Color Color = Color.white;
         public Vector2 Scale = Vector2.one;
         public Vector3 Offset = Vector3.zero;
+        public float Rotation;
 
         int layer_;
 
         Transform trans_;
 
+        /// <summary>
+        /// Cache the conversion from LayerMask to (int)layer to avoid engine calls per frame.
+        /// </summary>
         void UpdateLayer()
         {
-            layer_ = Layer;
+            layer_ = (int)Layer;
         }
 
         void OnValidate()
@@ -34,14 +38,19 @@ namespace HordeEngine
             Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late);
         }
 
-        void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
+        void OnDisable()
+        {
+            Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late);
+        }
 
+        // Enable whole GO: nothing drawn.
+        // Click any component in inspector: drawn
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
             var scale = Scale;
             scale.x *= FlipX ? -1 : 1;
             if (Sprite != null && Material != null)
-                Horde.Sprites.AddQuad(trans_.position + Offset, scale, 0.0f, Scale.y, Color, Sprite, Material, layer_);
+                Horde.Sprites.AddQuad(trans_.position + Offset, scale, Rotation, Scale.y, Color, Sprite, Material, layer_);
         }
     }
 }
