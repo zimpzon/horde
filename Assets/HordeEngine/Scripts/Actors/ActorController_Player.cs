@@ -55,7 +55,7 @@ namespace HordeEngine
 
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))
             {
-                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileDescriptions.Yellow, false, trans_.localPosition, 200, 5.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
+                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileDescriptions.Yellow, false, trans_.localPosition, 500, 5.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
             }
 
             Vector3 inputVec = Vector3.zero;

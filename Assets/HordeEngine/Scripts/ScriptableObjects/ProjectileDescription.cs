@@ -8,13 +8,13 @@ namespace HordeEngine
         public Sprite Sprite;
         public Material Material;
         public Vector2 Size = Vector2.one;
-        public Color Color = Color.white;
+        public Color32 Color = UnityEngine.Color.white;
 
         public bool EmitLight;
         public Sprite LightSprite;
         public Material LightMaterial;
         public Vector2 LightSize = Vector2.one;
-        public Color LightColor = Color.white;
+        public Color32 LightColor = UnityEngine.Color.white;
         public float LightOffsetY;
 
         public float CollisionSize = 1.0f;

@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace HordeEngine
 {
@@ -10,11 +9,14 @@ namespace HordeEngine
         public Vector3 Offset = Vector3.zero;
         [NonSerialized] public int QuadsPerBatchMesh = 256;
         [NonSerialized] public int SpritesRendered;
+        [NonSerialized] public int MeshesRendered;
 
-        [NonSerialized] public List<HordeBatchRenderer> Batches = new List<HordeBatchRenderer>();
-        [NonSerialized] List<UInt64> keys_ = new List<UInt64>();
+        const int InitialRendererCapacity = 128;
+        HordeBatchRenderer[] batches_;
+        UInt64[] keys_;
+        int rendererCount_;
 
-        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color color, Sprite sprite, Material material, int layer)
+        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color32 color, Sprite sprite, Material material, int layer)
         {
             var batch = GetBatchRenderer(sprite, material, layer);
             batch.AddQuad(center, size, rotationDegrees, zSkew, color, sprite);
@@ -23,27 +25,46 @@ namespace HordeEngine
         public HordeBatchRenderer GetBatchRenderer(Sprite sprite, Material material, int layer)
         {
             UInt64 key = ((UInt64)sprite.texture.GetInstanceID() << 29) + ((UInt64)material.GetInstanceID() << 6) + (UInt64)layer;
-            int idx = keys_.IndexOf(key);
+            int idx = -1;
+            for (int i = 0; i < rendererCount_; ++i)
+            {
+                if (keys_[i] == key)
+                {
+                    idx = i;
+                    break;
+                }
+            }
+
             if (idx < 0)
             {
                 idx = CreateBatchRenderer(key, sprite.texture, material, layer);
                 Debug.LogFormat("HordeBatchRenderer created, idx = {0}, key = {1}", idx, key);
             }
 
-            return Batches[idx];
+            return batches_[idx];
         }
 
         private int CreateBatchRenderer(UInt64 key, Texture sprite, Material material, int layer)
         {
-            HordeBatchRenderer batch = new HordeBatchRenderer(key, sprite, material, layer, QuadsPerBatchMesh);
-            Batches.Add(batch);
-            keys_.Add(key);
-            return Batches.Count - 1;
+            if (rendererCount_ >= batches_.Length)
+            {
+                Array.Resize(ref batches_, batches_.Length + batches_.Length / 2);
+                Array.Resize(ref keys_, batches_.Length);
+            }
+
+            var batch = new HordeBatchRenderer(key, sprite, material, layer, QuadsPerBatchMesh);
+            batches_[rendererCount_] = batch;
+            keys_[rendererCount_++] = key;
+            return rendererCount_ - 1;
         }
 
         void OnEnable()
         {
             Horde.Sprites = this;
+            batches_ = new HordeBatchRenderer[InitialRendererCapacity];
+            keys_ = new UInt64[InitialRendererCapacity];
+            rendererCount_ = 0;
+
             Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Internal_DrawMeshes);
         }
 
@@ -58,16 +79,18 @@ namespace HordeEngine
             matrix.SetTRS(Offset, Quaternion.identity, Vector3.one);
 
             SpritesRendered = 0;
-            for (int i = 0; i < Batches.Count; ++i)
+            MeshesRendered = 0;
+            for (int i = 0; i < rendererCount_; ++i)
             {
-                var batch = Batches[i];
+                var batch = batches_[i];
                 batch.ApplyChanges();
                 int activeMeshes = batch.GetActiveMeshCount();
                 for (int j = 0; j < activeMeshes; ++j)
                 {
-                    // TODO: DrawMesh does not always show in the editor. Toggling a sprite on/off lags behind one update.
+                    // TODO: DrawMesh does not always show in the editor. Seems to lag exactly one update behind.
                     Graphics.DrawMesh(batch.Meshes[j].Mesh, matrix, batch.Material, batch.Layer);
                     SpritesRendered += batch.Meshes[j].ActiveQuadCount;
+                    MeshesRendered++;
                 }
                 batch.Clear();
             }

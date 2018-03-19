@@ -5,6 +5,8 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
 {
     public int InitialCapacity = 5000;
     public float OffsetY;
+    [SerializeField, Layer] public LayerMask ProjectileLayer;
+    [SerializeField, Layer] public LayerMask LightLayer;
 
     // To allow updating structs in place we have to use array. A List<> will return a copy when accessing an element.
     Projectile[] projectiles_;
@@ -29,6 +31,9 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
     void Awake()
     {
         projectiles_ = new Projectile[InitialCapacity];
+
+        projectileLayer_ = (int)ProjectileLayer;
+        lightLayer_ = (int)LightLayer;
     }
 
     public void Clear()

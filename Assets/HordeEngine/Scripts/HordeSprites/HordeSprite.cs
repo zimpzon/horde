@@ -9,7 +9,7 @@ namespace HordeEngine
         public Material Material;
         public bool FlipX;
         [SerializeField, Layer] public LayerMask Layer;
-        public Color Color = Color.white;
+        public Color32 Color = UnityEngine.Color.white;
         public Vector2 Scale = Vector2.one;
         public Vector3 Offset = Vector3.zero;
         public float Rotation;
@@ -46,6 +46,7 @@ namespace HordeEngine
         // TODO
         // Enable whole GO: nothing drawn.
         // Click any component in inspector: drawn
+        // (NO its not.. wth) Hey hey! Light sprite can be toggled np. Sooo. Its a camera thing.
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
             var scale = Scale;

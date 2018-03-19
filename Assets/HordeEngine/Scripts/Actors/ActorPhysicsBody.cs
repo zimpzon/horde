@@ -24,11 +24,15 @@ namespace HordeEngine
         {
             CollisionUtil.AddCollisionPoints(CollisionUtil.TempList, transform.localPosition + (Vector3)MapCollisionOffset, Width, Depth, MapCollisionGranularity);
             Gizmos.color = Color.green;
+            Vector3 point = Vector3.zero;
             for (int i = 0; i < CollisionUtil.TempList.Count; ++i)
             {
-                Vector3 point = CollisionUtil.TempList[i];
+                point = CollisionUtil.TempList[i];
+                point.z = -5;
                 Gizmos.DrawWireCube(point, Vector3.one * 0.1f);
             }
+            point = transform.localPosition + (Vector3)CollisionCircleOffset;
+            point.z = -5;
             Gizmos.DrawWireSphere(transform.localPosition + (Vector3)CollisionCircleOffset, CollisionCircleSize);
         }
 

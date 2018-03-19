@@ -10,7 +10,7 @@ public class FpsControl : MonoBehaviour
     const int H = 100;
 
     int currentColumn_;
-    int textUpdateRate_ = 5;
+    int textUpdateRate_ = 2;
     Color32 background_ = new Color32(50, 50, 50, 255);
     RawImage image_;
     TextMeshProUGUI textFps_;
@@ -30,8 +30,10 @@ public class FpsControl : MonoBehaviour
 
         texture_ = new Texture2D(W, H, TextureFormat.RGBA32, false)
         {
-            filterMode = FilterMode.Point
+            filterMode = FilterMode.Point,
+            wrapMode = TextureWrapMode.Repeat
         };
+
         image_.texture = texture_;
         image_.uvRect = uvRect_;
 
@@ -54,6 +56,7 @@ public class FpsControl : MonoBehaviour
         }
 
         int row60Fps = H - (100 - 60) - 1; // As long as height is 100
+
         // Dashed line
         if ((currentColumn_ / 5) % 2 == 0)
             pixels_[row60Fps * W + currentColumn_] = Color.green;
@@ -79,7 +82,7 @@ public class FpsControl : MonoBehaviour
             Add(fps);
 
             if (Time.frameCount % textUpdateRate_ == 0)
-                textFps_.text = string.Format("{0:0.0} FpS", fps);
+                textFps_.SetText("{0:1} FpS", fps);
         }
     }
 }

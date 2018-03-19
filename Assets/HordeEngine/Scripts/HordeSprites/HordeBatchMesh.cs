@@ -104,12 +104,12 @@ namespace HordeEngine
             }
         }
 
-        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color color)
+        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color32 color)
         {
             AddQuad(center, size, rotationDegrees, zSkew, Vector2.up, Vector2.one, color);
         }
 
-        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Vector2 uvTopLeft, Vector2 uvSize, Color color)
+        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Vector2 uvTopLeft, Vector2 uvSize, Color32 color)
         {
             // 0---1
             // | / | = [0, 1, 3] and [1, 2, 3]

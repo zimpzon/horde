@@ -55,7 +55,7 @@ namespace HordeEngine
                 Meshes[i].ApplyChanges();
         }
 
-        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color color, Sprite sprite)
+        public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color32 color, Sprite sprite)
         {
             QuadCount++;
             if (QuadCount > totalQuadCapacity_)

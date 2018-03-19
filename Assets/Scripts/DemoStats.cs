@@ -6,7 +6,6 @@ public class DemoStats : MonoBehaviour
 {
     public Camera LightingCamera;
     public TextMeshProUGUI TextSpritesRendered;
-    public TextMeshProUGUI TextFps;
 
     public void AmbientLightSliderChanged(float value)
     {
@@ -24,13 +23,8 @@ public class DemoStats : MonoBehaviour
         int newSprCount = Horde.Sprites.SpritesRendered;
         if (newSprCount != lastSprCount_)
         {
-            TextSpritesRendered.text = newSprCount.ToString();
+            TextSpritesRendered.SetText("{0}", newSprCount);
             lastSprCount_ = newSprCount;
-        }
-
-        if (Time.frameCount % 5 == 0)
-        {
-            TextFps.text = string.Format("{0:0.0} fps", 1.0f / Time.deltaTime);
         }
     }
 }

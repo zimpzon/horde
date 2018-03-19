@@ -529,7 +529,7 @@ PlayerSettings:
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLCompressionFormat: 1
-  webGLLinkerTarget: 2
+  webGLLinkerTarget: 0
   scriptingDefineSymbols: {}
   platformArchitecture: {}
   scriptingBackend: {}
