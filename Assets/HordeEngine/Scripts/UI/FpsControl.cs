@@ -5,9 +5,10 @@ using UnityEngine.UI;
 public class FpsControl : MonoBehaviour
 {
     public KeyCode ToggleKey = KeyCode.I;
+    public bool StartEnabled = true;
 
-    const int W = 200;
-    const int H = 100;
+    const int W = 128;
+    const int H = 64;
 
     int currentColumn_;
     int textUpdateRate_ = 2;
@@ -38,7 +39,8 @@ public class FpsControl : MonoBehaviour
         image_.uvRect = uvRect_;
 
         displayRoot_ = transform.GetChild(0).gameObject;
-        displayRoot_.SetActive(false);
+        if (!StartEnabled)
+            displayRoot_.SetActive(false);
     }
 
     public void Add(float fps)
@@ -55,9 +57,8 @@ public class FpsControl : MonoBehaviour
             pixels_[y * W + currentColumn_] = y < top ? col32 : background_;
         }
 
-        int row60Fps = H - (100 - 60) - 1; // As long as height is 100
-
         // Dashed line
+        int row60Fps = 60;
         if ((currentColumn_ / 5) % 2 == 0)
             pixels_[row60Fps * W + currentColumn_] = Color.green;
 

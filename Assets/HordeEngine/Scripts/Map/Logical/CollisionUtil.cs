@@ -80,6 +80,10 @@ public static class CollisionUtil
                 if (GetCollisionValue(point) != MapConstants.CollWalkable)
                 {
                     // After resolving collision this point is still inside a collider
+                    Debug.DrawRay(point,  Vector2.up + Vector2.right, Color.red, 0.1f);
+                    Debug.DrawRay(point, -Vector2.up + Vector2.right, Color.red, 0.1f);
+                    Debug.DrawRay(point, -Vector2.up - Vector2.right, Color.red, 0.1f);
+                    Debug.DrawRay(point,  Vector2.up - Vector2.right, Color.red, 0.1f);
                     Debug.LogErrorFormat("Error resolving collision, newPos = {0}, velocity = {1}, normal = {2}", point.ToString("0.00000000"), velocity.ToString("0.00000000"), collisionNormal.ToString("0.00000000"));
                 }
             }

@@ -1,4 +1,5 @@
-﻿using HordeEngine;
+﻿using System;
+using HordeEngine;
 using UnityEngine;
 
 public class ProjectileManager : MonoBehaviour, IComponentUpdate

@@ -4,24 +4,25 @@ namespace HordeEngine
 {
     public static class ProjectileUpdaters
     {
-        public static ActorController_Player Player;
-        public static Vector2 PlayerPos;
-        public static float PlayerSize;
-
-        static void CollidePlayer(Vector2 pos, float size, Vector2 dir)
+        static bool CollidePlayer(Vector2 pos, float size, Vector2 dir, ref Projectile p)
         {
-            float s2 = PlayerSize + size;
-            if (Mathf.Abs(pos.x - PlayerPos.x) < s2 && Mathf.Abs(pos.y - PlayerPos.y) < s2)
+            float s2 = PlayerCollision.PlayerSize + size;
+            if (Mathf.Abs(pos.x - PlayerCollision.PlayerPos.x) < s2 && Mathf.Abs(pos.y - PlayerCollision.PlayerPos.y) < s2)
             {
-                Player.Hit(dir);
+                if (PlayerCollision.OnPlayerCollision != null)
+                    PlayerCollision.OnPlayerCollision(ref p);
+
+                return true;
             }
+
+            return false;
         }
 
         public static bool BasicMove(ref Projectile p)
         {
             p.ActualPos += p.Velocity * Horde.Time.DeltaTime;
-            if (p.CollidePlayer)
-                CollidePlayer(p.ActualPos, p.CollisionSize, p.Velocity);
+            if (p.CollidePlayer && CollidePlayer(p.ActualPos, p.CollisionSize, p.Velocity, ref p))
+                return false;
 
             return !CollisionUtil.IsCircleColliding(p.ActualPos, p.CollisionSize);
         }
@@ -40,8 +41,50 @@ namespace HordeEngine
 
             var move = p.ActualPos - oldPos;
             p.RotationDegrees = Mathf.Atan2(move.x, move.y) * Mathf.Rad2Deg;
-            if (p.CollidePlayer)
-                CollidePlayer(p.ActualPos, p.CollisionSize, p.Velocity);
+            if (p.CollidePlayer && CollidePlayer(p.ActualPos, p.CollisionSize, p.Velocity, ref p))
+                return false;
+
+            return !CollisionUtil.IsCircleColliding(p.ActualPos, p.CollisionSize);
+        }
+
+        public static bool ChasePlayer(ref Projectile p)
+        {
+            float timeAlive = Horde.Time.SlowableTime - p.StartTime;
+
+            // Spawn fast -> stop -> start engines
+            const float SpawnTime = 1.0f;
+
+            float moveSpeed = 0.0f;
+            if (timeAlive < SpawnTime)
+            {
+                // First x seconds: Go from full speed to 0
+                moveSpeed = (SpawnTime - timeAlive) * (1.0f / SpawnTime);
+                moveSpeed *= moveSpeed;
+                moveSpeed *= 5;
+            }
+            else
+            {
+                // After x seconds: keep speeding up
+                float t = (timeAlive - SpawnTime) * 2;
+                moveSpeed = Mathf.Clamp(t * t * t, 0.0f, 8.0f);
+            }
+
+            float turnPower = moveSpeed * 0.25f;
+            if (timeAlive < SpawnTime)
+                turnPower = 0.0f;
+
+            var desiredDir = (PlayerCollision.PlayerPos - p.ActualPos);
+            p.Velocity.x += (desiredDir.x - p.Velocity.x) * Horde.Time.DeltaSlowableTime * turnPower;
+            p.Velocity.y += (desiredDir.y - p.Velocity.y) * Horde.Time.DeltaSlowableTime * turnPower;
+            p.Velocity = p.Velocity.normalized;
+
+            p.ActualPos += p.Velocity * Horde.Time.DeltaTime * moveSpeed;
+            p.RotationDegrees = Mathf.Atan2(p.Velocity.x, p.Velocity.y) * Mathf.Rad2Deg;
+            if (p.CollidePlayer && CollidePlayer(p.ActualPos, p.CollisionSize, p.Velocity, ref p))
+            {
+                PlayerCollision.PlayerBody.AddForce(p.Velocity * 10);
+                return false;
+            }
 
             return !CollisionUtil.IsCircleColliding(p.ActualPos, p.CollisionSize);
         }

@@ -19,6 +19,10 @@ namespace HordeEngine
             trans_ = transform;
             actorBody_ = GetComponent<ActorPhysicsBody>();
             dodge_ = GetComponent<ActorAbility_Dodge>();
+
+            PlayerCollision.PlayerSize = actorBody_.CollisionCircleSize;
+            PlayerCollision.OnPlayerCollision = Hit;
+            PlayerCollision.PlayerBody = actorBody_;
         }
 
         void OnValidate()
@@ -31,12 +35,12 @@ namespace HordeEngine
         void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
         Vector2 frameForce_;
-        public void Hit(Vector2 direction)
+        public void Hit(ref Projectile p)
         {
             if (dodge_.IsDodging)
                 return;
 
-            frameForce_ += direction.normalized;
+            frameForce_ += p.Velocity.normalized;
         }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
@@ -44,9 +48,7 @@ namespace HordeEngine
             actorBody_.AddForce(frameForce_.normalized * 2);
             frameForce_ = Vector2.zero;
 
-            ProjectileUpdaters.Player = this;
-            ProjectileUpdaters.PlayerPos = trans_.position + (Vector3)actorBody_.CollisionCircleOffset;
-            ProjectileUpdaters.PlayerSize = actorBody_.CollisionCircleSize;
+            PlayerCollision.PlayerPos = trans_.localPosition + (Vector3)actorBody_.CollisionCircleOffset;
 
             float td = Horde.Time.DeltaTime;
 
@@ -55,7 +57,8 @@ namespace HordeEngine
 
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))
             {
-                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileDescriptions.Yellow, false, trans_.localPosition, 500, 5.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
+                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileBlueprints.Yellow, false, trans_.localPosition + Vector3.down * 0.75f, 250, 5.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
+                Global.SceneAccess.CameraShake.AddTrauma(1.0f);
             }
 
             Vector3 inputVec = Vector3.zero;

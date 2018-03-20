@@ -7,27 +7,38 @@ namespace HordeEngine
         public void Reset()
         {
             Idx = 0;
+            StartTime = Horde.Time.SlowableTime;
             StartPos = Vector2.zero;
-            StartTime = 0.0f;
             Origin = Vector2.zero;
             OriginOffset = Vector2.zero;
             MaxDist = float.MaxValue;
             MaxTime = float.MaxValue;
-            EmitLight = false;
-            LightOffsetY = 0.0f;
+
+            Sprite = null;
+            Material = null;
             Size = Vector2.one;
             Color = Color.white;
+            EmitLight = false;
+            LightSprite = null;
+            LightMaterial = null;
             LightSize = Vector2.one;
             LightColor = Color.white;
-            BounceWalls = false;
+            LightOffsetY = 0.0f;
+
+            CollidePlayer = false;
             CollisionSize = 1.0f;
+            BounceWalls = false;
             BouncesLeft = 0;
+
             Velocity = Vector2.zero;
             ActualPos = Vector2.zero;
+            RotationDegrees = 0;
+            Z = 0;
+
             UpdateCallback = null;
         }
 
-        public void ApplyDescription(ProjectileDescription desc)
+        public void ApplyBlueprint(ProjectileBlueprint desc)
         {
             Sprite = desc.Sprite;
             Material = desc.Material;
