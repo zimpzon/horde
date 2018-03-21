@@ -39,6 +39,7 @@ namespace HordeEngine
             {
                 idx = CreateBatchRenderer(key, sprite.texture, material, layer);
                 Debug.LogFormat("HordeBatchRenderer created, idx = {0}, key = {1}", idx, key);
+                Debug.LogWarning("FIX ME. HordeBatchMesh have to call RecalculateBounds or everything is culled."); // Maybe manually render to camera on PreRender.
             }
 
             return batches_[idx];

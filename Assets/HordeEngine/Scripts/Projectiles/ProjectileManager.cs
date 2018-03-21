@@ -48,7 +48,7 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
 
         if (ActiveProjectiles == projectiles_.Length)
         {
-            System.Array.Resize(ref projectiles_, projectiles_.Length + (projectiles_.Length / 2));
+            Array.Resize(ref projectiles_, projectiles_.Length + (projectiles_.Length / 2));
             Debug.Log("Projectile array was expanded. Consider increasing initial capacity. New size: " + projectiles_.Length);
         }
     }
