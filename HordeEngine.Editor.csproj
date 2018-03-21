@@ -339,17 +339,17 @@
       <Project>{6E871ED1-C874-5081-BAF0-856AF21CE905}</Project>
       <Name>HordeEngine</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.PackageManagerUI.Editor.csproj">
-      <Project>{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}</Project>
-      <Name>Unity.PackageManagerUI.Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="UnityEditor.StandardEvents.csproj">
       <Project>{6800202F-4402-D405-F8CB-03DC7BD78B92}</Project>
       <Name>UnityEditor.StandardEvents</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.PackageManagerUI.Editor.csproj">
+      <Project>{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}</Project>
+      <Name>Unity.PackageManagerUI.Editor</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\HordeEngine\Editor\HordeEngineTests\NewTestScript.cs" />
+    <Compile Include="Assets\HordeEngine\Editor\HordeEngineTests\HordeBatchRendererTests.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Editor\LayerSelectionHelper.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Editor\MapDataImporter.cs" />
     <Compile Include="Assets\PlayFabEditorExtensions\Editor\PlayFabEditor.cs" />

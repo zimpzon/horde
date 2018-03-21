@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System.Collections;
 using HordeEngine;
 
-public class NewTestScript
+public class HordeBatchRendererTests
 {
     HordeBatchRenderer br;
 
