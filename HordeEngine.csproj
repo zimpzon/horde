@@ -307,7 +307,10 @@
     <Compile Include="Assets\HordeEngine\Scripts\Actors\ActorAbility_Dodge.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Actors\ActorController_Player.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Actors\ActorController_TestEnemy.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\Actors\ActorLineOfSight.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Actors\ActorPhysicsBody.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\AI\AiBlackboard.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\AI\PerceptionBase.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Camera\CameraController_PlayerAndCrosshair.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Camera\CameraPositioner.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Camera\CameraShake.cs" />

@@ -1,37 +1,39 @@
-﻿using System;
-using HordeEngine;
-using UnityEngine;
+﻿//using System;
+//using HordeEngine;
+//using UnityEngine;
 
-[ExecuteInEditMode]
-public class DynamicQuadRenderer : MonoBehaviour
-{
-    public Material Material;
-    [SerializeField, Layer] public LayerMask Layer;
-    public Vector3 Offset = Vector3.zero;
-    public int InitialCapacity = 100;
+//// NOT USED ATM
 
-    [Header("Debug")]
-    public int QuadCount;
+//[ExecuteInEditMode]
+//public class DynamicQuadRenderer : MonoBehaviour
+//{
+//    public Material Material;
+//    [SerializeField, Layer] public LayerMask Layer;
+//    public Vector3 Offset = Vector3.zero;
+//    public int InitialCapacity = 100;
 
-    [NonSerialized] public DynamicQuadMesh QuadMesh;
+//    [Header("Debug")]
+//    public int QuadCount;
 
-    void EnsureCreated()
-    {
-        if (QuadMesh == null)
-            QuadMesh = new DynamicQuadMesh(InitialCapacity);
-    }
+//    [NonSerialized] public DynamicQuadMesh QuadMesh;
 
-    public void LateUpdate()
-    {
-        EnsureCreated();
+//    void EnsureCreated()
+//    {
+//        if (QuadMesh == null)
+//            QuadMesh = new DynamicQuadMesh(InitialCapacity);
+//    }
 
-        QuadMesh.ApplyChanges();
-        QuadCount = QuadMesh.QuadCount();
+//    public void LateUpdate()
+//    {
+//        EnsureCreated();
 
-        Matrix4x4 matrix = Matrix4x4.identity;
-        matrix.SetTRS(Offset, Quaternion.identity, Vector3.one);
-        Graphics.DrawMesh(QuadMesh.GetMesh(), matrix, Material, Layer.value);
+//        QuadMesh.ApplyChanges();
+//        QuadCount = QuadMesh.QuadCount();
 
-        QuadMesh.Clear();
-    }
-}
+//        Matrix4x4 matrix = Matrix4x4.identity;
+//        matrix.SetTRS(Offset, Quaternion.identity, Vector3.one);
+//        Graphics.DrawMesh(QuadMesh.GetMesh(), matrix, Material, Layer.value);
+
+//        QuadMesh.Clear();
+//    }
+//}

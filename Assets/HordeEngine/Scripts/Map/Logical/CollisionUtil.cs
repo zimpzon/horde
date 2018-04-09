@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using HordeEngine;
+﻿using HordeEngine;
 using UnityEngine;
+using System.Collections.Generic;
 
 public static class CollisionUtil
 {
@@ -13,13 +13,44 @@ public static class CollisionUtil
 
     static int lastMapIdx_;
 
-    public static void SetCollisionMap(byte[] map, int w, int h)
+    public static bool CircleCast(Vector2 p0, Vector2 p1, float width, bool allowPartial = false)
     {
-        CollisionMap = map;
-        Width = w;
-        Height = h;
-        lastMapIdx_ = (w * h) - 1;
-        Debug.LogFormat("Collision map, w = {0}, h = {1}, length = {2}", w, h, map.Length);
+        // Unoptimized! Does circle checks in a line, stepping partial width
+        float stepSize = width * 0.75f;
+        Vector2 step = (p1 - p0).normalized * stepSize;
+
+        var p = p0;
+        int stepCount = (int)((p1 - p0).magnitude / stepSize);
+        bool success = true;
+
+        if (allowPartial)
+        {
+            for (int i = 0; i < stepCount; ++i)
+            {
+                if (IsAllCircleColliding(p, width))
+                {
+                    success = false;
+                    break;
+                }
+
+                p += step;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < stepCount; ++i)
+            {
+                if (IsCircleColliding(p, width))
+                {
+                    success = false;
+                    break;
+                }
+
+                p += step;
+            }
+        }
+
+        return success;
     }
 
     public static void AddCollisionPoints(List<Vector2> list, Vector2 lineCenter, float width, float depth, float granularity)
@@ -197,24 +228,60 @@ public static class CollisionUtil
         // Top
         testPos.x = pos.x;
         testPos.y = pos.y + halfSize;
-        int count = GetCollisionValue(testPos);
+        if (GetCollisionValue(testPos) != MapConstants.CollWalkable)
+            return true;
 
         // Bottom
         testPos.x = pos.x;
         testPos.y = pos.y - halfSize;
-        count += GetCollisionValue(testPos);
+        if (GetCollisionValue(testPos) != MapConstants.CollWalkable)
+            return true;
 
         // Left
         testPos.x = pos.x - halfSize;
         testPos.y = pos.y;
-        count += GetCollisionValue(testPos);
+        if (GetCollisionValue(testPos) != MapConstants.CollWalkable)
+            return true;
 
         // Right
         testPos.x = pos.x + halfSize;
         testPos.y = pos.y;
-        count += GetCollisionValue(testPos);
+        if (GetCollisionValue(testPos) != MapConstants.CollWalkable)
+            return true;
 
-        return count != MapConstants.CollWalkable * 4;
+        return false;
+    }
+
+    public static bool IsAllCircleColliding(Vector2 pos, float size)
+    {
+        float halfSize = size * 0.5f;
+        Vector2 testPos = Vector2.zero;
+
+        // Top
+        testPos.x = pos.x;
+        testPos.y = pos.y + halfSize;
+        if (GetCollisionValue(testPos) == MapConstants.CollWalkable)
+            return false;
+
+        // Bottom
+        testPos.x = pos.x;
+        testPos.y = pos.y - halfSize;
+        if (GetCollisionValue(testPos) == MapConstants.CollWalkable)
+            return false;
+
+        // Left
+        testPos.x = pos.x - halfSize;
+        testPos.y = pos.y;
+        if (GetCollisionValue(testPos) == MapConstants.CollWalkable)
+            return false;
+
+        // Right
+        testPos.x = pos.x + halfSize;
+        testPos.y = pos.y;
+        if (GetCollisionValue(testPos) == MapConstants.CollWalkable)
+            return false;
+
+        return true;
     }
 
     public static int GetCollisionValue(Vector2 pos)
@@ -227,5 +294,14 @@ public static class CollisionUtil
 
         var collision = CollisionMap[collIdx];
         return collision;
+    }
+
+    public static void SetCollisionMap(byte[] map, int w, int h)
+    {
+        CollisionMap = map;
+        Width = w;
+        Height = h;
+        lastMapIdx_ = (w * h) - 1;
+        Debug.LogFormat("Collision map, w = {0}, h = {1}, length = {2}", w, h, map.Length);
     }
 }

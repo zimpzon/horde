@@ -18,7 +18,6 @@ namespace HordeEngine
         public Camera LightingCam;
         public Camera GameplayCam;
         public Camera OverlayCam;
-        public DynamicQuadRenderer PointLightRenderer;
         public RawImage LightDebugView;
         public ProjectileManager ProjectileManager;
         public ProjectileBlueprints ProjectileBlueprints;

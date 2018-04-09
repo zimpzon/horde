@@ -13,6 +13,7 @@ namespace HordeEngine
         public static ComponentUpdater ComponentUpdater = new ComponentUpdater();
         public static TimeManager Time = new TimeManager();
         public static HordeSpriteManager Sprites;
+        public static AiBlackboard AiBlackboard = new AiBlackboard();
     }
 
     /// <summary>

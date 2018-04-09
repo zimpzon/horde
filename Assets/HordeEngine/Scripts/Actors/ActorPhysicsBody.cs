@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace HordeEngine
 {
@@ -15,6 +16,8 @@ namespace HordeEngine
         public float CollisionCircleSize = 1.0f;
         public Vector2 CollisionCircleOffset;
         public bool UseSlowableTime = true;
+
+        [NonSerialized]public Vector2 Position;
 
         Vector2 force_;
         Vector2 pendingMovement_;
@@ -84,6 +87,7 @@ namespace HordeEngine
                     // There was a collision. Reflect the current force against the collider.
                     Vector2 reflectedForce = Vector2.Reflect(totalMove, collisionNormal).normalized * force_.magnitude * Bounciness;
                     SetForce(reflectedForce);
+
                     // After a collision the body position is clamped just in front of
                     // the collider. Add the remaining velocity to be added in next update.
                     float remainingVelocity = (totalMove.magnitude - maxAllowedMove.magnitude);
@@ -98,6 +102,8 @@ namespace HordeEngine
                 forceLen = Mathf.Clamp(forceLen - Drag * dt, 0.0f, float.MaxValue);
                 force_ = force_.normalized * forceLen;
             }
+
+            Position = trans_.position;
         }
     }
 }

@@ -38,15 +38,15 @@ namespace HordeEngine
                 yield return Yielders.WaitForSeconds(Random.value * 3 + 3);
                 dir_ = Vector2.zero;
 
-                var startPos = trans_.localPosition + Vector3.down * 0.5f;
-                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileBlueprints.Bullet2, true, startPos, 3, 1.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.ChasePlayer);
-                yield return Yielders.WaitForSeconds(1.5f);
+                //var startPos = trans_.localPosition + Vector3.down * 0.5f;
+                //ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileBlueprints.Bullet2, true, startPos, 3, 1.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.ChasePlayer);
+                //yield return Yielders.WaitForSeconds(1.5f);
 
-                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileBlueprints.Bullet1, true, trans_.localPosition + Vector3.down * 0.5f, 50, 10.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.CirclingMove);
-                yield return Yielders.WaitForSeconds(2);
+                //ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileBlueprints.Bullet1, true, trans_.localPosition + Vector3.down * 0.5f, 50, 10.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.CirclingMove);
+                //yield return Yielders.WaitForSeconds(2);
 
-                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileBlueprints.Bullet0, true, trans_.localPosition + Vector3.down * 0.5f, 100, 8.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
-                yield return Yielders.WaitForSeconds(2);
+                //ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileBlueprints.Bullet0, true, trans_.localPosition + Vector3.down * 0.5f, 100, 8.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
+                //yield return Yielders.WaitForSeconds(2);
             }
         }
 
