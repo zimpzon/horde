@@ -2,7 +2,7 @@
 
 namespace HordeEngine
 {
-    [CreateAssetMenu(fileName = "ProjectileBlueprint.asset", menuName = "HordeEngine/Projectile Blueprint")]
+    [CreateAssetMenu(fileName = "new ProjectileBlueprint.asset", menuName = "HordeEngine/Projectile Blueprint", order = 10)]
     public class ProjectileBlueprint : ScriptableObject
     {
         public Sprite Sprite;
