@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: FeelingSocial
   m_EditorClassIdentifier: 
   Feeling: 4
-  DecayTime: 2
+  DecayTime: 10
   UtilityCurve:
     serializedVersion: 2
     m_Curve:
@@ -37,5 +37,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  InStateBonus: 0.2
+  InStateBonus: 0
   DebugColor: {r: 0, g: 1, b: 0.038576365, a: 1}

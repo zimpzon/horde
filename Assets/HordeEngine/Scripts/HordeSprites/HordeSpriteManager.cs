@@ -15,6 +15,7 @@ namespace HordeEngine
         HordeBatchRenderer[] batches_;
         UInt64[] keys_;
         int rendererCount_;
+        Camera[] cameras_ = new Camera[0];
 
         public void AddQuad(Vector3 center, Vector2 size, float rotationDegrees, float zSkew, Color32 color, Sprite sprite, Material material, int layer)
         {
@@ -66,6 +67,8 @@ namespace HordeEngine
             keys_ = new UInt64[InitialRendererCapacity];
             rendererCount_ = 0;
 
+            Array.Resize(ref cameras_, Camera.allCamerasCount);
+            Camera.GetAllCameras(cameras_);
             Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Internal_DrawMeshes);
         }
 

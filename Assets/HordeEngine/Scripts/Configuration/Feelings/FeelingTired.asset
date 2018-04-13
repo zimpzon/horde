@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: FeelingTired
   m_EditorClassIdentifier: 
   Feeling: 3
-  DecayTime: 2
+  DecayTime: 15
   UtilityCurve:
     serializedVersion: 2
     m_Curve:
@@ -37,5 +37,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  InStateBonus: 0.2
+  InStateBonus: 0.8
   DebugColor: {r: 1, g: 0, b: 0.90488815, a: 1}

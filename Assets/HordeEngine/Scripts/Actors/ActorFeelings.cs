@@ -3,6 +3,26 @@ using UnityEngine;
 
 namespace HordeEngine
 {
+    /// <summary>
+    /// OK.. so... How does a monster shoot while resting? I am modeling 
+    /// 
+    /// Desires. Evaluate independently. Highest desire get state. BUT, also criteria to allow state change. A default + custom for selected.
+    /// Ex. DesireToFlee but suddenly CDs are ready. DesireToAttack might be better. After attack flee is better.
+    /// 
+    /// DesireToChase = age of loS + health + cd's
+    /// 
+    /// DesireToAttack = cd's, los, in range
+    /// 
+    /// DesireToFlee = health, los, cd's, incoming projectiles.
+    /// 
+    /// </summary>
+    /// 
+    public interface IFeelingChange
+    {
+        void FeelingActivated();
+        void FeelingLost();
+    }
+
     [RequireComponent(typeof(ActorPhysicsBody))]
     public class ActorFeelings : MonoBehaviour, IComponentUpdate
     {
@@ -24,13 +44,7 @@ namespace HordeEngine
             body_ = GetComponent<ActorPhysicsBody>();
         }
 
-        /// <summary>
-        /// Gradual influence like getting tired when running
-        /// </summary>
-        /// <param name="feeling"></param>
-        /// <param name="amount"></param>
-        /// <returns></returns>
-        public bool TryAddToFeeling(FeelingEnum feeling, float amount, float clampValue = 1.0f)
+        public bool TryUpdateFeeling(FeelingEnum feeling, float amount, float clampValue = 1.0f)
         {
             clampValue = Mathf.Min(1.0f, clampValue);
 
@@ -51,14 +65,13 @@ namespace HordeEngine
         {
             float dt = Horde.Time.SlowableTime - timeLastUpdate_;
             UpdateFeelings(dt);
+            timeLastUpdate_ = Horde.Time.SlowableTime;
 
             FeelingEnum result = FeelingEnum.None;
             float highestScore = float.MinValue;
 
             foreach (var f in KnownFeelings)
             {
-                f.LinearValue = Mathf.Clamp01(f.LinearValue - f.DecayTime * dt);
-
                 bool isCurrentFeeling = f.Feeling == currentFeeling;
                 f.UtilityValue = f.UtilityCurve.Evaluate(f.LinearValue) + (isCurrentFeeling ? f.InStateBonus : 0.0f);
                 if (f.UtilityValue > highestScore)
@@ -68,33 +81,39 @@ namespace HordeEngine
                 }
             }
 
+            Debug.LogFormat("Dominant: {0} : {1}", result, highestScore);
             return result;
         }
 
         void UpdateFeelings(float dt)
         {
-            foreach(var feeling in KnownFeelings)
-            {
-                feeling.LinearValue = Mathf.Clamp01(feeling.LinearValue - feeling.DecayTime * dt);
-            }
+            foreach(var f in KnownFeelings)
+                f.LinearValue = Mathf.Clamp01(f.LinearValue - (1.0f / f.DecayTime) * dt);
         }
 
-        void ShowDebug()
+        void OnDrawGizmos()
         {
+            if (body_ == null)
+                return;
+
             var pos = body_.Position;
-            pos.y += 1.5f;
+            pos.y += 0.6f;
             for (int i = 0; i < KnownFeelings.Length; ++i)
             {
                 var f = KnownFeelings[i];
-                Debug.DrawRay(pos, Vector3.right * 0.5f, Color.black);
-                Debug.DrawRay(pos, Vector3.right * 0.5f, f.DebugColor);
+                Vector3 size = new Vector3(1.2f, 0.2f, 0.1f);
+                Gizmos.color = Color.black;
+                Gizmos.DrawCube(pos, size);
+
+                size.x *= f.UtilityValue;
+                Gizmos.color = f.DebugColor;
+                Gizmos.DrawCube(pos, size);
+                pos.y += 0.25f;
             }
         }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            ShowDebug();
-
             bool checkNow = (Time.frameCount + myId_) % AiBlackboard.ActorFeelingFrameSkip == 0;
             if (checkNow)
             {

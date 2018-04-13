@@ -24,6 +24,18 @@ namespace HordeEngine
             feelings_ = GetComponent<ActorFeelings>();
         }
 
+        public bool TryGetRecentLineOfSightPosition(out Vector2 pos, float maxAge)
+        {
+            if (LatestLineOfSightTime >= Horde.Time.SlowableTime - maxAge)
+            {
+                pos = LatestLineOfSightPosition;
+                return true;
+            }
+
+            pos = Vector2.zero;
+            return false;
+        }
+
         void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
         void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
@@ -39,7 +51,7 @@ namespace HordeEngine
                 if (hasLoS)
                 {
                     if (feelings_ != null)
-                        feelings_.TryAddToFeeling(FeelingEnum.Fight, amount: 0.5f, clampValue: 0.9f);
+                        feelings_.TryUpdateFeeling(FeelingEnum.Fight, amount: 0.5f, clampValue: 0.9f);
 
                     LatestLineOfSightPosition = p1;
                     LatestLineOfSightTime = Horde.Time.Time;
