@@ -17,12 +17,12 @@ namespace HordeEngine
             Sprite = null;
             Material = null;
             Size = Vector2.one;
-            Color = Color.white;
+            Color = new Color32(255, 255, 255, 255);
             EmitLight = false;
             LightSprite = null;
             LightMaterial = null;
             LightSize = Vector2.one;
-            LightColor = Color.white;
+            LightColor = new Color32(255, 255, 255, 255);
             LightOffsetY = 0.0f;
 
             CollidePlayer = false;
@@ -71,7 +71,7 @@ namespace HordeEngine
         public Sprite Sprite;
         public Material Material;
         public Vector2 Size;
-        public Color Color;
+        public Color32 Color;
         public bool EmitLight;
         public Sprite LightSprite;
         public Material LightMaterial;
@@ -84,11 +84,12 @@ namespace HordeEngine
         public bool BounceWalls;
         public int BouncesLeft;
 
+        public float Speed;
         public Vector2 Velocity;
         public Vector2 ActualPos;
         public float RotationDegrees;
         public float Z;
-
+        
         public delegate bool TickDelegate(ref Projectile projectile);
         public TickDelegate UpdateCallback;
     }

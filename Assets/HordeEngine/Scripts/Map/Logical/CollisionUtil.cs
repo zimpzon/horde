@@ -40,7 +40,7 @@ public static class CollisionUtil
         {
             for (int i = 0; i < stepCount; ++i)
             {
-                if (IsCircleColliding(p, width))
+                if (IsCircleCollidingMap(p, width))
                 {
                     success = false;
                     break;
@@ -220,7 +220,7 @@ public static class CollisionUtil
         return result;
     }
 
-    public static bool IsCircleColliding(Vector2 pos, float size)
+    public static bool IsCircleCollidingMap(Vector2 pos, float size)
     {
         float halfSize = size * 0.5f;
         Vector2 testPos = Vector2.zero;

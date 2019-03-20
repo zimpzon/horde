@@ -78,7 +78,7 @@ public class ProjectileManager : MonoBehaviour, IComponentUpdate
             bool success = projectiles_[i].UpdateCallback(ref projectiles_[i]);
             if (!success)
             {
-                // Overwrite current with bottom of list
+                // Overwrite current with bottom of list and rerun current (i not incremented)
                 projectiles_[i] = projectiles_[ActiveProjectiles - 1];
                 ActiveProjectiles--;
                 continue;

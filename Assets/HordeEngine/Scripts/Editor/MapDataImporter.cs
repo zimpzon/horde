@@ -5,7 +5,6 @@ using UnityEditor;
 using System;
 using HordeEngine;
 using System.Linq;
-using SimpleJson;
 
 /// <summary>
 /// The json classes map directly to json exported by the Tiled editor.

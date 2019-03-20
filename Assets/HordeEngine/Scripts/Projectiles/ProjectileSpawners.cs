@@ -4,9 +4,9 @@ namespace HordeEngine
 {
     public static class ProjectileSpawners
     {
-        static Projectile proto = new Projectile();
+        static Projectile proto = new Projectile(); // Single-threaded access assumed
 
-        public static void SpawnCircle(ProjectileBlueprint desc, bool collidePlayer, Vector2 origin, int count, float velocity, ProjectileManager manager, Projectile.TickDelegate updateFunc)
+        public static void SpawnCircle(ProjectileBlueprint desc, bool collidePlayer, Vector2 origin, float radius, int count, float speed, ProjectileManager manager, Projectile.TickDelegate updateFunc)
         {
             proto.Reset();
             proto.ApplyBlueprint(desc);
@@ -15,14 +15,15 @@ namespace HordeEngine
                 float angleDegrees = (360.0f / count) * i;
                 float angle = angleDegrees * Mathf.Deg2Rad;
                 var dir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * 0.5f;
-                var pos = origin + dir * 0.5f;
+                var pos = origin + dir * radius;
 
                 proto.Idx = i;
                 proto.StartPos = pos;
                 proto.Origin = pos;
                 proto.ActualPos = pos;
                 proto.RotationDegrees = angleDegrees;
-                proto.Velocity = dir * velocity;
+                proto.Speed = speed;
+                proto.Velocity = dir * speed;
                 proto.UpdateCallback = updateFunc;
                 proto.CollidePlayer = collidePlayer;
 
@@ -30,7 +31,7 @@ namespace HordeEngine
             }
         }
 
-        public static void SpawnSingle(ProjectileBlueprint desc, bool collidePlayer, Vector2 origin, Vector2 dir, float velocity, ProjectileManager manager, Projectile.TickDelegate updateFunc)
+        public static void SpawnSingle(ProjectileBlueprint desc, bool collidePlayer, Vector2 origin, Vector2 dir, float speed, ProjectileManager manager, Projectile.TickDelegate updateFunc)
         {
             proto.Reset();
             proto.ApplyBlueprint(desc);
@@ -39,7 +40,8 @@ namespace HordeEngine
             proto.Origin = origin;
             proto.ActualPos = origin;
             proto.RotationDegrees = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
-            proto.Velocity = dir * velocity;
+            proto.Speed = speed;
+            proto.Velocity = dir * speed;
             proto.UpdateCallback = updateFunc;
             proto.CollidePlayer = collidePlayer;
 

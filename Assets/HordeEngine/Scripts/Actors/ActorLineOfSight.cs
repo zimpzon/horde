@@ -13,7 +13,7 @@ namespace HordeEngine
         [NonSerialized] public float LatestLineOfSightTime;
 
         static int IdCounter = AiBlackboard.LineOfSightFrameSkipOffset;
-        int myId_ = IdCounter++;
+        readonly int myId_ = IdCounter++;
 
         ActorPhysicsBody body_;
         ActorFeelings feelings_;

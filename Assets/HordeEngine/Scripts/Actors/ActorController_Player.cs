@@ -35,12 +35,12 @@ namespace HordeEngine
         void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
         Vector2 frameForce_;
-        public void Hit(ref Projectile p)
+        public void Hit(ref Projectile p, Vector2 velocity)
         {
             if (dodge_.IsDodging)
                 return;
 
-            frameForce_ += p.Velocity.normalized;
+            frameForce_ += velocity.normalized;
         }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
@@ -57,7 +57,16 @@ namespace HordeEngine
 
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))
             {
-                ProjectileSpawners.SpawnCircle(Global.SceneAccess.ProjectileBlueprints.Yellow, false, trans_.localPosition + Vector3.down * 0.75f, 250, 5.0f, Global.SceneAccess.ProjectileManager, ProjectileUpdaters.BasicMove);
+                ProjectileSpawners.SpawnCircle(
+                    Global.SceneAccess.ProjectileBlueprints.Bullet2,
+                    collidePlayer: true,
+                    trans_.localPosition + Vector3.down * 0.75f,
+                    radius: 3f,
+                    count: 30,
+                    speed: 2.5f,
+                    Global.SceneAccess.ProjectileManager,
+                    ProjectileUpdaters.ChasePlayer);
+
                 Global.SceneAccess.CameraShake.AddTrauma(1.0f);
             }
 

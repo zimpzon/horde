@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HordeEngine
 {
@@ -9,7 +8,7 @@ namespace HordeEngine
         public static float PlayerSize;
         public static ActorPhysicsBody PlayerBody;
 
-        public delegate void Callback(ref Projectile p);
+        public delegate void Callback(ref Projectile p, Vector2 velocity);
         public static Callback OnPlayerCollision;
     }
 }
