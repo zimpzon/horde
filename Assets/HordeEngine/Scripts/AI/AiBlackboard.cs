@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HordeEngine
 {
@@ -10,10 +9,6 @@ namespace HordeEngine
         public const int LineOfSightFrameSkip = 5;
         public const int LineOfSightFrameSkipOffset = 0;
 
-        public const int ActorFeelingFrameSkip = 20;
-        public const int ActorFeelingFrameSkipOffset = 10;
-
         public Vector2 PlayerPos;
-        public List<ActorPhysicsBody> HasPlayerLoS;
     }
 }

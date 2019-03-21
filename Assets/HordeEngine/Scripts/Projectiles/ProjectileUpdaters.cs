@@ -30,7 +30,7 @@ namespace HordeEngine
             p.Origin += p.Velocity * Horde.Time.DeltaTime;
             var oldPos = p.ActualPos;
 
-            float deg = Time.time * 500 + p.Idx * 5;
+            float deg = Time.time * 100 + p.Idx * 5;
             float sin = Mathf.Sin(-deg * Mathf.Deg2Rad);
             float cos = Mathf.Cos(-deg * Mathf.Deg2Rad);
 

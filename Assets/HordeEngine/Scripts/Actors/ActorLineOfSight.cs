@@ -11,17 +11,16 @@ namespace HordeEngine
         [NonSerialized] public bool HasLineOfSight;
         [NonSerialized] public Vector2 LatestLineOfSightPosition;
         [NonSerialized] public float LatestLineOfSightTime;
+        public float LatestLineOfSightAge => Horde.Time.SlowableTime - LatestLineOfSightTime;
 
         static int IdCounter = AiBlackboard.LineOfSightFrameSkipOffset;
         readonly int myId_ = IdCounter++;
 
         ActorPhysicsBody body_;
-        ActorFeelings feelings_;
 
         void Awake()
         {
             body_ = GetComponent<ActorPhysicsBody>();
-            feelings_ = GetComponent<ActorFeelings>();
         }
 
         public bool TryGetRecentLineOfSightPosition(out Vector2 pos, float maxAge)
@@ -47,18 +46,15 @@ namespace HordeEngine
                 var p0 = body_.Position;
                 var p1 = Target.Position;
 
-                bool hasLoS = CollisionUtil.CircleCast(p0, p1, RequiredWidth, allowPartial: true);
-                if (hasLoS)
+                HasLineOfSight = CollisionUtil.CircleCast(p0, p1, RequiredWidth, allowPartial: true);
+                if (HasLineOfSight)
                 {
-                    if (feelings_ != null)
-                        feelings_.TryUpdateFeeling(FeelingEnum.Fight, amount: 0.5f, clampValue: 0.9f);
-
                     LatestLineOfSightPosition = p1;
                     LatestLineOfSightTime = Horde.Time.Time;
                     Debug.DrawLine(p0, p1, Color.green, 0.32f);
                 }
 
-                if (!hasLoS)
+                if (!HasLineOfSight)
                     Debug.DrawLine(p0, LatestLineOfSightPosition, Color.yellow, 0.32f);
             }
         }

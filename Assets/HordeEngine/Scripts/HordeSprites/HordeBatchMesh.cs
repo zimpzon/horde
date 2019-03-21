@@ -73,7 +73,7 @@ namespace HordeEngine
         {
             ZeroVertices(ActiveQuadCount, idxAlreadyZeroed_ - 1);
             idxAlreadyZeroed_ = ActiveQuadCount;
-            Mesh.RecalculateBounds(); // TODO: no no no
+            Mesh.RecalculateBounds(); // TODO: What be nice to get rid of this
             Mesh.vertices = vertices_;
             Mesh.uv = UV_;
             Mesh.colors32 = colors_;

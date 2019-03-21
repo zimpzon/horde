@@ -11,7 +11,7 @@ Very important rendering info
 
     Sprites are rotated around X go get the same skewing as the map tiles. This makes them
     shorter though, so the height has to be compensated.
-    A 45 degrees rotation requires y scale of 1.4121 (sqr of 2, probably no coincidence?)
+    A 45 degrees rotation requires y scale of 1.4121 (sqr of 2)
 */
 
 namespace HordeEngine

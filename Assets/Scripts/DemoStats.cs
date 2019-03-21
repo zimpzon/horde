@@ -14,7 +14,7 @@ public class DemoStats : MonoBehaviour
 
     private void Start()
     {
-        LightingCamera.backgroundColor = Color.HSVToRGB(1.0f, 0.0f, 0.8f);
+//        LightingCamera.backgroundColor = Color.HSVToRGB(1.0f, 0.0f, 0.8f);
     }
 
     int lastSprCount_;
