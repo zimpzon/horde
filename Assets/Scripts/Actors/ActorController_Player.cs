@@ -52,6 +52,25 @@ namespace HordeEngine
             Horde.AiBlackboard.PlayerPos = playerPos;
         }
 
+        bool bulletTime_;
+        void ToggleBulletTime()
+        {
+            bulletTime_ = !bulletTime_;
+            SetBulletTime(bulletTime_);
+        }
+
+        void SetBulletTime(bool on)
+        {
+            if (on)
+            {
+                Global.SceneAccess.LightingImageEffect.MonochromeAmount = 2.0f;
+            }
+            else
+            {
+                Global.SceneAccess.LightingImageEffect.MonochromeAmount = 0.0f;
+            }
+        }
+
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
             actorBody_.AddForce(frameForce_.normalized * 2);
@@ -61,6 +80,9 @@ namespace HordeEngine
 
             if (Input.GetKeyDown(KeyCode.R))
                 Global.SceneAccess.CameraShake.AddTrauma(1.0f);
+
+            if (Input.GetKeyDown(KeyCode.B))
+                ToggleBulletTime();
 
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))
             {
@@ -72,7 +94,7 @@ namespace HordeEngine
                     count: 30,
                     speed: 2.5f,
                     Global.SceneAccess.ProjectileManager,
-                    ProjectileUpdaters.ChasePlayer);
+                    ProjectileUpdaters.BasicMove);
 
                 Global.SceneAccess.CameraShake.AddTrauma(1.0f);
             }

@@ -8,9 +8,9 @@ namespace HordeEngine
         public RenderTextureFormat LightingTextureFormat;
         public Camera ParentCamera;
         public float LightingResolution = 1.0f;
+        public LightingImageEffect lightingImageEffect_;
 
         Camera lightingCam_;
-        LightingImageEffect lightingImageEffect_;
 
         private void Awake()
         {
