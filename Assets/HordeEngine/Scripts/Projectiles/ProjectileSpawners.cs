@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace HordeEngine
 {
@@ -6,7 +7,7 @@ namespace HordeEngine
     {
         static Projectile proto = new Projectile(); // Single-threaded access assumed
 
-        public static void SpawnCircle(ProjectileBlueprint desc, bool collidePlayer, Vector2 origin, float radius, int count, float speed, ProjectileManager manager, Projectile.TickDelegate updateFunc)
+        public static void SpawnCircle(ProjectileBlueprint desc, bool collidePlayer, Vector2 origin, float radius, int count, float speed, ProjectileManager manager, Projectile.TickDelegate updateFunc, Projectile.TickDelegate filter = null)
         {
             proto.Reset();
             proto.ApplyBlueprint(desc);
@@ -27,7 +28,8 @@ namespace HordeEngine
                 proto.UpdateCallback = updateFunc;
                 proto.CollidePlayer = collidePlayer;
 
-                manager.SpawnProjectile(ref proto);
+                if (filter == null || filter(ref proto))
+                    manager.SpawnProjectile(ref proto);
             }
         }
 

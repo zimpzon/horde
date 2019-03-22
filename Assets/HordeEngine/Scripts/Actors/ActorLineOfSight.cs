@@ -25,7 +25,7 @@ namespace HordeEngine
 
         public bool TryGetRecentLineOfSightPosition(out Vector2 pos, float maxAge)
         {
-            if (LatestLineOfSightTime >= Horde.Time.SlowableTime - maxAge)
+            if (LatestLineOfSightTime >= Horde.Time.Time - maxAge)
             {
                 pos = LatestLineOfSightPosition;
                 return true;
@@ -51,11 +51,9 @@ namespace HordeEngine
                 {
                     LatestLineOfSightPosition = p1;
                     LatestLineOfSightTime = Horde.Time.Time;
-                    Debug.DrawLine(p0, p1, Color.green, 0.32f);
                 }
 
-                if (!HasLineOfSight)
-                    Debug.DrawLine(p0, LatestLineOfSightPosition, Color.yellow, 0.32f);
+                Debug.DrawLine(p0, LatestLineOfSightPosition, HasLineOfSight ? Color.green : Color.yellow, 0.32f);
             }
         }
     }

@@ -18,9 +18,9 @@ namespace HordeEngine
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            if (Horde.Time.Time > nextFire_)
+            if (Horde.Time.SlowableTime > nextFire_)
             {
-                nextFire_ = Horde.Time.Time + 5 + Random.value * 3;
+                nextFire_ = Horde.Time.SlowableTime + 5 + Random.value * 3;
 
                 ProjectileSpawners.SpawnCircle(
                     Global.SceneAccess.ProjectileBlueprints.Bullet2,

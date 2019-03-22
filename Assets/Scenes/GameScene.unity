@@ -610,7 +610,7 @@ MonoBehaviour:
     m_Bits: 0
   Color:
     serializedVersion: 2
-    rgba: 2148269824
+    rgba: 2752249600
   Scale: {x: 1.5, y: 0.5}
   Offset: {x: 0, y: -0.65, z: 0}
   Rotation: 0
@@ -2691,7 +2691,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3d48f1852eae0448f7dd0196394e72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlowableTimeScale: 1
 --- !u!20 &2046714220
 Camera:
   m_ObjectHideFlags: 0

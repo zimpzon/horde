@@ -22,8 +22,6 @@ namespace HordeEngine
     [ExecuteInEditMode]
     public class HordeEngine : MonoBehaviour
     {
-        public float SlowableTimeScale = 1.0f;
-
         void Awake()
         {
             Horde.Engine = this;
@@ -37,7 +35,6 @@ namespace HordeEngine
         void Update()
         {
             // This is the first Update() to be called in every frame
-            Horde.Time.SlowableTimeScale = SlowableTimeScale;
             Horde.Time.UpdateTime(Time.deltaTime);
 
             Horde.ComponentUpdater.DoUpdate();

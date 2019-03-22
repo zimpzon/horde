@@ -11,8 +11,6 @@ namespace HordeEngine
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public float SlowableTimeScale = 1.0f;
-
         GameState CurrentGameState { get { return gameStateStack_.Peek(); } }
         Stack<GameState> gameStateStack_ = new Stack<GameState>();
         Dictionary<GameState, GameStateHandler> gameStateHandlers_ = new Dictionary<GameState, GameStateHandler>();

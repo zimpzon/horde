@@ -16,11 +16,14 @@ namespace HordeEngine
         void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Default); }
         void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Default); }
 
+        bool Filter(ref Projectile p)
+            => p.RotationDegrees < 45 || p.RotationDegrees > 135;
+
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
-            if (Horde.Time.Time > nextFire_)
+            if (Horde.Time.SlowableTime > nextFire_)
             {
-                nextFire_ = Horde.Time.Time + 2 + Random.value * 1;
+                nextFire_ = Horde.Time.SlowableTime + 2 + Random.value * 1;
 
                 ProjectileSpawners.SpawnCircle(
                     Global.SceneAccess.ProjectileBlueprints.Bullet0,
@@ -30,7 +33,8 @@ namespace HordeEngine
                     count: Random.Range(20, 80),
                     speed: Random.value * 6 + 4,
                     Global.SceneAccess.ProjectileManager,
-                    ProjectileUpdaters.BasicMove);
+                    ProjectileUpdaters.BasicMove,
+                    Filter);
             }
         }
     }

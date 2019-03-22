@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HordeEngine", "Assembly-CSharp.csproj", "{5BE36E0C-F4D8-A8CD-3D97-A59EFA841709}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{5BE36E0C-F4D8-A8CD-3D97-A59EFA841709}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HordeEngine", "Assembly-CSharp-Editor.csproj", "{B6736AB1-9BB0-8551-9DDB-6E7BF3C907DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{B6736AB1-9BB0-8551-9DDB-6E7BF3C907DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

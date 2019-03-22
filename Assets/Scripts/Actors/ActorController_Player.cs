@@ -53,30 +53,41 @@ namespace HordeEngine
         }
 
         bool bulletTime_;
+        float bulletTimeValue_;
+        float bulletTimeTarget_;
         void ToggleBulletTime()
         {
             bulletTime_ = !bulletTime_;
-            SetBulletTime(bulletTime_);
+            bulletTimeTarget_ = bulletTime_ ? 1.0f : 0.0f;
         }
 
-        void SetBulletTime(bool on)
+        void UpdateBulletTime()
         {
-            if (on)
-            {
-                Global.SceneAccess.LightingImageEffect.MonochromeAmount = 2.0f;
-                Global.SceneAccess.Music.pitch = 0.8f;
-                Horde.Time.SlowableTimeScale = 0.1f;
-            }
-            else
-            {
-                Global.SceneAccess.LightingImageEffect.MonochromeAmount = 0.0f;
-                Global.SceneAccess.Music.pitch = 1.0f;
-                Horde.Time.SlowableTimeScale = 1.0f;
-            }
+            Global.SceneAccess.LightingImageEffect.MonochromeAmount = 2.0f * bulletTimeValue_;
+            Global.SceneAccess.Music.pitch = 1.0f - (0.2f * bulletTimeValue_);
+            Horde.Time.SlowableTimeScale = 1.0f - bulletTimeValue_;
+
+            float diff = bulletTimeTarget_ - bulletTimeValue_;
+            bulletTimeValue_ += Mathf.Sign(diff) * diff * diff * Horde.Time.Time * 0.01f;
+            bulletTimeValue_ = Mathf.Clamp01(bulletTimeValue_);
+        }
+
+        void Fire(Vector2 dir)
+        {
+            ProjectileSpawners.SpawnSingle(
+                Global.SceneAccess.ProjectileBlueprints.Bullet1,
+                false,
+                trans_.localPosition,
+                dir,
+                20.0f,
+                Global.SceneAccess.ProjectileManager,
+                ProjectileUpdaters.BasicMove);
         }
 
         public void ComponentUpdate(ComponentUpdatePass pass)
         {
+            UpdateBulletTime();
+
             actorBody_.AddForce(frameForce_.normalized * 2);
             frameForce_ = Vector2.zero;
 
@@ -88,6 +99,15 @@ namespace HordeEngine
             if (Input.GetKeyDown(KeyCode.B))
                 ToggleBulletTime();
 
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+                Fire(Vector2.down);
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+                Fire(Vector2.up);
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                Fire(Vector2.left);
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+                Fire(Vector2.right);
+
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))
             {
                 ProjectileSpawners.SpawnCircle(
@@ -98,7 +118,7 @@ namespace HordeEngine
                     count: 30,
                     speed: 2.5f,
                     Global.SceneAccess.ProjectileManager,
-                    ProjectileUpdaters.BasicMove);
+                    ProjectileUpdaters.ChasePlayer);
 
                 Global.SceneAccess.CameraShake.AddTrauma(1.0f);
             }

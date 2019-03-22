@@ -29,8 +29,8 @@ public class CameraShake : MonoBehaviour, IComponentUpdate
 
     public void ComponentUpdate(ComponentUpdatePass pass)
     {
-        float t = Horde.Time.SlowableTime * 10.0f;
-        float dt = Horde.Time.DeltaSlowableTime;
+        float t = Horde.Time.Time * 10.0f;
+        float dt = Horde.Time.Time;
         float power = traumaValue_ * traumaValue_ * traumaValue_;
         trans_.localPosition = new Vector3(
             Scale * power * Mathf.PerlinNoise(t + 1, t + 3.33f),

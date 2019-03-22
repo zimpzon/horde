@@ -5,7 +5,7 @@ namespace HordeEngine
     [RequireComponent(typeof(ActorPhysicsBody))]
     public class ActorAbility_Dodge : MonoBehaviour, IComponentUpdate
     {
-        public bool UseSlowableTime = true;
+        public bool UseSlowableTime = false;
         public float DodgeLength = 8.0f;
         public float DodgeTimeMs = 100.0f;
         [System.NonSerialized] public bool IsDodging;

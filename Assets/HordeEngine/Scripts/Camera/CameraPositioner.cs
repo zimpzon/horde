@@ -40,7 +40,7 @@ public class CameraPositioner : MonoBehaviour, IComponentUpdate
         if (movement.sqrMagnitude < MinimumMovement * MinimumMovement)
             movement = movement.normalized * MinimumMovement;
 
-        currentPos_ += movement * Horde.Time.DeltaSlowableTime;
+        currentPos_ += movement * Horde.Time.DeltaTime;
         trans_.localPosition = currentPos_;
     }
 }
