@@ -22,5 +22,6 @@ namespace HordeEngine
         public ProjectileManager ProjectileManager;
         public ProjectileBlueprints ProjectileBlueprints;
         public LightingImageEffect LightingImageEffect;
+        public AudioSource Music;
     }
 }

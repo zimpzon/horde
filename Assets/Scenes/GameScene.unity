@@ -2650,6 +2650,7 @@ MonoBehaviour:
   ProjectileManager: {fileID: 2118963245}
   ProjectileBlueprints: {fileID: 1966303783}
   LightingImageEffect: {fileID: 1314743766}
+  Music: {fileID: 1451546058}
 --- !u!1 &1966303782 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1757695095088452, guid: 319df2997cbfd4d4592880f6a1e8e3ee,

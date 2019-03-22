@@ -64,10 +64,14 @@ namespace HordeEngine
             if (on)
             {
                 Global.SceneAccess.LightingImageEffect.MonochromeAmount = 2.0f;
+                Global.SceneAccess.Music.pitch = 0.8f;
+                Horde.Time.SlowableTimeScale = 0.1f;
             }
             else
             {
                 Global.SceneAccess.LightingImageEffect.MonochromeAmount = 0.0f;
+                Global.SceneAccess.Music.pitch = 1.0f;
+                Horde.Time.SlowableTimeScale = 1.0f;
             }
         }
 

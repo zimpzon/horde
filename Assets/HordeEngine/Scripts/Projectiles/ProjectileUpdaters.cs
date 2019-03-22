@@ -18,7 +18,7 @@ namespace HordeEngine
 
         public static bool BasicMove(ref Projectile p)
         {
-            p.ActualPos += p.Velocity * Horde.Time.DeltaTime;
+            p.ActualPos += p.Velocity * Horde.Time.DeltaSlowableTime;
             if (p.CollidePlayer && CollidePlayer(p.ActualPos, p.CollisionSize, p.Velocity, ref p))
                 return false;
 
@@ -27,7 +27,7 @@ namespace HordeEngine
 
         public static bool CirclingMove(ref Projectile p)
         {
-            p.Origin += p.Velocity * Horde.Time.DeltaTime;
+            p.Origin += p.Velocity * Horde.Time.DeltaSlowableTime;
             var oldPos = p.ActualPos;
 
             float deg = Time.time * 100 + p.Idx * 5;
@@ -76,7 +76,7 @@ namespace HordeEngine
             p.Velocity.y += (desiredDir.y - p.Velocity.y) * Horde.Time.DeltaSlowableTime * turnPower;
             p.Velocity = p.Velocity.normalized;
 
-            p.ActualPos += p.Velocity * Horde.Time.DeltaTime * moveSpeed * p.Speed;
+            p.ActualPos += p.Velocity * Horde.Time.DeltaSlowableTime * moveSpeed * p.Speed;
             p.RotationDegrees = Mathf.Atan2(p.Velocity.x, p.Velocity.y) * Mathf.Rad2Deg;
             if (p.CollidePlayer && CollidePlayer(p.ActualPos, p.CollisionSize, p.Velocity, ref p))
             {
@@ -89,12 +89,12 @@ namespace HordeEngine
 
         public static bool UpdateProjectile2(ref Projectile p)
         {
-            p.ActualPos += p.Velocity * Horde.Time.DeltaTime;
+            p.ActualPos += p.Velocity * Horde.Time.DeltaSlowableTime;
             float dist = (p.ActualPos - p.StartPos).sqrMagnitude;
             if (dist > p.MaxDist * p.MaxDist)
                 return false;
 
-            p.Velocity += p.Velocity * 1.5f * Time.deltaTime;
+            p.Velocity += p.Velocity * 1.5f * Horde.Time.DeltaSlowableTime;
             return !CollisionUtil.IsCircleCollidingMap(p.ActualPos, p.CollisionSize);
         }
     }
