@@ -68,41 +68,30 @@
     <Compile Include="Assets\HordeEngine\RndUtil.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Actors\ActorLineOfSight.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Actors\ActorPhysicsBody.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\Actors\Actors\ActorAbility_Dodge.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\Actors\Actors\ActorAbility_FireCircle.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\Actors\Actors\ActorAbility_FireRockets.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\Actors\Actors\ActorChasePlayer.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\Actors\Actors\ActorController_Player.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\Actors\Actors\ActorRandomMovement.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\AI\AiBlackboard.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Camera\CameraController_PlayerAndCrosshair.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Camera\CameraPositioner.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Camera\CameraShake.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\ComponentUpdater.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\DynamicQuadRenderer.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\FlashingLight.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\HordeSprites\HordeBatchMesh.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\HordeSprites\HordeBatchRenderer.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\HordeSprites\HordeSprite.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\HordeSprites\HordeSpriteManager.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Lighting\LightingCamera.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Lighting\LightingImageEffect.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\Display\DisplayMap.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\Display\DisplayMapChunk.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\Display\MapRenderer.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\Display\MiniMapScript.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\Logical\CollisionUtil.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\Logical\LogicalMap.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\Logical\LogicalMapRoom.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\Logical\MapResources.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\Logical\TileMetadata.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\MapBuilding\MapBuilderSingleRoom.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\MapConstants.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\MapObjects\MapObjectBase.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\MapObjects\MapObjectPlayerStartTile.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Map\MapUtil.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Misc\CrosshairController.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Misc\DebugUtil.cs" />
+    <Compile Include="Assets\HordeEngine\Scripts\MaterialColorSetter.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Misc\DynamicQuadMesh.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Misc\ExtensionMethods.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Misc\LayerAttribute.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Misc\PlayerCollision.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Misc\ReusableObject.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Misc\SimpleSpriteAnimator.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Misc\SpatialHash.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Misc\Splash.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Misc\Yielders.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\MusicManager.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Projectiles\Projectile.cs" />
@@ -213,49 +202,32 @@
     <Compile Include="Assets\PlayFabSdk\Shared\SignalR.NET20\Transports\OptionalEventSignal.cs" />
     <Compile Include="Assets\PlayFabSdk\Shared\SignalR.NET20\Transports\ServerSentEventsTransport.cs" />
     <Compile Include="Assets\PlayFabSdk\Shared\SignalR.NET20\Transports\SseEvent.cs" />
-    <Compile Include="Assets\Projects\PerfTest\PerfTestManager.cs" />
-    <Compile Include="Assets\Scripts\Actors\ActorAbility_Dodge.cs" />
-    <Compile Include="Assets\Scripts\Actors\ActorAbility_FireCircle.cs" />
-    <Compile Include="Assets\Scripts\Actors\ActorAbility_FireRockets.cs" />
-    <Compile Include="Assets\Scripts\Actors\ActorChasePlayer.cs" />
-    <Compile Include="Assets\Scripts\Actors\ActorController_Player.cs" />
-    <Compile Include="Assets\Scripts\Actors\ActorRandomMovement.cs" />
-    <Compile Include="Assets\Scripts\DemoStats.cs" />
-    <Compile Include="Assets\Scripts\DynamicQuadRenderer.cs" />
-    <Compile Include="Assets\Scripts\FlashingLight.cs" />
-    <Compile Include="Assets\Scripts\Game\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Game\GameStateBoot.cs" />
-    <Compile Include="Assets\Scripts\Game\GameStateHandler.cs" />
-    <Compile Include="Assets\Scripts\Game\GameStateHub.cs" />
-    <Compile Include="Assets\Scripts\Game\Global.cs" />
-    <Compile Include="Assets\Scripts\Game\SceneAccessScript.cs" />
-    <Compile Include="Assets\Scripts\MaterialColorSetter.cs" />
-    <Compile Include="Assets\SimpleJSON\SimpleJSON.cs" />
-    <None Include="Assets\Shaders\WallShader.shader" />
+    <Compile Include="Assets\Scripts\PlayerScript.cs" />
+    <None Include="Assets\Graphics\Shaders\WallShader.shader" />
     <None Include="Assets\PlayFabSdk\link.xml" />
-    <None Include="Assets\Shaders\AdditiveTint.shader" />
+    <None Include="Assets\Graphics\Shaders\AdditiveTint.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-    <None Include="Assets\Shaders\FloorShader.shader" />
+    <None Include="Assets\Graphics\Shaders\FloorShader.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\Shaders\SpriteAdditive.shader" />
+    <None Include="Assets\Graphics\Shaders\SpriteAdditive.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-    <None Include="Assets\Shaders\CutoutTransparent.shader" />
+    <None Include="Assets\Graphics\Shaders\CutoutTransparent.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\Shaders\ActorSpriteVertexColor.shader" />
-    <None Include="Assets\Shaders\AdditiveVertexColor.shader" />
+    <None Include="Assets\Graphics\Shaders\ActorSpriteVertexColor.shader" />
+    <None Include="Assets\Graphics\Shaders\AdditiveVertexColor.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
-    <None Include="Assets\Scripts\pixeldudes code.txt" />
+    <None Include="Assets\HordeEngine\Scripts\pixeldudes code.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\HordeEngine\Scripts\Projectiles\ProjectileDefault.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
-    <None Include="Assets\Shaders\ActorSprite.shader" />
-    <None Include="Assets\Shaders\LightingBlend.shader" />
+    <None Include="Assets\Graphics\Shaders\ActorSprite.shader" />
+    <None Include="Assets\Graphics\Shaders\LightingBlend.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
@@ -272,6 +244,12 @@
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Tilemap.Editor">
+      <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
       <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
     </Reference>
@@ -280,12 +258,6 @@
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Tilemap.Editor">
-      <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.quicksearch">
       <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/com.unity.quicksearch.dll</HintPath>

@@ -19,17 +19,11 @@ namespace HordeEngine
     /// <summary>
     /// HordeEngine root
     /// </summary>
-    [ExecuteInEditMode]
     public class HordeEngine : MonoBehaviour
     {
         void Awake()
         {
             Horde.Engine = this;
-        }
-
-        public void SetDebugTexture(Texture tex)
-        {
-            Global.SceneAccess.LightDebugView.texture = tex;
         }
 
         void Update()

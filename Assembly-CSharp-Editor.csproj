@@ -64,7 +64,6 @@
   <ItemGroup>
     <Compile Include="Assets\HordeEngine\Editor\HordeEngineTests\HordeBatchRendererTests.cs" />
     <Compile Include="Assets\HordeEngine\Scripts\Editor\LayerSelectionHelper.cs" />
-    <Compile Include="Assets\HordeEngine\Scripts\Editor\MapDataImporter.cs" />
     <Compile Include="Assets\PlayFabEditorExtensions\Editor\PlayFabEditor.cs" />
     <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\ProgressBar.cs" />
     <Compile Include="Assets\PlayFabEditorExtensions\Editor\Scripts\Components\SubMenuComponent.cs" />
@@ -105,6 +104,12 @@
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Tilemap.Editor">
+      <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
       <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
     </Reference>
@@ -113,12 +118,6 @@
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Tilemap.Editor">
-      <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.quicksearch">
       <HintPath>C:/private/HordeEngine/Library/ScriptAssemblies/com.unity.quicksearch.dll</HintPath>

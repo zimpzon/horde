@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace HordeEngine
 {
-    [ExecuteInEditMode]
     public class HordeSpriteManager : MonoBehaviour, IComponentUpdate
     {
         public Vector3 Offset = Vector3.zero;

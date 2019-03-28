@@ -2,7 +2,6 @@
 
 namespace HordeEngine
 {
-    [ExecuteInEditMode]
     public class HordeSprite : MonoBehaviour, IComponentUpdate
     {
         public Sprite Sprite;
