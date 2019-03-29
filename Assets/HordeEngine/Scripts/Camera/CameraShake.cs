@@ -1,12 +1,14 @@
-﻿using HordeEngine;
-using UnityEngine;
+﻿using UnityEngine;
+using HordeEngine;
 
 // Object to shake will be forced at 0, 0, 0
 public class CameraShake : MonoBehaviour, IComponentUpdate
 {
-    const float TraumaDampening = 4.0f;
-    const float Scale = 0.2f;
-    float traumaValue_;
+    public bool ShakeRotation = true;
+    public bool ShakePosition = true;
+    public float Dampening = 4.0f;
+    public float Scale = 0.2f;
+    public float CurrentAmount;
     Transform trans_;
 
     private void Awake()
@@ -14,14 +16,9 @@ public class CameraShake : MonoBehaviour, IComponentUpdate
         trans_ = transform;
     }
 
-    public void AddForce(Vector2 force)
+    public void AddShake(float amount)
     {
-        // TODO: Add spring-like 2D motion.
-    }
-
-    public void AddTrauma(float amount)
-    {
-        traumaValue_ = Mathf.Clamp01(traumaValue_ + amount);
+        CurrentAmount = Mathf.Clamp01(CurrentAmount + amount);
     }
 
     void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
@@ -31,16 +28,26 @@ public class CameraShake : MonoBehaviour, IComponentUpdate
     {
         float t = Horde.Time.Time * 10.0f;
         float dt = Horde.Time.Time;
-        float power = traumaValue_ * traumaValue_ * traumaValue_;
-        trans_.localPosition = new Vector3(
-            Scale * power * Mathf.PerlinNoise(t + 1, t + 3.33f),
-            Scale * power * Mathf.PerlinNoise(t + 2, t + 4.44f) * 0.25f,
-            0.0f
-        );
+        float power = CurrentAmount * CurrentAmount * CurrentAmount;
+        if (ShakePosition)
+        {
+            trans_.localPosition = new Vector3(
+                Scale * power * Mathf.PerlinNoise(t + 1, t + 3.33f),
+                Scale * power * Mathf.PerlinNoise(t + 2, t + 4.44f) * 0.25f,
+                0.0f
+            );
+        }
+        else
+        {
+            trans_.localPosition = Vector3.zero;
+        }
 
         const float MaxDegrees = 5;
-        trans_.localRotation = Quaternion.Euler(0.0f, 0.0f, Scale * power * (Mathf.PerlinNoise(t + 5, t + 6.66f) - 0.5f) * MaxDegrees);
+        if (ShakeRotation)
+            trans_.localRotation = Quaternion.Euler(0, 0, Scale * power * (Mathf.PerlinNoise(t + 5, t + 6.66f) - 0.5f) * MaxDegrees);
+        else
+            trans_.localRotation = Quaternion.Euler(0, 0, 0);
 
-        traumaValue_ = Mathf.Clamp01(traumaValue_ - dt * TraumaDampening);
+        CurrentAmount = Mathf.Clamp01(CurrentAmount - dt * Dampening);
 	}
 }

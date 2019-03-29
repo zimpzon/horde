@@ -2,10 +2,15 @@
 
 public class CameraPositioner : MonoBehaviour
 {
-    public float MoveSpeed = 8.0f;
-    public Transform Target;
+    public float MoveSpeed = 5.0f;
+    public Vector3 Target;
+    public float TargetOffsetZ;
+    public float MoveSpeedZ = 5;
+    public float DistanceFromTarget;
+    public float DistanceFromTargetOffsetZ;
 
     Vector3 currentPos_;
+    float currentOffsetZ_;
     Transform trans_;
 
     private void Awake()
@@ -13,7 +18,7 @@ public class CameraPositioner : MonoBehaviour
         trans_ = transform;
     }
 
-    public void SetTarget(Transform target)
+    public void SetTarget(Vector3 target)
     {
         Target = target;
     }
@@ -23,20 +28,32 @@ public class CameraPositioner : MonoBehaviour
         currentPos_ = pos;
     }
 
-    public void Update()
+    private void Update()
     {
-        var movement = (Target.position - currentPos_) * MoveSpeed;
+        UpdateCamera(Time.unscaledDeltaTime);
+    }
+
+    public void UpdateCamera(float dt)
+    {
+        // XY
+        var movement = (Target - currentPos_);
+        DistanceFromTarget = movement.magnitude;
+        movement*= MoveSpeed;
 
         const float CloseEnough = 0.1f;
-        if (movement.sqrMagnitude < CloseEnough * CloseEnough)
-            return;
+        if (DistanceFromTarget > CloseEnough)
+            currentPos_ += movement * dt;
 
-        // Keep a minimum speed so the camera don't spend seconds on the last few pixels.
-        const float MinimumMovement = 1.0f;
-        if (movement.sqrMagnitude < MinimumMovement * MinimumMovement)
-            movement = movement.normalized * MinimumMovement;
+        // Z
+        float moveZ = (TargetOffsetZ - currentOffsetZ_);
+        DistanceFromTargetOffsetZ = moveZ;
+        moveZ *= MoveSpeedZ;
 
-        currentPos_ += movement * Time.unscaledDeltaTime;
+        const float CloseEnoughZ = 0.1f;
+        if (Mathf.Abs(moveZ) > CloseEnoughZ)
+            currentOffsetZ_ += moveZ * dt;
+
+        currentPos_.z = currentOffsetZ_;
         trans_.localPosition = currentPos_;
     }
 }
