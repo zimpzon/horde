@@ -82,8 +82,8 @@ public class FpsControl : MonoBehaviour
             float fps = 1.0f / Time.deltaTime;
             Add(fps);
 
-            if (Time.frameCount % textUpdateRate_ == 0)
-                textFps_.SetText("{0:1} FpS", fps);
+            //if (Time.frameCount % textUpdateRate_ == 0)
+            //    textFps_.SetText("{0:1} FpS", fps);
         }
     }
 }

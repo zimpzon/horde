@@ -1,11 +1,10 @@
-﻿using HordeEngine;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CameraPositioner : MonoBehaviour, IComponentUpdate
+public class CameraPositioner : MonoBehaviour
 {
     public float MoveSpeed = 8.0f;
+    public Transform Target;
 
-    Vector3 target_;
     Vector3 currentPos_;
     Transform trans_;
 
@@ -14,9 +13,9 @@ public class CameraPositioner : MonoBehaviour, IComponentUpdate
         trans_ = transform;
     }
 
-    public void SetTarget(Vector3 target)
+    public void SetTarget(Transform target)
     {
-        target_ = target;
+        Target = target;
     }
 
     public void SetPosition(Vector3 pos)
@@ -24,12 +23,9 @@ public class CameraPositioner : MonoBehaviour, IComponentUpdate
         currentPos_ = pos;
     }
 
-    void OnEnable() { Horde.ComponentUpdater.RegisterForUpdate(this, ComponentUpdatePass.Late); }
-    void OnDisable() { Horde.ComponentUpdater.UnregisterForUpdate(this, ComponentUpdatePass.Late); }
-
-    public void ComponentUpdate(ComponentUpdatePass pass)
+    public void Update()
     {
-        var movement = (target_ - currentPos_) * MoveSpeed;
+        var movement = (Target.position - currentPos_) * MoveSpeed;
 
         const float CloseEnough = 0.1f;
         if (movement.sqrMagnitude < CloseEnough * CloseEnough)
@@ -40,7 +36,7 @@ public class CameraPositioner : MonoBehaviour, IComponentUpdate
         if (movement.sqrMagnitude < MinimumMovement * MinimumMovement)
             movement = movement.normalized * MinimumMovement;
 
-        currentPos_ += movement * Horde.Time.DeltaTime;
+        currentPos_ += movement * Time.unscaledDeltaTime;
         trans_.localPosition = currentPos_;
     }
 }
