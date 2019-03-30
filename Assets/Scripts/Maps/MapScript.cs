@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEngine.ParticleSystem;
 
 public class MapScript : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class MapScript : MonoBehaviour
     public void ClearWallCircle(Vector3 worldPosition, float worldRadius)
     {
         int count = MapUtil.ClearCircle(WallTileMap, TopTileMap, worldPosition, worldRadius);
+        for (int i = 0; i < count; ++i)
+        {
+            var tile = MapUtil.LatestResult[i];
+            EmitParams param = new EmitParams();
+            SceneGlobals.Instance.ParticleScript.WallDestructionParticles.Emit(tile.gameObject.transform.position, 20);
+        }
         Debug.Log("Count: " + count);
     }
 

@@ -9,6 +9,7 @@ public class SceneGlobals : MonoBehaviour
     public CameraShake CameraShake;
     public MapScript MapScript;
     public SoundManager SoundManager;
+    public ParticleScript ParticleScript;
 
     void Awake()
     {
@@ -17,6 +18,7 @@ public class SceneGlobals : MonoBehaviour
         CameraShake = FindObjectOfType<CameraShake>();
         SoundManager = FindObjectOfType<SoundManager>();
         MapScript = FindObjectOfType<MapScript>();
+        ParticleScript = FindObjectOfType<ParticleScript>();
 
         Instance = this;
     }
