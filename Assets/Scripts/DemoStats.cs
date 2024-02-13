@@ -23,7 +23,7 @@ public class DemoStats : MonoBehaviour
         int newSprCount = Horde.Sprites.SpritesRendered;
         if (newSprCount != lastSprCount_)
         {
-            TextSpritesRendered.SetText("{0}", newSprCount);
+            //TextSpritesRendered.SetText("{0}", newSprCount);
             lastSprCount_ = newSprCount;
         }
     }
